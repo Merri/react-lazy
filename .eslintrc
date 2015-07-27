@@ -1,0 +1,11 @@
+{
+    "extends": "vaffel/react",
+    "rules": {
+    	"no-bitwise": false,
+    	"no-eq-null": false,
+    	"no-underscore-dangle": false,
+    	"semi": false,
+    	"strict": false,
+    	"wrap-iife": false
+    }
+}

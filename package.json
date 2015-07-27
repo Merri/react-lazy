@@ -1,0 +1,50 @@
+{
+  "name": "react-lazy",
+  "version": "0.0.1",
+  "description": "SEO friendly isomorphic lazy loader component",
+  "main": "dist/react-lazy.min.js",
+  "scripts": {
+    "pretest": "npm run lint",
+    "lint": "eslint .",
+    "prepublish": "npm prune && npm test",
+    "build": "NODE_ENV=production webpack",
+    "build_windows": "set NODE_ENV=production&&webpack",
+    "watch": "webpack --watch",
+    "test": "mocha --reporter spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/merri/react-lazy.git"
+  },
+  "author": "Vesa Piittinen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/merri/react-lazy/issues"
+  },
+  "homepage": "https://github.com/merri/react-lazy/",
+  "keywords": [
+    "react",
+    "react-component",
+    "lazy",
+    "load",
+    "isomorphic",
+    "render"
+  ],
+  "devDependencies": {
+    "babel-core": "^5.4.3",
+    "babel-loader": "^5.1.2",
+    "chai": "^2.3.0",
+    "eslint": "^0.21.2",
+    "eslint-config-vaffel": "1.0.0",
+    "eslint-plugin-react": "^2.3.0",
+    "jsdom": "3.1.2",
+    "mocha": "^2.2.5",
+    "mocha-jsdom": "^0.3.0",
+    "node-libs-browser": "^0.5.0",
+    "react": "~0.13.0",
+    "webpack": "^1.9.7"
+  },
+  "dependencies": {
+    "verge": "^1.9.1"
+  }
+}

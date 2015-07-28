@@ -1,8 +1,9 @@
 'use strict'
-var React = require('react/addons')
+var React = require('react')
 var verge = require('verge')
 
-var elements = []
+var elements = [],
+    isBind = false
 
 function throttle(func, wait) {
     var timeout
@@ -23,16 +24,17 @@ var checkElementsInViewport = throttle(function() {
         if (verge.inViewport(elements[i].element, elements[i].cushion)) {
             elements[i].callback()
             elements.splice(i, 1)
+            checkUnbind()
         }
     }
-    checkUnbind()
 }, 50)
 
 function checkUnbind() {
-    if (elements.length === 0 && window.removeEventListener) {
+    if (isBind && elements.length === 0 && window.removeEventListener) {
         window.removeEventListener('resize', checkElementsInViewport, false)
         window.removeEventListener('scroll', checkElementsInViewport, false)
         window.removeEventListener('touchend', checkElementsInViewport, false)
+        isBind = false
     }
 }
 
@@ -42,10 +44,11 @@ function addElement(options) {
         return
     }
 
-    if (elements.length === 0 && window.addEventListener) {
+    if (!isBind && elements.length === 0 && window.addEventListener) {
         window.addEventListener('resize', checkElementsInViewport, false)
         window.addEventListener('scroll', checkElementsInViewport, false)
         window.addEventListener('touchend', checkElementsInViewport, false)
+        isBind = true
     }
 
     elements.push(options)
@@ -154,11 +157,11 @@ var Lazy = React.createClass({
             cushion: this.props.cushion,
             element: React.findDOMNode(this)
         }
-        addElement(options)
+        addElement(this.options)
     },
 
     componentWillUnmount: function() {
-
+        removeElement(this.options)
     },
 
     handleLoad: function() {

@@ -3,7 +3,7 @@
 var React = require('react/addons'),
     jsdom = require('mocha-jsdom'),
     expect = require('chai').expect,
-    Lazy = require('../').Lazy
+    Lazy = require('../index').Lazy
 
 var TestUtils = React.addons.TestUtils
 

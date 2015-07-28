@@ -8,6 +8,8 @@ crawled by search engines that are not JavaScript aware. Also means this compone
 
 Works for **both vertical and horizontal scrolling**, which is also unlike some other solutions.
 
+[View demo](https://merri.github.io/react-lazy/)
+
 ## Why lazy load content such as images?
 
 You want to save your bandwidth and/or server load. As a side effect you may also gain some performance benefits on

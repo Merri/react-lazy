@@ -79,6 +79,24 @@ will not see it, therefore causing a non-lazy load of the content immediately up
 In other words, if you want to have minimal support in legacy browsers when using this component... you can have that!
 This component **does not** support lazy loading in any form in Internet Explorer 8 and older.
 
+## Other features
+
+`react-lazy` exposes [verge](https://github.com/ryanve/verge), you can use it with
+`import {verge} from 'react-lazy'` or `var verge = require('react-lazy').verge`
+
+You can apply "cushion" around elements so they are loaded slighly before coming into the actual viewport:
+
+```jsx
+// element content appear if it is in viewport or within 100px radius of it
+<Lazy cushion={100}>...</Lazy>
+```
+
+You can also get notified on just before lazy load switch render happens:
+
+```jsx
+<Lazy onLoad={yourCustomFunction}>...</Lazy>
+```
+
 ## Developing
 
 ```

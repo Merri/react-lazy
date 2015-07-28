@@ -137,7 +137,7 @@ var Lazy = React.createClass({
             'ul',
             'var'
         ]),
-        onLazyLoad: React.PropTypes.func
+        onLoad: React.PropTypes.func
     },
 
     getDefaultProps: function() {
@@ -165,8 +165,8 @@ var Lazy = React.createClass({
     },
 
     handleLoad: function() {
-        if (this.props.onLazyLoad) {
-            this.props.onLazyLoad()
+        if (this.props.onLoad) {
+            this.props.onLoad()
         }
         this.setState({ loadedAt: Date.now() })
     },

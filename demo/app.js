@@ -6,6 +6,13 @@
     var ImageLink = React.createFactory(React.createClass({
         displayName: 'ImageLink',
 
+        getInitialState: function() {
+            return {
+                backgroundColor: 'red',
+                opacity: 0.1
+            }
+        },
+
         onError: function() {
             console.log('Load ' + this.props.src + ' FAILED', new Date())
         },
@@ -16,6 +23,7 @@
 
         onLoaded: function() {
             console.log('Load ' + this.props.src + ' complete', new Date())
+            this.setState({ backgroundColor: 'white', opacity: 1 })
         },
 
         render: function() {
@@ -24,7 +32,8 @@
                     nodeName: 'a',
                     href: this.props.href || '#',
                     className: 'image-link image-link--100px',
-                    onLoad: this.onLoad
+                    onLoad: this.onLoad,
+                    style: this.state
                 },
                 React.DOM.img({
                     className: 'image-link__image',
@@ -45,6 +54,66 @@
         render: function() {
             return React.DOM.div(
                 {},
+                ImageLink({ src: 'http://placekitten.com/50/75' }),
+                ImageLink({ src: 'http://placekitten.com/60/75' }),
+                ImageLink({ src: 'http://placekitten.com/70/75' }),
+                ImageLink({ src: 'http://placekitten.com/80/75' }),
+                ImageLink({ src: 'http://placekitten.com/90/75' }),
+                ImageLink({ src: 'http://placekitten.com/100/75' }),
+                ImageLink({ src: 'http://placekitten.com/75/75' }),
+                ImageLink({ src: 'http://placekitten.com/75/85' }),
+                ImageLink({ src: 'http://placekitten.com/75/95' }),
+                ImageLink({ src: 'http://placekitten.com/75/55' }),
+                ImageLink({ src: 'http://placekitten.com/50/75' }),
+                ImageLink({ src: 'http://placekitten.com/60/75' }),
+                ImageLink({ src: 'http://placekitten.com/70/75' }),
+                ImageLink({ src: 'http://placekitten.com/80/75' }),
+                ImageLink({ src: 'http://placekitten.com/90/75' }),
+                ImageLink({ src: 'http://placekitten.com/100/75' }),
+                ImageLink({ src: 'http://placekitten.com/75/75' }),
+                ImageLink({ src: 'http://placekitten.com/75/85' }),
+                ImageLink({ src: 'http://placekitten.com/75/95' }),
+                ImageLink({ src: 'http://placekitten.com/75/55' }),
+                ImageLink({ src: 'http://placekitten.com/50/75' }),
+                ImageLink({ src: 'http://placekitten.com/60/75' }),
+                ImageLink({ src: 'http://placekitten.com/70/75' }),
+                ImageLink({ src: 'http://placekitten.com/80/75' }),
+                ImageLink({ src: 'http://placekitten.com/90/75' }),
+                ImageLink({ src: 'http://placekitten.com/100/75' }),
+                ImageLink({ src: 'http://placekitten.com/75/75' }),
+                ImageLink({ src: 'http://placekitten.com/75/85' }),
+                ImageLink({ src: 'http://placekitten.com/75/95' }),
+                ImageLink({ src: 'http://placekitten.com/75/55' }),
+                ImageLink({ src: 'http://placekitten.com/50/75' }),
+                ImageLink({ src: 'http://placekitten.com/60/75' }),
+                ImageLink({ src: 'http://placekitten.com/70/75' }),
+                ImageLink({ src: 'http://placekitten.com/80/75' }),
+                ImageLink({ src: 'http://placekitten.com/90/75' }),
+                ImageLink({ src: 'http://placekitten.com/100/75' }),
+                ImageLink({ src: 'http://placekitten.com/75/75' }),
+                ImageLink({ src: 'http://placekitten.com/75/85' }),
+                ImageLink({ src: 'http://placekitten.com/75/95' }),
+                ImageLink({ src: 'http://placekitten.com/75/55' }),
+                ImageLink({ src: 'http://placekitten.com/50/75' }),
+                ImageLink({ src: 'http://placekitten.com/60/75' }),
+                ImageLink({ src: 'http://placekitten.com/70/75' }),
+                ImageLink({ src: 'http://placekitten.com/80/75' }),
+                ImageLink({ src: 'http://placekitten.com/90/75' }),
+                ImageLink({ src: 'http://placekitten.com/100/75' }),
+                ImageLink({ src: 'http://placekitten.com/75/75' }),
+                ImageLink({ src: 'http://placekitten.com/75/85' }),
+                ImageLink({ src: 'http://placekitten.com/75/95' }),
+                ImageLink({ src: 'http://placekitten.com/75/55' }),
+                ImageLink({ src: 'http://placekitten.com/50/75' }),
+                ImageLink({ src: 'http://placekitten.com/60/75' }),
+                ImageLink({ src: 'http://placekitten.com/70/75' }),
+                ImageLink({ src: 'http://placekitten.com/80/75' }),
+                ImageLink({ src: 'http://placekitten.com/90/75' }),
+                ImageLink({ src: 'http://placekitten.com/100/75' }),
+                ImageLink({ src: 'http://placekitten.com/75/75' }),
+                ImageLink({ src: 'http://placekitten.com/75/85' }),
+                ImageLink({ src: 'http://placekitten.com/75/95' }),
+                ImageLink({ src: 'http://placekitten.com/75/55' }),
                 ImageLink({ src: 'http://placekitten.com/50/75' }),
                 ImageLink({ src: 'http://placekitten.com/60/75' }),
                 ImageLink({ src: 'http://placekitten.com/70/75' }),

@@ -1,8 +1,8 @@
 (function(make) {
     make = make()
 
-    if (typeof module != 'undefined' && module['exports']) {
-        module['exports'] = make
+    if (typeof module !== 'undefined' && module.exports) {
+        module.exports = make
     }
 
     if (typeof window !== 'undefined' && window.React) {

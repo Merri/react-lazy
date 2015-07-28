@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>React Lazy Component Demo</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" />
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css" rel="stylesheet" />
+        <style>
+.image-link {
+    border: thin solid #DDD;
+    display: inline-block;
+    margin: 5px;
+    position: relative;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.image-link--100px {
+    height: 100px;
+    line-height: 98px;
+    width: 100px;
+}
+
+.image-link__image {
+    line-height: 1;
+    max-height: 100%;
+    max-width: 100%;
+    vertical-align: middle;
+}
+        </style>
+    </head>
+    <body>
+        <h1>React Lazy Demo</h1>
+        <div id="app"></div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/react.min.js"></script>
+        <script src="./dist/react-lazy.min.js"></script>
+        <script src="./demo/app.js"></script>
+    </body>
+</html>

@@ -222,6 +222,7 @@
     })
 
     return {
+        checkElementsInViewport: checkElementsInViewport,
         Lazy: Lazy,
         verge: verge
     }

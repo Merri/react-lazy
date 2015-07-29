@@ -99,6 +99,16 @@ You can also get notified on just before lazy load switch render happens:
 <Lazy onLoad={yourCustomFunction}>...</Lazy>
 ```
 
+Finally, you can also manually trigger checking for elements in viewport, which can be useful if you toggle element
+resize (which won't cause resize or scroll events). Or you can use setInterval if you want to be very lazy.
+
+```js
+import {checkElementsInViewport} from 'react-lazy'
+
+// now you're being a very lazy dev...
+setInterval(checkElementsInViewport, 250)
+```
+
 ## Developing
 
 ```

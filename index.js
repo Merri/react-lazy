@@ -87,21 +87,23 @@
     var elements = [],
         isBind = false
 
-    function throttle(func, wait) {
+    function debounce(func, wait) {
         var timeout
 
         return function() {
-            if (!timeout) {
-                timeout = setTimeout(function() {
-                    timeout = null
-                }, wait)
-
+            var call = !timeout
+            clearTimeout(timeout)
+            timeout = setTimeout(function(args) {
+                timeout = null
+                func.apply(this, args)
+            }.bind(this, arguments), wait)
+            if (call) {
                 func.apply(this, arguments)
             }
         }
     }
 
-    var checkElementsInViewport = throttle(function() {
+    var checkElementsInViewport = debounce(function() {
         for (var i = elements.length - 1; i >= 0; i--) {
             if (verge.inViewport(elements[i].element, elements[i].cushion)) {
                 elements[i].callback()

@@ -1,6 +1,6 @@
 {
   "name": "react-lazy",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "SEO friendly isomorphic lazy loader component",
   "main": "dist/react-lazy.min.js",
   "scripts": {

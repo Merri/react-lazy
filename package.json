@@ -1,8 +1,8 @@
 {
   "name": "react-lazy",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "SEO friendly isomorphic lazy loader component",
-  "main": "dist/react-lazy.min.js",
+  "main": "index.js",
   "scripts": {
     "pretest": "npm run lint",
     "lint": "eslint .",

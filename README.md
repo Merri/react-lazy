@@ -2,24 +2,66 @@
 [![Version](http://img.shields.io/npm/v/react-lazy.svg)](https://www.npmjs.org/package/react-lazy)
 [![Build Status](https://travis-ci.org/Merri/react-lazy.svg)](https://travis-ci.org/Merri/react-lazy)
 
-Lazy loader container element that triggers load when element comes into view. Provides fallback for SEO and no-JS by
-using a `noscript` element, a unique feature compared to other solutions. This means your images and/or content can be
-crawled by search engines that are not JavaScript aware. Also means this component supports isomorphic rendering.
+Renders a component which inner contents are lazy loaded. Lazy loading happens when component becomes visible in
+browser viewport.
 
-Works for **both vertical and horizontal scrolling**, which is also unlike some other solutions.
+This component is universal: it renders on server and client side. Server rendered HTML includes the lazy loaded content
+(such as image), but it is hidden within a `noscript` element. This has two benefits: SEO and images are loaded if
+browser JavaScript is disabled.
 
 [View demo](https://merri.github.io/react-lazy/)
 
-## Why lazy load content such as images?
+**npm notes**
 
-You want to save your bandwidth and/or server load. As a side effect you may also gain some performance benefits on
-client side, especially on mobile devices. However the main benefit (and main purpose) for you should always be the
-reduction of bandwidth/server load.
+- React 0.14: use `v0.1.0` or later.
+- React 0.13: use `v0.0.3`.
 
-Another side effect of lazy loading is that user may see content flashing as it comes into view; sometimes with a lot of
-delay as it depends on connectivity.
 
-## Usage
+### Lazy loading benefits
+
+- Reduces your bandwidth usage.
+- Reduces file server / CDN loads.
+- Faster page loads on mobile / slow connections.
+
+The two things matter a lot if you're working with a popular site. The last thing can give noticeable improvement to
+page loading times, but shouldn't be your main reason for lazy loading.
+
+
+### Lazy loading disadvantages
+
+- User may see content flashing / appearing slowly.
+- Slighly increased HTML output and JS bundle sizes.
+- Can be tricky when working with responsive, complex components with features like animation and show/hide.
+
+
+## Basic sample
+
+Require Lazy component in your project.
+
+```jsx
+import {Lazy} from 'react-lazy'
+```
+
+Then you have this JSX:
+
+```
+return <a href="/" className="image-link image-link--100px">
+    <img alt="My Image" className="image-link__image" src="my-image.png" />
+</a>
+```
+
+You want to lazy load it. You change `<a />` to `<Lazy />` and you add prop `nodeName="a"`.
+
+```
+<Lazy nodeName="a" href="/" className="image-link image-link--100px">
+    <img alt="My Image" className="image-link__image" src="my-image.png" />
+</Lazy>
+```
+
+Congratulations! You are lazy loading!
+
+
+## More detailed sample
 
 A sample for targetting a single image. You are encouraged to give the container lazy element an explicit size, as can
 be seen in the CSS below.
@@ -71,6 +113,7 @@ var Lazy = reactLazy.Lazy
 </a>
 ```
 
+
 ## Why IE conditional comments?
 
 You probably develop your site in a way that your scripts don't really run on Internet Explorer 8. Maybe you see just
@@ -80,6 +123,7 @@ will not see it, therefore causing a non-lazy load of the content immediately up
 
 In other words, if you want to have minimal support in legacy browsers when using this component... you can have that!
 This component **does not** support lazy loading in any form in Internet Explorer 8 and older.
+
 
 ## Other features
 
@@ -109,6 +153,7 @@ import {checkElementsInViewport} from 'react-lazy'
 setInterval(checkElementsInViewport, 250)
 ```
 
+
 ## Developing
 
 ```
@@ -120,6 +165,8 @@ npm test
 
 **Note!** This component uses jsdom 3.1.7 in it's tests. This means you may need to install stuff, especially on
 Windows. The following is copied from [node-jsdom's readme](https://github.com/darrylwest/node-jsdom):
+
+**Note!** On Windows you may have to use an older version of Node such as v0.12.
 
 ### Contextify
 

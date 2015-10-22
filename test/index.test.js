@@ -1,11 +1,12 @@
 'use strict'
 
-var React = require('react/addons'),
+var React = require('react'),
+    ReactDOM = require('react-dom'),
     jsdom = require('mocha-jsdom'),
     expect = require('chai').expect,
     Lazy = require('../index').Lazy
 
-var TestUtils = React.addons.TestUtils
+var TestUtils = require('react-addons-test-utils')
 
 var NOSCRIPT_BEGIN = '<!--[if IE 9]><!--><noscript><!--<![endif]-->',
     NOSCRIPT_END = '<!--[if IE 9]><!--></noscript><!--<![endif]-->'
@@ -18,7 +19,7 @@ describe('Lazy', function() {
             React.createElement(Lazy)
         )
 
-        expect(React.findDOMNode(rendered).innerHTML).to.equal(NOSCRIPT_BEGIN + NOSCRIPT_END)
+        expect(ReactDOM.findDOMNode(rendered).innerHTML).to.equal(NOSCRIPT_BEGIN + NOSCRIPT_END)
     })
 
     it('should render children inside noscript element', function() {
@@ -26,7 +27,7 @@ describe('Lazy', function() {
             React.createElement(Lazy, {}, React.DOM.div({ className: 'test' }, 'Test'))
         )
 
-        expect(React.findDOMNode(rendered).innerHTML).to.equal(
+        expect(ReactDOM.findDOMNode(rendered).innerHTML).to.equal(
             NOSCRIPT_BEGIN + '<div class="test">Test</div>' + NOSCRIPT_END
         )
     })
@@ -36,6 +37,6 @@ describe('Lazy', function() {
             React.createElement(Lazy, { nodeName: 'section' })
         )
 
-        expect(React.findDOMNode(rendered).nodeName).to.equal('SECTION')
+        expect(ReactDOM.findDOMNode(rendered).nodeName).to.equal('SECTION')
     })
 })

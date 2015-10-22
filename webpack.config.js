@@ -18,7 +18,9 @@ var config = {
     },
 
     externals: {
-        react: 'React'
+        'react': 'React',
+        'react-dom': 'ReactDOM',
+        'react-dom/server': 'ReactDOMServer'
     },
 
     module: {
@@ -35,7 +37,7 @@ var config = {
 if (prod) {
     config.plugins.push(new webpack.optimize.DedupePlugin())
     config.plugins.push(new webpack.optimize.OccurenceOrderPlugin(true))
-    config.plugins.push(new webpack.optimize.UglifyJsPlugin())
+    config.plugins.push(new webpack.optimize.UglifyJsPlugin({ comments: false }))
 }
 
 module.exports = config

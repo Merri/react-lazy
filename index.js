@@ -17,6 +17,7 @@
 })(function() {
     'use strict'
     var React = require('react')
+    var ReactDOM = require('react-dom/server');
     var verge = require('verge')
 
     var PLAUSIBLE_NOSCRIPT_CONTAINERS = [
@@ -176,7 +177,7 @@
             this.options = {
                 callback: this.handleLoad,
                 cushion: this.props.cushion,
-                element: React.findDOMNode(this)
+                element: this.refs[this.rootKey]
             }
             addElement(this.options)
         },
@@ -193,7 +194,7 @@
         },
 
         render: function() {
-            var props = {}
+            var props = { key: 'root' }
 
             for (var key in this.props) {
                 if (this.props.hasOwnProperty(key) && !Lazy.propTypes.hasOwnProperty(key)) {
@@ -201,12 +202,14 @@
                 }
             }
 
+            this.rootKey = props.key
+
             if (this.state.loadedAt) {
                 return React.createElement(this.props.nodeName, props, this.props.children)
             }
 
             props.dangerouslySetInnerHTML = {
-                __html: React.renderToStaticMarkup(
+                __html: ReactDOM.renderToStaticMarkup(
                     React.DOM.noscript({}, this.props.children)
                 ).replace(
                     '<noscript>',

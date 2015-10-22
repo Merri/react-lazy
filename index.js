@@ -17,6 +17,7 @@
 })(function() {
     'use strict'
     var React = require('react')
+    var ReactDOMStatic = require('react-dom/server')
     var verge = require('verge')
 
     var PLAUSIBLE_NOSCRIPT_CONTAINERS = [
@@ -176,7 +177,7 @@
             this.options = {
                 callback: this.handleLoad,
                 cushion: this.props.cushion,
-                element: React.findDOMNode(this)
+                element: this.refs.lazy
             }
             addElement(this.options)
         },
@@ -201,12 +202,14 @@
                 }
             }
 
+            props.key = 'lazy'
+
             if (this.state.loadedAt) {
                 return React.createElement(this.props.nodeName, props, this.props.children)
             }
 
             props.dangerouslySetInnerHTML = {
-                __html: React.renderToStaticMarkup(
+                __html: ReactDOMStatic.renderToStaticMarkup(
                     React.DOM.noscript({}, this.props.children)
                 ).replace(
                     '<noscript>',

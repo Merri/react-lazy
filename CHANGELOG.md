@@ -1,3 +1,8 @@
+## v0.1.0 - 2015-10-22
+
+- React v0.14 support. Use version 0.0.3 in `package.json` if you still depend on v0.13 series.
+
+
 ## v0.0.3 - 2015-09-11
 
 - Fix issue #1: require loaded client side only intended minified version due to wrong reference in package.json

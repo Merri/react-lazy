@@ -25,10 +25,11 @@ describe('Lazy', function() {
         var rendered = TestUtils.renderIntoDocument(
             React.createElement(Lazy, {}, React.DOM.div({ className: 'test' }, 'Test'))
         )
-
-        expect(React.findDOMNode(rendered).innerHTML).to.equal(
-            NOSCRIPT_BEGIN + '<div class="test">Test</div>' + NOSCRIPT_END
+        var match = /<!--\[if IE 9\]><!--><noscript><!--<!\[endif\]--><div\sclass="test"\sdata-reactid="[a-z0-9-\.]+">Test<\/div><!--\[if IE 9\]><!--><\/noscript><!--<!\[endif\]-->/.test(
+            React.findDOMNode(rendered).innerHTML
         )
+
+        expect(match).to.be.equal(true);
     })
 
     it('should allow customization of nodeName', function() {

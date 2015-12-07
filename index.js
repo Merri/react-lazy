@@ -18,6 +18,8 @@
     'use strict'
     var React = require('react')
     var verge = require('verge')
+    var ReactDOM = require('react-dom')
+    var ReactDOMServer = require('react-dom/server')
 
     var PLAUSIBLE_NOSCRIPT_CONTAINERS = [
         'a',
@@ -176,7 +178,7 @@
             this.options = {
                 callback: this.handleLoad,
                 cushion: this.props.cushion,
-                element: React.findDOMNode(this)
+                element: ReactDOM.findDOMNode(this)
             }
             addElement(this.options)
         },
@@ -206,10 +208,10 @@
             }
 
             props.dangerouslySetInnerHTML = {
-                __html: React.renderToStaticMarkup(
-                    React.DOM.noscript({}, this.props.children)
+                __html: ReactDOMServer.renderToString(
+                    React.DOM.noscript(null, this.props.children)
                 ).replace(
-                    '<noscript>',
+                    /<noscript\s(data-reactid="[a-z0-9-\.]+")\s(data-react-checksum="[a-z0-9-\.]+")>/,
                     '<!--[if IE 9]><!--><noscript><!--<![endif]-->'
                 ).replace(
                     '</noscript>',

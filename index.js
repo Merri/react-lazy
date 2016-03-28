@@ -138,6 +138,13 @@
         elements.push(options)
     }
 
+    function updateCushion(cushion) {
+        for (var i = 0; i < elements.length; i++) {
+            var element = elements[i]
+            element.cushion = cushion
+        }
+    }
+
     function removeElement(options) {
         var index = elements.indexOf(options)
 
@@ -179,6 +186,10 @@
                 element: React.findDOMNode(this)
             }
             addElement(this.options)
+        },
+
+        componentDidUpdate: function() {
+            updateCushion(this.props.cushion)
         },
 
         componentWillUnmount: function() {

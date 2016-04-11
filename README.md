@@ -118,7 +118,7 @@ npm install
 npm test
 ```
 
-**Note!** This component uses jsdom 3.1.7 in it's tests. This means you may need to install stuff, especially on
+**Note!** This component uses jsdom in it's tests. This means you may need to install stuff, especially on
 Windows. The following is copied from [node-jsdom's readme](https://github.com/darrylwest/node-jsdom):
 
 ### Contextify

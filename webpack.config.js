@@ -18,7 +18,9 @@ var config = {
     },
 
     externals: {
-        react: 'React'
+        'react': 'React',
+        'react-dom': 'ReactDOM',
+        'react-dom/server': 'ReactDOMServer'
     },
 
     module: {

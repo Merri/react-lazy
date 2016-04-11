@@ -1,12 +1,12 @@
 {
     "extends": "vaffel/react",
     "rules": {
-        "no-bitwise": false,
-        "no-eq-null": false,
-        "no-underscore-dangle": false,
-        "no-wrap-func": false,
-        "semi": false,
-        "strict": false,
-        "wrap-iife": false
+        "eqeqeq": [2, "allow-null"],
+        "no-bitwise": 0,
+        "no-eq-null": 0,
+        "no-underscore-dangle": 0,
+        "semi": 0,
+        "strict": 0,
+        "wrap-iife": 0
     }
 }

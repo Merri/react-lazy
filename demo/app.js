@@ -1,5 +1,5 @@
 (function() {
-    var Lazy = React.createFactory(window.Lazy)
+    var Lazy = React.createFactory(window.ReactLazy.Lazy)
 
     var TRANSPARENT_GIF = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
 
@@ -128,5 +128,5 @@
         }
     })
 
-    React.render(React.createElement(Demo), document.getElementById('app'))
+    ReactDOM.render(React.createElement(Demo), document.getElementById('app'))
 })()

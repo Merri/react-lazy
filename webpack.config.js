@@ -1,43 +1,56 @@
-'use strict'
-
-var path = require('path')
 var webpack = require('webpack')
-var prod = process.env.NODE_ENV === 'production'
 
-var config = {
-    devtool: prod ? null : 'eval',
-
-    entry: [
-        path.join(__dirname, 'index.js')
-    ],
-
+module.exports = {
+    devtool: 'source-map',
+    entry: './src/index.jsx',
     output: {
-        path: path.join(__dirname, 'dist'),
-        filename: 'react-lazy.min.js',
-        publicPath: '/dist'
+        path: __dirname + '/dist/umd/',
+        filename: 'react-lazy.js',
+        publicPath: '/build/',
+        library: 'ReactLazy',
+        libraryTarget: 'umd'
     },
-
-    externals: {
-        'react': 'React',
-        'react-dom': 'ReactDOM',
-        'react-dom/server': 'ReactDOMServer'
-    },
-
     module: {
         loaders: [
-            { test: /\.js$/, loaders: ['babel?stage=0'], exclude: /node_modules/ }
+            { test: /\.jsx?$/,
+                loader: 'babel-loader',
+                exclude: [
+                    '/demo/',
+                    '/dist/',
+                    '/node_modules/',
+                    '/style/',
+                    '/test/',
+                ],
+                query: {
+                    presets: ['es2015', 'stage-0', 'react']
+                }
+            }
         ]
     },
-
     plugins: [
-        new webpack.NoErrorsPlugin()
-    ]
+        new webpack.optimize.OccurrenceOrderPlugin,
+        new webpack.optimize.UglifyJsPlugin
+    ],
+    externals: [
+        {
+            react: {
+                root: 'React',
+                commonjs2: 'react',
+                commonjs: 'react',
+                amd: 'react'
+            },
+            'react-dom': {
+                root: 'ReactDOM',
+                commonjs2: 'react-dom',
+                commonjs: 'react-dom',
+                amd: 'react-dom'
+            },
+            'react-dom/server': {
+                root: 'ReactDOMServer',
+                commonjs2: 'react-dom/server',
+                commonjs: 'react-dom/server',
+                amd: 'react-dom/server'
+            }
+        }
+    ],
 }
-
-if (prod) {
-    config.plugins.push(new webpack.optimize.DedupePlugin())
-    config.plugins.push(new webpack.optimize.OccurenceOrderPlugin(true))
-    config.plugins.push(new webpack.optimize.UglifyJsPlugin())
-}
-
-module.exports = config

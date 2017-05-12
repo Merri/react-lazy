@@ -1,16 +1,17 @@
 {
   "name": "react-lazy",
-  "version": "0.1.0",
-  "description": "SEO friendly isomorphic lazy loader component",
-  "main": "index.js",
+  "version": "0.2.0",
+  "description": "Universal lazy loader component: SEO, no-JS and legacy browser friendly",
+  "main": "dist/module/index.js",
   "scripts": {
     "pretest": "npm run lint",
+    "build": "npm run clean-dist && npm run build-modules && npm run build-umd",
+    "build-modules": "cross-env BABEL_ENV=build babel src --out-dir dist/module ",
+    "build-umd": "webpack --config webpack.config.js",
+    "clean-dist": "rimraf dist",
     "lint": "eslint .",
-    "prepublish": "npm prune && npm test",
-    "build": "NODE_ENV=production webpack",
-    "build_windows": "set NODE_ENV=production&&webpack",
-    "watch": "webpack --watch",
-    "test": "mocha --reporter spec"
+    "prepublish": "npm prune && npm run build && npm test",
+    "test": "mocha --compilers js:babel-core/register --reporter spec"
   },
   "repository": {
     "type": "git",
@@ -31,23 +32,30 @@
     "render",
     "universal"
   ],
+  "peerDependencies": {
+    "react": ">=15"
+  },
   "devDependencies": {
-    "babel-core": "~5.8.0",
-    "babel-loader": "~5.4.0",
-    "chai": "~2.3.0",
-    "eslint": "~1.10.0",
-    "eslint-config-vaffel": "~4.0.0",
-    "eslint-plugin-react": "~2.7.0",
+    "babel-cli": "^6.24.1",
+    "babel-core": "~6.24.0",
+    "babel-loader": "~7.0.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "chai": "~3.5.0",
+    "cross-env": "^4.0.0",
+    "eslint": "~3.19.0",
+    "eslint-plugin-react": "~7.0.0",
     "jsdom": "~7.0.0",
-    "mocha": "~2.4.5",
+    "mocha": "~3.3.0",
     "mocha-jsdom": "~1.1.0",
-    "node-libs-browser": "~0.5.0",
-    "react": "~0.14.0",
-    "react-addons-test-utils": "~0.14.0",
-    "react-dom": "~0.14.0",
-    "webpack": "~1.12.0"
+    "react": "~15.5.0",
+    "react-dom": "~15.5.0",
+    "rimraf": "^2.6.1",
+    "webpack": "~2.5.0"
   },
   "dependencies": {
+    "prop-types": "^15.5.9",
     "verge": "^1.9.1"
   }
 }

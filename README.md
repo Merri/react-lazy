@@ -3,8 +3,8 @@
 [![Build Status](https://travis-ci.org/Merri/react-lazy.svg)](https://travis-ci.org/Merri/react-lazy)
 
 Lazy loader container element that triggers load when element comes into view. Provides fallback for SEO and no-JS by
-using a `noscript` element, a unique feature compared to other solutions. This means your images and/or content can be
-crawled by search engines that are not JavaScript aware. Also means this component supports isomorphic rendering.
+using a `noscript` element. This means your images and/or content can be crawled by search engines that are not
+JavaScript aware. Also means this component supports universal rendering (isomorphic JS).
 
 Works for **both vertical and horizontal scrolling**, which is also unlike some other solutions.
 
@@ -25,7 +25,7 @@ A sample for targetting a single image. You are encouraged to give the container
 be seen in the CSS below.
 
 ```css
-/* SAMPLE CSS */
+/* sample of traditional CSS centered thumbnail styling */
 .image-link {
     display: inline-block;
     margin: 5px;
@@ -48,15 +48,11 @@ be seen in the CSS below.
 ```
 
 ```jsx
-// ES2015
-import {Lazy} from 'react-lazy'
-// or ES5
-var reactLazy = require('react-lazy')
-var Lazy = reactLazy.Lazy
+import { Lazy } from 'react-lazy'
 
 ...
 
-    <Lazy nodeName="a" href="/" className="image-link image-link--100px">
+    <Lazy component="a" href="/" className="image-link image-link--100px">
         <img alt="My Lazy Loaded Image" className="image-link__image" src="my-lazy-loaded-image.png" />
     </Lazy>
 ```
@@ -71,7 +67,7 @@ var Lazy = reactLazy.Lazy
 </a>
 ```
 
-## Why IE conditional comments?
+### Why IE conditional comments?
 
 You probably develop your site in a way that your scripts don't really run on Internet Explorer 8. Maybe you see just
 enough trouble to make things render and work just enough that IE8 user can browse around without things being unusably
@@ -83,8 +79,7 @@ This component **does not** support lazy loading in any form in Internet Explore
 
 ## Other features
 
-`react-lazy` exposes [verge](https://github.com/ryanve/verge), you can use it with
-`import {verge} from 'react-lazy'` or `var verge = require('react-lazy').verge`
+### `cushion`
 
 You can apply "cushion" around elements so they are loaded slighly before coming into the actual viewport:
 
@@ -93,17 +88,62 @@ You can apply "cushion" around elements so they are loaded slighly before coming
 <Lazy cushion={100}>...</Lazy>
 ```
 
+### `imgWrapperComponent`
+
+Allows you to toggle a render where given component is rendered around all contained img elements, while still rendering
+all the other children as usual.
+
+```jsx
+<Lazy component="ul" className="thumbnail-list" imgWrapperComponent={MyThumbnailPlaceholder}>
+    {imagesWithProps.map((props, index) =>
+        <li key={index} className="thumbnail-list__item"><img {...props} /></li>
+    )}
+</Lazy>
+```
+
+Will result in HTML like:
+
+```html
+<ul class="thumbnail-list">
+    <li class="thumbnail-list__item">
+        <div class="my-thumbnail-placeholder">
+            <!--[if IE 9]><!--><noscript><!--<![endif]-->
+                <img alt="My Image" class="my-thumbnail" src="my-image.png" />
+            <!--[if IE 9]><!--></noscript><!--<![endif]-->
+        </div>
+    </li>
+</ul>
+```
+
+Which will change to a DOM tree like this when coming into viewport:
+
+```html
+<ul class="thumbnail-list">
+    <li class="thumbnail-list__item">
+        <img alt="My Image" class="my-thumbnail" src="my-image.png" />
+    </li>
+</ul>
+```
+
+You can also have Lazy containers inside Lazy containers.
+
+Note that component given to `imgWrapperComponent` will have any of it's own children overwritten.
+
+### `onLoad`
+
 You can also get notified on just before lazy load switch render happens:
 
 ```jsx
 <Lazy onLoad={yourCustomFunction}>...</Lazy>
 ```
 
+### `checkElementsInViewport`
+
 Finally, you can also manually trigger checking for elements in viewport, which can be useful if you toggle element
 resize (which won't cause resize or scroll events). Or you can use setInterval if you want to be very lazy.
 
 ```js
-import {checkElementsInViewport} from 'react-lazy'
+import { checkElementsInViewport } from 'react-lazy'
 
 // now you're being a very lazy dev...
 setInterval(checkElementsInViewport, 250)
@@ -112,9 +152,8 @@ setInterval(checkElementsInViewport, 250)
 ## Developing
 
 ```
-git clone git@github.com:merri/react-lazy.git
-cd react-lazy
 npm install
+npm run build
 npm test
 ```
 

@@ -1,3 +1,18 @@
+## v0.2.0 - 2017-05-12
+
+- Upgrade to React 15.5
+- Babel 6
+- Webpack 2
+- Convert from createClass to ES6 class
+- Modularize
+- Test Travis CI in Node 6.10
+- Update linting
+- Change `nodeName` to `component` and allow for more than string tags
+- Fix bug in cushion handling
+- Add support for `imgWrapperComponent` which renders given component around all noscripted img childs
+- No longer expose `verge`
+
+
 ## v0.1.0 - 2016-04-11
 
 - Upgrade to React 0.14

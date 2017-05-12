@@ -23,9 +23,13 @@ function debounce(func, wait) {
     }
 }
 
+function inViewport({ cushion, element }) {
+    return element.offsetParent !== null && verge.inViewport(element, cushion)
+}
+
 export const checkElementsInViewport = debounce(function checkElementsInViewport() {
     for (let i = elements.length - 1; i >= 0; i--) {
-        if (verge.inViewport(elements[i].element, elements[i].cushion)) {
+        if (inViewport(elements[i])) {
             elements[i].callback()
             elements.splice(i, 1)
         }
@@ -43,7 +47,7 @@ function checkUnbind() {
 }
 
 function addElement(options) {
-    if (verge.inViewport(options.element, options.cushion)) {
+    if (inViewport(options)) {
         options.callback()
         return
     }

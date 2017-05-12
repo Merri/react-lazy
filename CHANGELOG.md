@@ -1,3 +1,9 @@
+## v0.2.1 - 2017-05-12
+
+- Fix issue where images loaded when `display: none` was set to hide an element
+- Introduces issue where having lazy loading on `position: fixed` elements does not work
+
+
 ## v0.2.0 - 2017-05-12
 
 - Upgrade to React 15.5

@@ -1,6 +1,6 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
-import ReactDOMServer from 'react-dom/server'
+import { findDOMNode } from 'react-dom'
+import { renderToStaticMarkup } from 'react-dom/server'
 import PropTypes from 'prop-types'
 import verge from 'verge'
 
@@ -72,18 +72,23 @@ function removeElement(options) {
     checkUnbind()
 }
 
-function propsWithNoScriptRender(children, props = {}) {
-    props.dangerouslySetInnerHTML = {
-        __html: (
-            ReactDOMServer.renderToStaticMarkup(React.DOM.noscript(null, children))
-            .replace('<noscript>', '<!--[if IE 9]><!--><noscript><!--<![endif]-->')
-            .replace('</noscript>', '<!--[if IE 9]><!--></noscript><!--<![endif]-->')
-        )
+function propsWithNoScriptRender(children, ltIE9, props = {}) {
+    if (!ltIE9) {
+        props.children = <noscript>{children}</noscript>
+    } else {
+        props.dangerouslySetInnerHTML = {
+            __html: (
+                renderToStaticMarkup(React.DOM.noscript(null, children))
+                .replace('<noscript>', '<!--[if IE 9]><!--><noscript><!--<![endif]-->')
+                .replace('</noscript>', '<!--[if IE 9]><!--></noscript><!--<![endif]-->')
+            )
+        }
     }
+
     return props
 }
 
-function wrapImgToNoScript(children, wrapper) {
+function wrapImgToNoScript(children, ltIE9, wrapper) {
     if (!children) {
         return children
     }
@@ -91,10 +96,10 @@ function wrapImgToNoScript(children, wrapper) {
         if (!child) {
             return child
         } else if (child.type === 'img') {
-            return React.createElement(wrapper, propsWithNoScriptRender(child))
+            return React.createElement(wrapper, propsWithNoScriptRender(child, ltIE9))
         } else if (child.type !== Lazy) {
             const props = child.props || (child._store && child._store.props) || {}
-            const children = wrapImgToNoScript(props.children, wrapper)
+            const children = wrapImgToNoScript(props.children, ltIE9, wrapper)
 
             if (children !== props.children) {
                 return React.cloneElement(child, null, children)
@@ -118,7 +123,7 @@ export class Lazy extends React.PureComponent {
         this.options = {
             callback: this.handleLoad,
             cushion: this.props.cushion,
-            element: ReactDOM.findDOMNode(this),
+            element: findDOMNode(this),
         }
         addElement(this.options)
     }
@@ -142,7 +147,7 @@ export class Lazy extends React.PureComponent {
     }
 
     render() {
-        const { children, component, imgWrapperComponent, ...props } = this.props
+        const { children, component, imgWrapperComponent, ltIE9, ...props } = this.props
         delete props.cushion
         delete props.onLoad
 
@@ -152,10 +157,10 @@ export class Lazy extends React.PureComponent {
 
         if (imgWrapperComponent) {
             // wrap only img elements to noscript and the given wrapper component
-            return React.createElement(component, props, wrapImgToNoScript(children, imgWrapperComponent))
+            return React.createElement(component, props, wrapImgToNoScript(children, ltIE9, imgWrapperComponent))
         } else {
             // wrap all contents inside noscript
-            return React.createElement(component, propsWithNoScriptRender(children, props))
+            return React.createElement(component, propsWithNoScriptRender(children, ltIE9, props))
         }
     }
 }
@@ -163,6 +168,7 @@ export class Lazy extends React.PureComponent {
 Lazy.defaultProps = {
     component: 'div',
     cushion: 0,
+    ltIE9: false,
 }
 
 Lazy.propTypes = {
@@ -178,7 +184,6 @@ Lazy.propTypes = {
         PropTypes.object,
         PropTypes.func,
     ]),
+    ltIE9: PropTypes.bool,
     onLoad: PropTypes.func,
 }
-
-export default { checkElementsInViewport, Lazy }

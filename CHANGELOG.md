@@ -1,3 +1,10 @@
+## v0.3.0 - 2017-05-29
+
+- Disable IE conditional comment rendering by default
+- Add `ltIE9` to enable IE conditional comment rendering
+- Update dependencies
+
+
 ## v0.2.1 - 2017-05-12
 
 - Fix issue where images loaded when `display: none` was set to hide an element

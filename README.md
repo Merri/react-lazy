@@ -10,19 +10,30 @@ Works for **both vertical and horizontal scrolling**, which is also unlike some 
 
 [View demo](https://merri.github.io/react-lazy/)
 
+
 ## Why lazy load content such as images?
 
 You want to save your bandwidth and/or server load. As a side effect you may also gain some performance benefits on
 client side, especially on mobile devices. However the main benefit (and main purpose) for you should always be the
 reduction of bandwidth/server load.
 
-Another side effect of lazy loading is that user may see content flashing as it comes into view; sometimes with a lot of
-delay as it depends on connectivity.
+Likely side effect of lazy loading is that user may see content flashing as it comes into view; sometimes with a lot of
+delay as it depends on connectivity. You can make the experience less flickery by adding a transition when image is
+loaded (a bit harder to develop) or by giving `Lazy` a large cushion (500 pixels or more) to load image before it is
+actually in the viewport. Using both strategies together is recommended. You can test the experience on your own site by
+dropping mobile connection to 2G / edge.
+
+Chrome developer tools also has network throttling so you don't need to get yourself into a train to nowhere to test how
+well or poorly your site works in high latency conditions. However it is also recommended you do get yourself into a
+train to nowhere as it does good for your mind and soul to abandon the hectic although convenient city lifestyle every
+once in a while.
+
 
 ## Usage
 
-A sample for targetting a single image. You are encouraged to give the container lazy element an explicit size, as can
-be seen in the CSS below.
+A sample for targetting a single image. You are encouraged to give the container lazy element an explicit size as can
+be seen in the CSS below. Also, use of CSS is recommended as you can't know the height of a container in JavaScript code
+when rendering a responsive website, which is highly likely to be the case these days.
 
 ```css
 /* sample of traditional CSS centered thumbnail styling */
@@ -52,7 +63,7 @@ import { Lazy } from 'react-lazy'
 
 ...
 
-    <Lazy component="a" href="/" className="image-link image-link--100px">
+    <Lazy component="a" href="/" className="image-link image-link--100px" ltIE9>
         <img alt="My Lazy Loaded Image" className="image-link__image" src="my-lazy-loaded-image.png" />
     </Lazy>
 ```
@@ -67,17 +78,15 @@ import { Lazy } from 'react-lazy'
 </a>
 ```
 
-### Why IE conditional comments?
 
-You probably develop your site in a way that your scripts don't really run on Internet Explorer 8. Maybe you see just
-enough trouble to make things render and work just enough that IE8 user can browse around without things being unusably
-wrong. The above syntax ensures that IE9+, modern browsers and crawlers do notice the `noscript` tag, but IE8 and below
-will not see it, therefore causing a non-lazy load of the content immediately upon first browser render.
+## Features
 
-In other words, if you want to have minimal support in legacy browsers when using this component... you can have that!
-This component **does not** support lazy loading in any form in Internet Explorer 8 and older.
+**TL;DR**
 
-## Other features
+1. Use of `noscript` ensures search engines can see the images.
+2. Use of `noscript` allows images to be rendered even in case JavaScript is disabled.
+3. Optional: IE conditional comments allow rendering images in IE8 and earlier where your JS code does not execute.
+
 
 ### `cushion`
 
@@ -87,6 +96,7 @@ You can apply "cushion" around elements so they are loaded slighly before coming
 // element content appear if it is in viewport or within 100px radius of it
 <Lazy cushion={100}>...</Lazy>
 ```
+
 
 ### `imgWrapperComponent`
 
@@ -107,9 +117,9 @@ Will result in HTML like:
 <ul class="thumbnail-list">
     <li class="thumbnail-list__item">
         <div class="my-thumbnail-placeholder">
-            <!--[if IE 9]><!--><noscript><!--<![endif]-->
+            <noscript>
                 <img alt="My Image" class="my-thumbnail" src="my-image.png" />
-            <!--[if IE 9]><!--></noscript><!--<![endif]-->
+            </noscript>
         </div>
     </li>
 </ul>
@@ -127,7 +137,18 @@ Which will change to a DOM tree like this when coming into viewport:
 
 You can also have Lazy containers inside Lazy containers.
 
-Note that component given to `imgWrapperComponent` will have any of it's own children overwritten.
+
+### `ltIE9`
+
+Renders Internet Explorer 8 friendly syntax by adding conditional comments around `noscript`, effectively hiding
+existance of the tag from IE8 and earlier. This allows for minimal legacy browser support, since it is highly unlikely
+anyone writes their JS to execute on IE8 anymore.
+
+Essentially this feature allows to render a visually non-broken page to users of legacy browsers, making it possible to
+give minimally acceptable user experience to users of browsers that should be dead.
+
+This means there is no lazy rendering on legacy browsers, images load immediately.
+
 
 ### `onLoad`
 
@@ -136,6 +157,7 @@ You can also get notified on just before lazy load switch render happens:
 ```jsx
 <Lazy onLoad={yourCustomFunction}>...</Lazy>
 ```
+
 
 ### `checkElementsInViewport`
 
@@ -148,6 +170,14 @@ import { checkElementsInViewport } from 'react-lazy'
 // now you're being a very lazy dev...
 setInterval(checkElementsInViewport, 250)
 ```
+
+## Notes about performance
+
+`checkElementsInViewport` is debounced by 50ms so it never executes more than 20 times a second. Checking element's
+position in viewport is costly. For best performance it is recommended to use `imgWrapperComponent` and have multiple
+images inside a single Lazy container as this means only the container's position in viewport is checked for, not the
+position of every single image component.
+
 
 ## Developing
 

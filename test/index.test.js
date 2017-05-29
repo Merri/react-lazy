@@ -14,17 +14,35 @@ var NOSCRIPT_END = '<!--[if IE 9]><!--></noscript><!--<![endif]-->'
 describe('Lazy', function() {
     jsdom()
 
-    it('should render empty noscript wrapped within IE conditional comments', function() {
+    it('should contain empty noscript element by default', function() {
         var rendered = TestUtils.renderIntoDocument(
             React.createElement(Lazy)
+        )
+
+        expect(ReactDOM.findDOMNode(rendered).innerHTML).to.equal('<noscript></noscript>')
+    })
+
+    it('should contain empty noscript wrapped within IE conditional comments', function() {
+        var rendered = TestUtils.renderIntoDocument(
+            React.createElement(Lazy, { ltIE9: true })
         )
 
         expect(ReactDOM.findDOMNode(rendered).innerHTML).to.equal(NOSCRIPT_BEGIN + NOSCRIPT_END)
     })
 
-    it('should render children inside noscript element', function() {
+    it('should contain children inside noscript element', function() {
         var rendered = TestUtils.renderIntoDocument(
             React.createElement(Lazy, {}, React.DOM.div({ className: 'test' }, 'Test'))
+        )
+
+        expect(ReactDOM.findDOMNode(rendered).innerHTML).to.equal(
+            '<noscript><div class="test">Test</div></noscript>'
+        )
+    })
+
+    it('should contain children inside IECC noscript element', function() {
+        var rendered = TestUtils.renderIntoDocument(
+            React.createElement(Lazy, { ltIE9: true }, React.DOM.div({ className: 'test' }, 'Test'))
         )
 
         expect(ReactDOM.findDOMNode(rendered).innerHTML).to.equal(
@@ -40,7 +58,7 @@ describe('Lazy', function() {
         expect(ReactDOM.findDOMNode(rendered).nodeName).to.equal('SECTION')
     })
 
-    it('should wrap only img elements to noscript if told so', function() {
+    it('should wrap all contained img elements to noscript when using imgWrapperComponent', function() {
         var rendered = TestUtils.renderIntoDocument(
             React.createElement(
                 Lazy,
@@ -52,7 +70,25 @@ describe('Lazy', function() {
             )
         )
 
-        // eslint-disable-next-line
+        // JSDOM renders as `<img src="">`
+        expect(ReactDOM.findDOMNode(rendered).innerHTML).to.equal(
+            '<div><noscript><img src=""></noscript></div><div><div><noscript><img src=""></noscript></div></div>'
+        )
+    })
+
+    it('should wrap all contained img elements to IECC noscript when using imgWrapperComponent', function() {
+        var rendered = TestUtils.renderIntoDocument(
+            React.createElement(
+                Lazy,
+                { imgWrapperComponent: 'div', ltIE9: true },
+                [
+                    React.DOM.img({ key: 'a', src: '' }),
+                    React.DOM.div({ key: 'b' }, React.DOM.img({ src: '' }))
+                ]
+            )
+        )
+
+        // ReactDOM renders as `<img src=""/>`
         expect(ReactDOM.findDOMNode(rendered).innerHTML).to.equal(
             '<div>' + NOSCRIPT_BEGIN + '<img src=""/>' + NOSCRIPT_END + '</div>'
             + '<div><div>' + NOSCRIPT_BEGIN + '<img src=""/>' + NOSCRIPT_END + '</div></div>'

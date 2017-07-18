@@ -70,9 +70,8 @@ describe('Lazy', function() {
             )
         )
 
-        // JSDOM renders as `<img src="">`
         expect(ReactDOM.findDOMNode(rendered).innerHTML).to.equal(
-            '<div><noscript><img src=""></noscript></div><div><div><noscript><img src=""></noscript></div></div>'
+            '<div><noscript><img src=""/></noscript></div><div><div><noscript><img src=""/></noscript></div></div>'
         )
     })
 

@@ -1,8 +1,9 @@
-## v0.3.0 - 2017-05-29
+## v0.3.0 - 2017-07-18
 
 - Disable IE conditional comment rendering by default
 - Add `ltIE9` to enable IE conditional comment rendering
 - Update dependencies
+- Fix `React.DOM.div` warnings
 
 
 ## v0.2.1 - 2017-05-12

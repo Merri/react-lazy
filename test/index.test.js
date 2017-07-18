@@ -32,7 +32,7 @@ describe('Lazy', function() {
 
     it('should contain children inside noscript element', function() {
         var rendered = TestUtils.renderIntoDocument(
-            React.createElement(Lazy, {}, React.DOM.div({ className: 'test' }, 'Test'))
+            React.createElement(Lazy, {}, React.createElement('div', { className: 'test' }, 'Test'))
         )
 
         expect(ReactDOM.findDOMNode(rendered).innerHTML).to.equal(
@@ -42,7 +42,7 @@ describe('Lazy', function() {
 
     it('should contain children inside IECC noscript element', function() {
         var rendered = TestUtils.renderIntoDocument(
-            React.createElement(Lazy, { ltIE9: true }, React.DOM.div({ className: 'test' }, 'Test'))
+            React.createElement(Lazy, { ltIE9: true }, React.createElement('div', { className: 'test' }, 'Test'))
         )
 
         expect(ReactDOM.findDOMNode(rendered).innerHTML).to.equal(
@@ -64,8 +64,8 @@ describe('Lazy', function() {
                 Lazy,
                 { imgWrapperComponent: 'div' },
                 [
-                    React.DOM.img({ key: 'a', src: '' }),
-                    React.DOM.div({ key: 'b' }, React.DOM.img({ src: '' }))
+                    React.createElement('img', { key: 'a', src: '' }),
+                    React.createElement('div', { key: 'b' }, React.createElement('img', { src: '' }))
                 ]
             )
         )
@@ -82,8 +82,8 @@ describe('Lazy', function() {
                 Lazy,
                 { imgWrapperComponent: 'div', ltIE9: true },
                 [
-                    React.DOM.img({ key: 'a', src: '' }),
-                    React.DOM.div({ key: 'b' }, React.DOM.img({ src: '' }))
+                    React.createElement('img', { key: 'a', src: '' }),
+                    React.createElement('div', { key: 'b' }, React.createElement('img', { src: '' }))
                 ]
             )
         )

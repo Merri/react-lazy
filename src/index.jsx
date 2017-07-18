@@ -78,7 +78,7 @@ function propsWithNoScriptRender(children, ltIE9, props = {}) {
     } else {
         props.dangerouslySetInnerHTML = {
             __html: (
-                renderToStaticMarkup(React.DOM.noscript(null, children))
+                renderToStaticMarkup(React.createElement('noscript', null, children))
                 .replace('<noscript>', '<!--[if IE 9]><!--><noscript><!--<![endif]-->')
                 .replace('</noscript>', '<!--[if IE 9]><!--></noscript><!--<![endif]-->')
             )

@@ -1,3 +1,8 @@
+## v0.3.1 - 2017-07-18
+
+- Fix non-`ltIE9` not loading images
+
+
 ## v0.3.0 - 2017-07-18
 
 - Disable IE conditional comment rendering by default

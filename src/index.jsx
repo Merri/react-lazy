@@ -74,7 +74,11 @@ function removeElement(options) {
 
 function propsWithNoScriptRender(children, ltIE9, props = {}) {
     if (!ltIE9) {
-        props.children = <noscript>{children}</noscript>
+        props.dangerouslySetInnerHTML = {
+            __html: (
+                renderToStaticMarkup(React.createElement('noscript', null, children))
+            )
+        }
     } else {
         props.dangerouslySetInnerHTML = {
             __html: (

@@ -48,7 +48,6 @@
     "eslint": "~4.2.0",
     "eslint-plugin-react": "~7.1.0",
     "jsdom": "~7.0.0",
-    "lodash": "^4.17.4",
     "mocha": "~3.4.0",
     "mocha-jsdom": "~1.1.0",
     "prop-types": "^15.5.10",

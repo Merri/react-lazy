@@ -41,7 +41,7 @@ function inViewport({ cushion, element }, viewport) {
 
     const rect = getRect(element, cushion)
 
-    return !!rect && rect.bottom >= 0 && rect.right <= 0 && rect.top < viewport.height && rect.left < viewport.width
+    return !!rect && rect.bottom >= 0 && rect.right >= 0 && rect.top < viewport.height && rect.left < viewport.width
 }
 
 function debounce(func, wait) {

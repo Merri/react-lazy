@@ -33,6 +33,7 @@
     "universal"
   ],
   "peerDependencies": {
+    "prop-types": ">=15",
     "react": ">=15"
   },
   "devDependencies": {
@@ -47,15 +48,13 @@
     "eslint": "~4.2.0",
     "eslint-plugin-react": "~7.1.0",
     "jsdom": "~7.0.0",
+    "lodash": "^4.17.4",
     "mocha": "~3.4.0",
     "mocha-jsdom": "~1.1.0",
+    "prop-types": "^15.5.10",
     "react": "~15.6.0",
     "react-dom": "~15.6.0",
     "rimraf": "^2.6.1",
     "webpack": "~2.6.0"
-  },
-  "dependencies": {
-    "prop-types": "^15.5.9",
-    "verge": "^1.10.1"
   }
 }

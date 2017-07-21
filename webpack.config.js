@@ -2,7 +2,7 @@ var webpack = require('webpack')
 
 module.exports = {
     devtool: 'source-map',
-    entry: './src/index.jsx',
+    entry: './dist/module/index.js',
     output: {
         path: __dirname + '/dist/umd/',
         filename: 'react-lazy.js',
@@ -50,6 +50,12 @@ module.exports = {
                 commonjs2: 'react-dom/server',
                 commonjs: 'react-dom/server',
                 amd: 'react-dom/server'
+            },
+            'prop-types': {
+                root: 'PropTypes',
+                commonjs2: 'prop-types',
+                commonjs: 'prop-types',
+                amd: 'prop-types'
             }
         }
     ],

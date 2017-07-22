@@ -53,7 +53,7 @@ class LazyImg extends React.PureComponent {
     }
 
     onLoad(event) {
-        this.setState({ isLoaded: true}, this.props.callback)
+        this.setState({ isLoaded: true }, this.props.callback)
 
         if (this.imgOnLoad) {
             this.imgOnLoad(event)

@@ -63,6 +63,15 @@ footer .fa-download {
     color: #1C720E;
 }
 
+.three-image-container {
+    border: 1px solid black;
+    display: block;
+    opacity: 0;
+    outline: 1px solid green;
+    -webkit-transition: opacity 2000ms ease-in-out, background-color 2000ms cubic-bezier(0.68,-0.55,0.27,1.55);
+    transition: opacity 2000ms ease-in-out, background-color 2000ms cubic-bezier(0.68,-0.55,0.27,1.55);
+}
+
 .image-link {
     background: white;
     border: thin solid #DDD;
@@ -74,6 +83,28 @@ footer .fa-download {
     vertical-align: middle;
     -webkit-transition: opacity 2000ms ease-in-out, background-color 2000ms cubic-bezier(0.68,-0.55,0.27,1.55);
     transition: opacity 2000ms ease-in-out, background-color 2000ms cubic-bezier(0.68,-0.55,0.27,1.55);
+}
+
+.image-link--container {
+    opacity: 1;
+}
+
+.image-link--failed {
+    background: darkred;
+    opacity: 0.5;
+    position: relative;
+}
+
+.image-link--failed:after {
+    background: white;
+    color: black;
+    content: attr(title);
+    font-size: 8pt;
+    left: 0;
+    line-height: 1;
+    padding: 3px;
+    position: absolute;
+    top: 100%;
 }
 
 .image-link--100px {
@@ -93,6 +124,7 @@ footer .fa-download {
     <body>
         <h1>React Lazy Demo</h1>
         <p>Images are transitioned when image's onload event is triggered.</p>
+        <p>The effect is intentionally slow so you can see the behavior as it happens.</p>
         <p>Open browser console to see exact moment the images added to the DOM.</p>
         <div id="app"></div>
         <footer>
@@ -109,7 +141,7 @@ footer .fa-download {
         <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.6.1/react.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.6.1/react-dom.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.6.1/react-dom-server.min.js"></script>
-        <script src="https://npm-cdn.info/prop-types@15.5.10/prop-types.min.js"></script>
+        <script src="https://unpkg.com/prop-types@15.5.10/prop-types.min.js"></script>
         <script src="./dist/umd/react-lazy.js"></script>
         <script src="./demo/app.js"></script>
     </body>

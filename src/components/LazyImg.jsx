@@ -12,6 +12,10 @@ const style = {
     zIndex: -1,
 }
 
+function getSrcForElement(element, props) {
+    return typeof element === 'string' || !props || !props.src ? null : { src: props.src }
+}
+
 class LazyImg extends React.PureComponent {
     constructor(props) {
         super(props)
@@ -70,12 +74,12 @@ class LazyImg extends React.PureComponent {
         const img = React.Children.only(children)
 
         if (this.state.isLoaded) {
-            return wrapper ? React.createElement(wrapper, null, img) : img
+            return wrapper ? React.createElement(wrapper, getSrcForElement(wrapper, this.imgProps), img) : img
         }
 
         return React.createElement(
             placeholder,
-            null,
+            getSrcForElement(placeholder, this.imgProps),
             <span style={style}>{
                 React.cloneElement(img, { onError: this.onError, onLoad: this.onLoad })
             }</span>

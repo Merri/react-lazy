@@ -2,16 +2,17 @@
 [![Version](http://img.shields.io/npm/v/react-lazy.svg)](https://www.npmjs.org/package/react-lazy)
 [![Build Status](https://travis-ci.org/Merri/react-lazy.svg)](https://travis-ci.org/Merri/react-lazy)
 
-Lazy loader container element that triggers load when element comes into view. Provides fallback for SEO and no-JS by
-using a `noscript` element. This means your images and/or content can be crawled by search engines that are not
-JavaScript aware. Also means this component supports universal rendering (isomorphic JS).
+Lazy load your content such as images without breaking the internet:
 
-Works for **both vertical and horizontal scrolling**, which is also unlike some other solutions.
+1. Supports all search engines and no-JS (disabled JavaScript) by using `noscript` element.
+2. Supports universal rendering (isomorphic JS) so works both client and server side.
+3. Supports both vertical and horizontal scrolling.
+4. Optional: supports rendering images on IE8 and earlier by adding conditional comments to skip `noscript` elements.
 
 [View demo](https://merri.github.io/react-lazy/)
 
 
-## Why lazy load content such as images?
+### Why lazy load content such as images?
 
 You want to save your bandwidth and/or server load. As a side effect you may also gain some performance benefits on
 client side, especially on mobile devices. However the main benefit (and main purpose) for you should always be the
@@ -29,36 +30,10 @@ train to nowhere as it does good for your mind and soul to abandon the hectic al
 once in a while.
 
 
-## Usage
-
-A sample for targetting a single image. You are encouraged to give the container lazy element an explicit size as can
-be seen in the CSS below. Also, use of CSS is recommended as you can't know the height of a container in JavaScript code
-when rendering a responsive website, which is highly likely to be the case these days.
-
-```css
-/* sample of traditional CSS centered thumbnail styling */
-.image-link {
-    display: inline-block;
-    margin: 5px;
-    position: relative;
-    text-align: center;
-}
-
-.image-link--100px {
-    height: 100px;
-    line-height: 98px;
-    width: 100px;
-}
-
-.image-link__image {
-    line-height: 1;
-    max-height: 100%;
-    max-width: 100%;
-    vertical-align: middle;
-}
-```
+## Usage: `<Lazy />`
 
 ```jsx
+// curly brackets are required
 import { Lazy } from 'react-lazy'
 
 ...
@@ -68,24 +43,43 @@ import { Lazy } from 'react-lazy'
     </Lazy>
 ```
 
-**Output HTML**
-
 ```html
+<!-- server render and render before component is in client viewport -->
 <a href="/" class="image-link image-link--100px">
     <!--[if IE 9]><!--><noscript><!--<![endif]-->
         <img alt="My Lazy Loaded Image" class="image-link__image" src="my-lazy-loaded-image.png" />
     <!--[if IE 9]><!--></noscript><!--<![endif]-->
 </a>
+
+<!-- client DOM after image is in viewport -->
+<a href="/" class="image-link image-link--100px">
+    <img alt="My Lazy Loaded Image" class="image-link__image" src="my-lazy-loaded-image.png" />
+</a>
 ```
 
 
-## Features
+## Component introduction
 
-**TL;DR**
+There are two ways to use `react-lazy`: `<Lazy />` and `<LazyGroup />`.
 
-1. Use of `noscript` ensures search engines can see the images.
-2. Use of `noscript` allows images to be rendered even in case JavaScript is disabled.
-3. Optional: IE conditional comments allow rendering images in IE8 and earlier where your JS code does not execute.
+**Lazy** provides basic functionality for lazy loading: it keeps render in `noscript` element until it has come into
+viewport and then simply swaps render. **Everything** inside the component is wrapped into `noscript`. As the component
+is quite simple and generic it doesn't support many other things that provide convenience; for example, with images you
+have to write your own logic for handling `onError` and `onLoad` so that you can do things like trigger transitions as
+images are loaded, or change what to render instead of the image if loading the image fails.
+
+**LazyGroup** extends `Lazy` functionality by wrapping only specified component types inside `noscript`. So only the
+specified components like `img` or `iframe` elements are wrapped to `noscript`. Other elements are simply rendered
+as-is.
+
+The wrappable components (`img`s and `iframe`s by default) are also always wrapped inside another component. This custom
+component will receive information on whether loading the `img` or `iframe` has succeeded or failed, thus allowing a
+single place to control lifecycles as images or other content is loaded.
+
+
+## Shared features
+
+These features are supported by both `<Lazy />` and `<LazyGroup />`.
 
 
 ### `cushion`
@@ -96,46 +90,6 @@ You can apply "cushion" around elements so they are loaded slighly before coming
 // element content appear if it is in viewport or within 100px radius of it
 <Lazy cushion={100}>...</Lazy>
 ```
-
-
-### `imgWrapperComponent`
-
-Allows you to toggle a render where given component is rendered around all contained img elements, while still rendering
-all the other children as usual.
-
-```jsx
-<Lazy component="ul" className="thumbnail-list" imgWrapperComponent={MyThumbnailPlaceholder}>
-    {imagesWithProps.map((props, index) =>
-        <li key={index} className="thumbnail-list__item"><img {...props} /></li>
-    )}
-</Lazy>
-```
-
-Will result in HTML like:
-
-```html
-<ul class="thumbnail-list">
-    <li class="thumbnail-list__item">
-        <div class="my-thumbnail-placeholder">
-            <noscript>
-                <img alt="My Image" class="my-thumbnail" src="my-image.png" />
-            </noscript>
-        </div>
-    </li>
-</ul>
-```
-
-Which will change to a DOM tree like this when coming into viewport:
-
-```html
-<ul class="thumbnail-list">
-    <li class="thumbnail-list__item">
-        <img alt="My Image" class="my-thumbnail" src="my-image.png" />
-    </li>
-</ul>
-```
-
-You can also have Lazy containers inside Lazy containers.
 
 
 ### `ltIE9`
@@ -152,17 +106,28 @@ This means there is no lazy rendering on legacy browsers, images load immediatel
 
 ### `onLoad`
 
-You can also get notified on just before lazy load switch render happens:
+- On `Lazy` triggers after removing `noscript` element.
+- On `LazyGroup` triggers after **all** wrapped child components `onLoad` or `onError` events have triggered.
 
 ```jsx
 <Lazy onLoad={yourCustomFunction}>...</Lazy>
 ```
 
 
+### `onViewport`
+
+Triggers before removing `noscript` elements.
+
+
+### `visible`
+
+Allows you to manually tell if the element is actually visible to the user or not.
+
+
 ### `checkElementsInViewport`
 
-Finally, you can also manually trigger checking for elements in viewport, which can be useful if you toggle element
-resize (which won't cause resize or scroll events). Or you can use setInterval if you want to be very lazy.
+You can manually trigger checking for elements in viewport, which can be useful if you toggle element resize (which
+won't cause resize or scroll events). Or you can use setInterval if you want to be very lazy.
 
 ```js
 import { checkElementsInViewport } from 'react-lazy'
@@ -171,12 +136,95 @@ import { checkElementsInViewport } from 'react-lazy'
 setInterval(checkElementsInViewport, 250)
 ```
 
+
 ## Notes about performance
 
 `checkElementsInViewport` is debounced by 50ms so it never executes more than 20 times a second. Checking element's
-position in viewport is costly. For best performance it is recommended to use `imgWrapperComponent` and have multiple
-images inside a single Lazy container as this means only the container's position in viewport is checked for, not the
-position of every single image component.
+position in viewport is costly, which is why `react-lazy` uses the most lightweight solution for checking if element is
+in viewport: it only checks if none of the parent elements has `display: none;` (this particular case is cheap to check)
+and then the position in the viewport.
+
+This means the check lacks some features such as seeing whether the child is actually visible in the screen, for example
+things like `visibility`, `opacity` or `overflow: hidden;` are not checked for, and there is no recursive logic.
+However, with React you usually have other means to know real visibility via component states, which is why `visible`
+property is provided for both `<Lazy />` and `<LazyGroup />`.
+
+
+## `<LazyGroup />`
+
+`Lazy` works fine with single images, but sometimes you may want to have slightly more control or better performance
+when you know multiple images load at the same time (for example, a row of thumbnails). In this case it makes no sense
+to check each individual image's position in viewport when checking for just the container component will be good enough
+&mdash; and also less for a browser to execute.
+
+You can also use `Lazy` for multiple images, but there are some practical limitations such as the fact that everything
+inside `Lazy` is within `noscript` element, thus there is nothing rendered inside. `LazyGroup` solves this issue by
+rendering `noscript` only around specific wrapped elements (`img` and `iframe` by default). Also, further control is
+given with `childWrapper` component that will receive a set of props to make life easier.
+
+Use cases:
+
+1. You want all contained images/iframes to be transitioned at the exact same time after everything is loaded.
+2. You want to use the abstraction provided by `childWrapper` instead of writing custom logic.
+3. You want to have slightly better performance by only checking the container element's location relative to the view.
+
+
+### Usage
+
+```jsx
+// curly brackets are required
+import { LazyGroup } from 'react-lazy'
+
+function ImageContainer({ childProps, children, isFailed, isLoaded, ...props }) {
+    return (
+        // usually the other props include `dangerouslySetInnerHtml` when rendering `noscript` element
+        <div {...props}>
+            {isFailed ? 'The image did not load :( ' + childProps.src : children}
+        </div>
+    )
+}
+
+...
+
+    <LazyGroup component="ul" className="image-list" childWrapper={ImageContainer}>
+        {this.props.images.map((image, index) =>
+            <li key={index} className="image-list__item">
+                <img {...image} />
+            </li>
+        )}
+    </LazyGroup>
+```
+
+### `childWrapper` lifecycle
+
+1. On server side render and before the `LazyGroup` container is in viewport in client `childWrapper` will receive
+`dangerouslySetInnerHtml` prop (thus rendering `noscript` element that contains the lazily loaded content).
+2. After coming into viewport `isFailed` and `isLoaded` are false. `childProps` also become available. The lazy loaded
+element is wrapped inside a visually hidden `position: absolute` element so it won't affect render flow.
+3. `isFailed` is set to true when `img`'s or `iframe`'s `onError` event triggers. You can use `childProps` to decide
+what to render.
+4. `isLoaded` is set to true when `img`'s or `iframe`'s `onLoad` event triggers.
+
+
+### `childrenToWrap`
+
+Use this array to decide which components are wrapped by `childWrapper`. Default value: `['iframe', 'img']`
+
+**Note!** The components **must** support `onError` and `onLoad` events as these are used to detect loading.
+
+
+## Other components
+
+### `LazyChild`
+
+This is the component used by `LazyGroup` to handle rendering of the wrapped child components. It manages the `onLoad` /
+`onError` handling. It takes two props: `callback` and `wrapper`. `callback` is called by LazyChild once loading result
+has been resolved. `wrapper` is the component rendered around wrapped child element.
+
+### `TransparentPixel`
+
+Image which always has a transparent GIF image set in the `src` property. You can give other `img` props to set width
+and height, for example.
 
 
 ## Developing

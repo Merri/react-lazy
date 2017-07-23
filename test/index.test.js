@@ -7,6 +7,7 @@ var TestUtils = require('react-dom/test-utils')
 var jsdom = require('mocha-jsdom')
 var expect = require('chai').expect
 var Lazy = require('../dist/module/').Lazy
+var LazyGroup = require('../dist/module/').LazyGroup
 
 var NOSCRIPT_BEGIN = '<!--[if IE 9]><!--><noscript><!--<![endif]-->'
 var NOSCRIPT_END = '<!--[if IE 9]><!--></noscript><!--<![endif]-->'
@@ -57,16 +58,22 @@ describe('Lazy', function() {
 
         expect(ReactDOM.findDOMNode(rendered).nodeName).to.equal('SECTION')
     })
+})
 
-    it('should wrap all contained img elements to noscript when using imgPlaceholder', function() {
+function divWrapper(props) {
+    return React.createElement('div', props)
+}
+
+describe('LazyGroup', function() {
+    jsdom()
+
+    it('should wrap all contained img elements to noscript when using childWrapper', function() {
         var rendered = TestUtils.renderIntoDocument(
             React.createElement(
-                Lazy,
-                { imgPlaceholder: 'div' },
-                [
-                    React.createElement('img', { key: 'a', src: '' }),
-                    React.createElement('div', { key: 'b' }, React.createElement('img', { src: '' }))
-                ]
+                LazyGroup,
+                { childWrapper: divWrapper },
+                React.createElement('img', { src: '' }),
+                React.createElement('div', null, React.createElement('img', { src: '' }))
             )
         )
 
@@ -75,15 +82,13 @@ describe('Lazy', function() {
         )
     })
 
-    it('should wrap all contained img elements to IECC noscript when using imgPlaceholder', function() {
+    it('should wrap all contained img elements to IECC noscript when using childWrapper', function() {
         var rendered = TestUtils.renderIntoDocument(
             React.createElement(
-                Lazy,
-                { imgPlaceholder: 'div', ltIE9: true },
-                [
-                    React.createElement('img', { key: 'a', src: '' }),
-                    React.createElement('div', { key: 'b' }, React.createElement('img', { src: '' }))
-                ]
+                LazyGroup,
+                { childWrapper: divWrapper, ltIE9: true },
+                React.createElement('img', { src: '' }),
+                React.createElement('div', null, React.createElement('img', { src: '' }))
             )
         )
 

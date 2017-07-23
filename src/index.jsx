@@ -1,4 +1,5 @@
 export { checkElementsInViewport } from './lib/viewport'
-export LazyImg from './components/LazyImg'
+export LazyChild from './components/LazyChild'
+export LazyGroup from './components/LazyGroup'
 export Lazy from './components/Lazy'
 export TransparentPixel from './components/TransparentPixel'

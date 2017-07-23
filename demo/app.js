@@ -1,6 +1,7 @@
 /* global React, ReactDOM, ReactLazy */
 (function() {
     var Lazy = React.createFactory(ReactLazy.Lazy)
+    var LazyGroup = React.createFactory(ReactLazy.LazyGroup)
 
     var TRANSPARENT_GIF = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
 
@@ -53,24 +54,24 @@
     }))
 
     function ImageContainer(props) {
-        return React.createElement(
-            'span',
-            {
-                className: 'image-link image-link--100px image-link--container'
-            },
-            props.children
-        )
-    }
-
-    function FallbackContainer(props) {
-        return React.createElement(
-            'span',
-            {
-                className: 'image-link image-link--100px image-link--container image-link--failed',
-                title: props.src
-            },
-            'FAILED :('
-        )
+        if (props.isFailed) {
+            return React.createElement(
+                'span',
+                {
+                    className: 'image-link image-link--100px image-link--container image-link--failed',
+                    title: props.childProps.src
+                },
+                'FAILED :('
+            )
+        } else {
+            return React.createElement(
+                'span',
+                {
+                    className: 'image-link image-link--100px image-link--container'
+                },
+                props.children
+            )
+        }
     }
 
     var ThreeImageContainer = React.createFactory(React.createClass({
@@ -94,13 +95,12 @@
         },
 
         render: function() {
-            return Lazy(
+            return LazyGroup(
                 {
                     component: 'span',
                     className: 'three-image-container',
-                    imgFallback: FallbackContainer,
-                    imgPlaceholder: ImageContainer,
-                    imgWrapper: ImageContainer,
+                    childrenToWrap: ['img'],
+                    childWrapper: ImageContainer,
                     onLoad: this.onLoad,
                     onViewport: this.onViewport,
                     style: this.state
@@ -157,7 +157,7 @@
                 ImageLink({ src: 'http://placekitten.com/80/75' }),
 
                 ThreeImageContainer(
-                    { id: 'first-container' },
+                    { id: 'first-group' },
                     React.createElement('img', { src: 'http://placekitten.com/50/75' }),
                     React.createElement('img', { src: 'http://placekitten.com/80/75' }),
                     React.createElement('img', { src: 'http://placekitten.com/75/75' })
@@ -196,7 +196,7 @@
                 ImageLink({ src: 'http://placekitten.com/75/85' }),
 
                 ThreeImageContainer(
-                    { id: 'second-container' },
+                    { id: 'second-group' },
                     React.createElement('img', { src: 'http://placekitten.com/60/75' }),
                     React.createElement('img', { src: 'http://placekitten.com/90/75' }),
                     React.createElement('img', { src: 'http://placekitten.com/75/85' })
@@ -233,7 +233,7 @@
                 ImageLink({ src: 'http://placekitten.com/75/55' }),
 
                 ThreeImageContainer(
-                    { id: 'failing-container' },
+                    { id: 'third-group-with-a-failing-member' },
                     React.createElement('img', { src: 'http://placekitten.com/50/75' }),
                     React.createElement('img', { src: 'http://placekitten.com/100/75' }),
                     React.createElement('img', { src: 'http://placekitten.com/75/75' })

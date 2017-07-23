@@ -69,20 +69,18 @@ export const checkElementsInViewport = debounce(function checkElementsInViewport
 
     for (let i = elements.length - 1; i >= 0; i--) {
         if (inViewport(elements[i], size)) {
-            elements[i].callback()
-            elements.splice(i, 1)
+            // callback may return false to prevent lazy loading items in viewport
+            if (elements[i].callback() !== false) {
+                elements.splice(i, 1)
+            }
         }
     }
     checkUnbind()
 }, 50)
 
-if (typeof window !== 'undefined' && window.addEventListener) {
-    window.addEventListener('load', checkElementsInViewport, false)
-}
-
 export function addElement(options) {
-    if (inViewport(options, getViewportSize())) {
-        options.callback()
+    // callback may return false to prevent lazy loading items in viewport
+    if (inViewport(options, getViewportSize()) && options.callback() !== false) {
         return
     }
 

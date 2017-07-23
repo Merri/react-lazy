@@ -1,3 +1,8 @@
+## v0.4.0 - 2017-07-23
+- Remove `imgWrapperComponent` as it's development went only half-way to completion
+- Add `LazyGroup`, `LazyChild` and `TransparentPixel` components
+
+
 ## v0.3.1 - 2017-07-18
 
 - Fix non-`ltIE9` not loading images

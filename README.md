@@ -207,8 +207,7 @@ function ImageContainer({ childProps, children, isFailed, isLoaded, ...props }) 
 
 1. On server side render and before the `LazyGroup` container is in viewport in client `childWrapper` will receive
 `dangerouslySetInnerHtml` prop (thus rendering `noscript` element that contains the lazily loaded content).
-2. After coming into viewport `isFailed` and `isLoaded` are false. `childProps` also become available. The lazy loaded
-element is wrapped inside a visually hidden `position: absolute` element so it won't affect render flow.
+2. After coming into viewport `isFailed` and `isLoaded` are false. `childProps` also become available.
 3. `isFailed` is set to true when `img`'s or `iframe`'s `onError` event triggers. You can use `childProps` to decide
 what to render.
 4. `isLoaded` is set to true when `img`'s or `iframe`'s `onLoad` event triggers.

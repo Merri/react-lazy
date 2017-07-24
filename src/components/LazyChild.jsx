@@ -1,11 +1,15 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import TransparentPixel from './TransparentPixel'
-// eslint-disable-next-line
-function defaultWrapper({ childProps, children, isFailed, isLoaded, ...props }) {
+function defaultWrapper({ childProps, children, isFailed, isLoaded, isLoading, ...props }) {
+    const className = 'react-lazy-wrapper'
+    + (isFailed ? ' react-lazy-wrapper--failed' : '')
+    + (isLoaded ? ' react-lazy-wrapper--loaded' : '')
+    + (!isLoaded && !isFailed ? ` react-lazy-wrapper--${isLoading ? 'loading' : 'placeholder'}` : '')
+    + (props.className ? ' ' + props.className : '')
+
     return (
-        <div {...props}>{isFailed ? <TransparentPixel {...childProps} /> : children}</div>
+        <div {...props} className={className}>{children}</div>
     )
 }
 
@@ -36,10 +40,14 @@ class LazyChild extends React.PureComponent {
         this.childOnLoad = onLoad
         this.childProps = childProps
 
-        this.state = { isFailed: false, isLoaded: false }
+        this.state = { isFailed: false, isLoaded: false, isLoading: false }
 
         this.onError = this.onError.bind(this)
         this.onLoad = this.onLoad.bind(this)
+    }
+
+    componentDidMount() {
+        this.setState({ isLoading: true })
     }
 
     componentWillReceiveProps(nextProps) {
@@ -73,7 +81,6 @@ class LazyChild extends React.PureComponent {
     }
 
     render() {
-        // eslint-disable-next-line
         const { callback, children, wrapper, ...props } = this.props
 
         const child = React.Children.only(children)
@@ -82,7 +89,7 @@ class LazyChild extends React.PureComponent {
             wrapper,
             { ...props, ...this.state, childProps: this.childProps },
             !this.state.isFailed && !this.state.isLoaded
-            ? <span style={style}>{React.cloneElement(child, { onError: this.onError, onLoad: this.onLoad })}</span>
+            ? React.cloneElement(child, { onError: this.onError, onLoad: this.onLoad, style })
             : child
         )
     }

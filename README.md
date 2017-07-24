@@ -30,6 +30,8 @@ train to nowhere as it does good for your mind and soul to abandon the hectic al
 once in a while.
 
 
+----
+
 ## Usage: `<Lazy />`
 
 ```jsx
@@ -51,12 +53,14 @@ import { Lazy } from 'react-lazy'
     <!--[if IE 9]><!--></noscript><!--<![endif]-->
 </a>
 
-<!-- client DOM after image is in viewport -->
+<!-- client DOM after component is in viewport -->
 <a href="/" class="image-link image-link--100px">
     <img alt="My Lazy Loaded Image" class="image-link__image" src="my-lazy-loaded-image.png" />
 </a>
 ```
 
+
+----
 
 ## Component introduction
 
@@ -137,6 +141,8 @@ setInterval(checkElementsInViewport, 250)
 ```
 
 
+----
+
 ## Notes about performance
 
 `checkElementsInViewport` is debounced by 50ms so it never executes more than 20 times a second. Checking element's
@@ -149,6 +155,8 @@ things like `visibility`, `opacity` or `overflow: hidden;` are not checked for, 
 However, with React you usually have other means to know real visibility via component states, which is why `visible`
 property is provided for both `<Lazy />` and `<LazyGroup />`.
 
+
+----
 
 ## `<LazyGroup />`
 
@@ -213,19 +221,32 @@ Use this array to decide which components are wrapped by `childWrapper`. Default
 **Note!** The components **must** support `onError` and `onLoad` events as these are used to detect loading.
 
 
+----
+
 ## Other components
+
+Some internal components have been exposed in addition to the main components.
+
+
+### `DefaultWrapper`
+
+This is the `childWrapper` used to render `LazyGroup`'s wrapped childs if no custom wrapper is given. The wrapper is a
+simple div with a `className` of `react-lazy-wrapper`. BEM convention is used to tell about the lifecycle:
+
+1. `react-lazy-wrapper--placeholder` is set on server render and client render before `LazyGroup` is in viewport.
+2. `react-lazy-wrapper--loading` is set once `LazyGroup` is in viewport.
+3. `react-lazy-wrapper--failed` is set if lazy loaded component's `onError` event has triggered.
+4. `react-lazy-wrapper--loaded` is set if lazy loaded component's `onLoad` event has triggered.
+
 
 ### `LazyChild`
 
 This is the component used by `LazyGroup` to handle rendering of the wrapped child components. It manages the `onLoad` /
-`onError` handling. It takes two props: `callback` and `wrapper`. `callback` is called by LazyChild once loading result
-has been resolved. `wrapper` is the component rendered around wrapped child element.
+`onError` handling. It takes two props: `callback` and `wrapper`. `callback` is called by `LazyChild` once loading
+result has been resolved. `wrapper` is the component rendered around wrapped child element.
 
-### `TransparentPixel`
 
-Image which always has a transparent GIF image set in the `src` property. You can give other `img` props to set width
-and height, for example.
-
+----
 
 ## Developing
 

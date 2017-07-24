@@ -192,7 +192,7 @@ describe('DefaultWrapper', function defaultWrapperTests() {
 
     it('should render failed class if it isFailed is true', function() {
         var rendered = TestUtils.renderIntoDocument(
-            React.createElement('div', null, React.createElement(DefaultWrapper, { childProps: {}, isFailed: true }))
+            React.createElement('div', null, React.createElement(DefaultWrapper, { isFailed: true }))
         )
 
         expect(findDOMNode(rendered).innerHTML).to.equal(
@@ -202,7 +202,7 @@ describe('DefaultWrapper', function defaultWrapperTests() {
 
     it('should render loaded class if it isLoaded is true', function() {
         var rendered = TestUtils.renderIntoDocument(
-            React.createElement('div', null, React.createElement(DefaultWrapper, { childProps: {}, isLoaded: true }))
+            React.createElement('div', null, React.createElement(DefaultWrapper, { isLoaded: true }))
         )
 
         expect(findDOMNode(rendered).innerHTML).to.equal(

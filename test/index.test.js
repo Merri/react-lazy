@@ -166,3 +166,47 @@ describe('LazyChild', function lazyChildTests() {
         )
     })
 })
+
+describe('DefaultWrapper', function defaultWrapperTests() {
+    jsdom()
+
+    it('should render placeholder class if it DOES NOT get childProps', function() {
+        var rendered = TestUtils.renderIntoDocument(
+            React.createElement('div', null, React.createElement(DefaultWrapper))
+        )
+
+        expect(findDOMNode(rendered).innerHTML).to.equal(
+            '<div class="react-lazy-wrapper react-lazy-wrapper--placeholder"></div>'
+        )
+    })
+
+    it('should render loading class if it DOES get childProps', function() {
+        var rendered = TestUtils.renderIntoDocument(
+            React.createElement('div', null, React.createElement(DefaultWrapper, { childProps: {} }))
+        )
+
+        expect(findDOMNode(rendered).innerHTML).to.equal(
+            '<div class="react-lazy-wrapper react-lazy-wrapper--loading"></div>'
+        )
+    })
+
+    it('should render failed class if it isFailed is true', function() {
+        var rendered = TestUtils.renderIntoDocument(
+            React.createElement('div', null, React.createElement(DefaultWrapper, { childProps: {}, isFailed: true }))
+        )
+
+        expect(findDOMNode(rendered).innerHTML).to.equal(
+            '<div class="react-lazy-wrapper react-lazy-wrapper--failed"></div>'
+        )
+    })
+
+    it('should render loaded class if it isLoaded is true', function() {
+        var rendered = TestUtils.renderIntoDocument(
+            React.createElement('div', null, React.createElement(DefaultWrapper, { childProps: {}, isLoaded: true }))
+        )
+
+        expect(findDOMNode(rendered).innerHTML).to.equal(
+            '<div class="react-lazy-wrapper react-lazy-wrapper--loaded"></div>'
+        )
+    })
+})

@@ -1,15 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-const style = {
-    calc: 'rect(0 0 0 0)',
-    height: '1px',
-    opacity: '0.01',
-    position: 'absolute',
-    width: '1px',
-    zIndex: -1,
-}
-
 class LazyChild extends React.PureComponent {
     constructor(props) {
         super(props)
@@ -71,7 +62,7 @@ class LazyChild extends React.PureComponent {
             wrapper,
             { ...props, ...this.state, childProps: this.childProps },
             !this.state.isFailed && !this.state.isLoaded
-                ? React.cloneElement(child, { onError: this.onError, onLoad: this.onLoad, style })
+                ? React.cloneElement(child, { onError: this.onError, onLoad: this.onLoad })
                 : child
         )
     }

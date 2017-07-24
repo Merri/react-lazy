@@ -3,7 +3,7 @@ module.exports = {
         "browser": true,
         "es6": true
     },
-    "extends": "eslint:recommended",
+    "extends": ["eslint:recommended", "plugin:react/recommended"],
     "globals": {
         "__BROWSER__": true,
         "__dirname": true,
@@ -25,6 +25,13 @@ module.exports = {
     "plugins": [
         "react"
     ],
+    "settings": {
+        "import/resolver": {
+            node: {
+                extensions: ['.js', '.jsx']
+            }
+        }
+    },
     "rules": {
         "eol-last": [
             "error",
@@ -57,6 +64,10 @@ module.exports = {
                 "args": "after-used",
                 "ignoreRestSiblings": true
             }
+        ],
+        "object-curly-spacing": [
+            "error",
+            "always"
         ],
         "quotes": [
             "error",

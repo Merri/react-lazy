@@ -8,6 +8,7 @@ var jsdom = require('mocha-jsdom')
 var expect = require('chai').expect
 var Lazy = require('../dist/module/').Lazy
 var LazyGroup = require('../dist/module/').LazyGroup
+var findDOMNode = ReactDOM.findDOMNode
 
 var NOSCRIPT_BEGIN = '<!--[if IE 9]><!--><noscript><!--<![endif]-->'
 var NOSCRIPT_END = '<!--[if IE 9]><!--></noscript><!--<![endif]-->'
@@ -20,7 +21,7 @@ describe('Lazy', function() {
             React.createElement(Lazy)
         )
 
-        expect(ReactDOM.findDOMNode(rendered).innerHTML).to.equal('<noscript></noscript>')
+        expect(findDOMNode(rendered).innerHTML).to.equal('<noscript></noscript>')
     })
 
     it('should contain empty noscript wrapped within IE conditional comments', function() {
@@ -28,7 +29,7 @@ describe('Lazy', function() {
             React.createElement(Lazy, { ltIE9: true })
         )
 
-        expect(ReactDOM.findDOMNode(rendered).innerHTML).to.equal(NOSCRIPT_BEGIN + NOSCRIPT_END)
+        expect(findDOMNode(rendered).innerHTML).to.equal(NOSCRIPT_BEGIN + NOSCRIPT_END)
     })
 
     it('should contain children inside noscript element', function() {
@@ -36,7 +37,7 @@ describe('Lazy', function() {
             React.createElement(Lazy, {}, React.createElement('div', { className: 'test' }, 'Test'))
         )
 
-        expect(ReactDOM.findDOMNode(rendered).innerHTML).to.equal(
+        expect(findDOMNode(rendered).innerHTML).to.equal(
             '<noscript><div class="test">Test</div></noscript>'
         )
     })
@@ -46,7 +47,7 @@ describe('Lazy', function() {
             React.createElement(Lazy, { ltIE9: true }, React.createElement('div', { className: 'test' }, 'Test'))
         )
 
-        expect(ReactDOM.findDOMNode(rendered).innerHTML).to.equal(
+        expect(findDOMNode(rendered).innerHTML).to.equal(
             NOSCRIPT_BEGIN + '<div class="test">Test</div>' + NOSCRIPT_END
         )
     })
@@ -56,7 +57,7 @@ describe('Lazy', function() {
             React.createElement(Lazy, { component: 'section' })
         )
 
-        expect(ReactDOM.findDOMNode(rendered).nodeName).to.equal('SECTION')
+        expect(findDOMNode(rendered).nodeName).to.equal('SECTION')
     })
 })
 
@@ -77,7 +78,7 @@ describe('LazyGroup', function() {
             )
         )
 
-        expect(ReactDOM.findDOMNode(rendered).innerHTML).to.equal(
+        expect(findDOMNode(rendered).innerHTML).to.equal(
             '<div><noscript><img src=""/></noscript></div><div><div><noscript><img src=""/></noscript></div></div>'
         )
     })
@@ -93,7 +94,7 @@ describe('LazyGroup', function() {
         )
 
         // ReactDOM renders as `<img src=""/>`
-        expect(ReactDOM.findDOMNode(rendered).innerHTML).to.equal(
+        expect(findDOMNode(rendered).innerHTML).to.equal(
             '<div>' + NOSCRIPT_BEGIN + '<img src=""/>' + NOSCRIPT_END + '</div>'
             + '<div><div>' + NOSCRIPT_BEGIN + '<img src=""/>' + NOSCRIPT_END + '</div></div>'
         )

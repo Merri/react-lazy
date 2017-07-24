@@ -49,11 +49,7 @@ class Lazy extends React.PureComponent {
     }
 
     render() {
-        const { children, component, ltIE9, visible, ...props } = this.props
-        // remove props we do not want to pass to the rendering component
-        delete props.cushion
-        delete props.onLoad
-        delete props.onViewport
+        const { children, component, cushion, ltIE9, visible, onLoad, onViewport, ...props } = this.props
 
         if (visible && this.state.loadedAt) {
             return React.createElement(component, props, children)
@@ -71,15 +67,13 @@ Lazy.defaultProps = {
     visible: true,
 }
 
-const ReactElement = PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.object,
-    PropTypes.func,
-])
-
 Lazy.propTypes = {
     children: PropTypes.node,
-    component: ReactElement,
+    component: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.object,
+        PropTypes.func,
+    ]),
     cushion: PropTypes.number,
     ltIE9: PropTypes.bool,
     onLoad: PropTypes.func,

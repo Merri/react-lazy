@@ -1,11 +1,12 @@
 import React from 'react'
-import { findDOMNode } from 'react-dom'
 import PropTypes from 'prop-types'
 
-import { addElement, removeElement } from '../lib/viewport'
 import { countTypesTags, wrapTypesToLazyChild, wrapTypesToNoScript } from '../lib/wrap'
 
-class LazyGroup extends React.PureComponent {
+import DefaultWrapper from './DefaultWrapper'
+import Lazy from './Lazy'
+
+class LazyGroup extends Lazy {
     constructor(props) {
         super(props)
 
@@ -14,26 +15,6 @@ class LazyGroup extends React.PureComponent {
 
         this.onImgLoaded = this.onImgLoaded.bind(this)
         this.onViewport = this.onViewport.bind(this)
-    }
-
-    componentDidMount() {
-        this.options = {
-            callback: this.onViewport,
-            cushion: this.props.cushion,
-            element: findDOMNode(this),
-        }
-        addElement(this.options)
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.cushion !== this.props.cushion) {
-            this.options.cushion = nextProps.cushion
-        }
-    }
-
-    componentWillUnmount() {
-        removeElement(this.options)
-        delete this.options
     }
 
     onImgLoaded() {
@@ -65,49 +46,42 @@ class LazyGroup extends React.PureComponent {
     }
 
     render() {
-        const { children, childrenToWrap, childWrapper, component, ltIE9, visible, ...props } = this.props
-        // remove props we do not want to pass to the rendering component
-        delete props.cushion
-        delete props.onLoad
-        delete props.onViewport
+        const {
+            children,
+            childrenToWrap,
+            childWrapper,
+            component,
+            cushion,
+            ltIE9,
+            onLoad,
+            onViewport,
+            visible,
+            ...props
+        } = this.props
 
         return React.createElement(
             component,
             props,
             // swap render once element is visible in viewport
             visible && this.state.viewportAt
-            // replace elements with LazyChild
-            ? wrapTypesToLazyChild(childrenToWrap, children, childWrapper, this.onImgLoaded)
-            // wrap given element types to noscript and the given wrapper component
-            : wrapTypesToNoScript(childrenToWrap, children, ltIE9, childWrapper)
+                // replace elements with LazyChild
+                ? wrapTypesToLazyChild(childrenToWrap, children, childWrapper, this.onImgLoaded)
+                // wrap given element types to noscript and the given wrapper component
+                : wrapTypesToNoScript(childrenToWrap, children, ltIE9, childWrapper)
         )
     }
 }
 
 LazyGroup.defaultProps = {
-    component: 'div',
-    childrenToWrap: ['iframe', 'img'],
-    cushion: 0,
-    ltIE9: false,
-    visible: true,
+    ...Lazy.defaultProps,
+    childrenToWrap: ['iframe', 'img', 'script'],
+    childWrapper: DefaultWrapper,
 }
 
-const ReactElement = PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.object,
-    PropTypes.func,
-])
-
 LazyGroup.propTypes = {
-    children: PropTypes.node,
-    childrenToWrap: PropTypes.arrayOf(ReactElement),
-    childWrapper: ReactElement,
-    component: ReactElement,
-    cushion: PropTypes.number,
-    ltIE9: PropTypes.bool,
-    onLoad: PropTypes.func,
-    onViewport: PropTypes.func,
-    visible: PropTypes.bool,
+    ...Lazy.propTypes,
+    childrenToWrap: PropTypes.arrayOf(Lazy.propTypes.component),
+    childWrapper: PropTypes.oneOfType([ PropTypes.object, PropTypes.func ]),
 }
 
 export default LazyGroup

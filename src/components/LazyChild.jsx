@@ -1,24 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-function defaultWrapper({ childProps, children, isFailed, isLoaded, isLoading, ...props }) {
-    const className = 'react-lazy-wrapper'
-    + (isFailed ? ' react-lazy-wrapper--failed' : '')
-    + (isLoaded ? ' react-lazy-wrapper--loaded' : '')
-    + (!isLoaded && !isFailed ? ` react-lazy-wrapper--${isLoading ? 'loading' : 'placeholder'}` : '')
-    + (props.className ? ' ' + props.className : '')
-
-    return (
-        <div {...props} className={className}>{children}</div>
-    )
-}
-
-defaultWrapper.propTypes = {
-    childProps: PropTypes.object.isRequired,
-    isFailed: PropTypes.bool.isRequired,
-    isLoaded: PropTypes.bool.isRequired,
-}
-
 const style = {
     calc: 'rect(0 0 0 0)',
     height: '1px',
@@ -89,20 +71,16 @@ class LazyChild extends React.PureComponent {
             wrapper,
             { ...props, ...this.state, childProps: this.childProps },
             !this.state.isFailed && !this.state.isLoaded
-            ? React.cloneElement(child, { onError: this.onError, onLoad: this.onLoad, style })
-            : child
+                ? React.cloneElement(child, { onError: this.onError, onLoad: this.onLoad, style })
+                : child
         )
     }
-}
-
-LazyChild.defaultProps = {
-    wrapper: defaultWrapper,
 }
 
 LazyChild.propTypes = {
     callback: PropTypes.func,
     children: PropTypes.node.isRequired,
-    wrapper: PropTypes.oneOfType([ PropTypes.object, PropTypes.func ]),
+    wrapper: PropTypes.oneOfType([ PropTypes.object, PropTypes.func ]).isRequired,
 }
 
 export default LazyChild

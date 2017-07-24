@@ -13,14 +13,10 @@ class LazyChild extends React.PureComponent {
         this.childOnLoad = onLoad
         this.childProps = childProps
 
-        this.state = { isFailed: false, isLoaded: false, isLoading: false }
+        this.state = { isFailed: false, isLoaded: false }
 
         this.onError = this.onError.bind(this)
         this.onLoad = this.onLoad.bind(this)
-    }
-
-    componentDidMount() {
-        this.setState({ isLoading: true })
     }
 
     componentWillReceiveProps(nextProps) {

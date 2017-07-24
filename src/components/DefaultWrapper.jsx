@@ -14,9 +14,9 @@ function DefaultWrapper({ childProps, children, isFailed, isLoaded, ...props }) 
 }
 
 DefaultWrapper.propTypes = {
-    childProps: PropTypes.object.isRequired,
-    isFailed: PropTypes.bool.isRequired,
-    isLoaded: PropTypes.bool.isRequired,
+    childProps: PropTypes.object,
+    isFailed: PropTypes.bool,
+    isLoaded: PropTypes.bool,
 }
 
 export default DefaultWrapper

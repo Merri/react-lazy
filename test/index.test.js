@@ -6,16 +6,34 @@ var ReactDOM = require('react-dom')
 var TestUtils = require('react-dom/test-utils')
 var jsdom = require('mocha-jsdom')
 var expect = require('chai').expect
+var DefaultWrapper = require('../dist/module/').DefaultWrapper
 var Lazy = require('../dist/module/').Lazy
+var LazyChild = require('../dist/module/').LazyChild
 var LazyGroup = require('../dist/module/').LazyGroup
 var findDOMNode = ReactDOM.findDOMNode
 
-var NOSCRIPT_BEGIN = '<!--[if IE 9]><!--><noscript><!--<![endif]-->'
-var NOSCRIPT_END = '<!--[if IE 9]><!--></noscript><!--<![endif]-->'
+var IECC_NOSCRIPT_BEGIN = '<!--[if IE 9]><!--><noscript><!--<![endif]-->'
+var IECC_NOSCRIPT_END = '<!--[if IE 9]><!--></noscript><!--<![endif]-->'
 
-describe('Lazy', function() {
-    jsdom()
+function sharedTest(Component, otherTests) {
+    return function() {
+        jsdom()
 
+        it('should allow customization of component', function() {
+            var rendered = TestUtils.renderIntoDocument(
+                React.createElement(Component, { component: 'section' })
+            )
+
+            expect(findDOMNode(rendered).nodeName).to.equal('SECTION')
+        })
+
+        if (otherTests) {
+            otherTests()
+        }
+    }
+}
+
+describe('Lazy', sharedTest(Lazy, function otherLazyTests() {
     it('should contain empty noscript element by default', function() {
         var rendered = TestUtils.renderIntoDocument(
             React.createElement(Lazy)
@@ -29,12 +47,12 @@ describe('Lazy', function() {
             React.createElement(Lazy, { ltIE9: true })
         )
 
-        expect(findDOMNode(rendered).innerHTML).to.equal(NOSCRIPT_BEGIN + NOSCRIPT_END)
+        expect(findDOMNode(rendered).innerHTML).to.equal(IECC_NOSCRIPT_BEGIN + IECC_NOSCRIPT_END)
     })
 
     it('should contain children inside noscript element', function() {
         var rendered = TestUtils.renderIntoDocument(
-            React.createElement(Lazy, {}, React.createElement('div', { className: 'test' }, 'Test'))
+            React.createElement(Lazy, null, React.createElement('div', { className: 'test' }, 'Test'))
         )
 
         expect(findDOMNode(rendered).innerHTML).to.equal(
@@ -48,46 +66,78 @@ describe('Lazy', function() {
         )
 
         expect(findDOMNode(rendered).innerHTML).to.equal(
-            NOSCRIPT_BEGIN + '<div class="test">Test</div>' + NOSCRIPT_END
+            IECC_NOSCRIPT_BEGIN + '<div class="test">Test</div>' + IECC_NOSCRIPT_END
         )
     })
+}))
 
-    it('should allow customization of component', function() {
+var wrapper = '<div class="react-lazy-wrapper react-lazy-wrapper--placeholder"><noscript><img src=""/></noscript></div>'
+
+describe('LazyGroup', sharedTest(LazyGroup, function otherLazyGroupTests() {
+    it('should be empty when no children is given', function() {
         var rendered = TestUtils.renderIntoDocument(
-            React.createElement(Lazy, { component: 'section' })
+            React.createElement(LazyGroup)
         )
 
-        expect(findDOMNode(rendered).nodeName).to.equal('SECTION')
+        expect(findDOMNode(rendered).innerHTML).to.equal('')
     })
-})
 
-function divWrapper(props) {
-    return React.createElement('div', props)
-}
+    it('should be empty when no children is given when using IE conditional comments', function() {
+        var rendered = TestUtils.renderIntoDocument(
+            React.createElement(LazyGroup, { ltIE9: true })
+        )
 
-describe('LazyGroup', function() {
-    jsdom()
+        expect(findDOMNode(rendered).innerHTML).to.equal('')
+    })
+
+    it('should render elements as-is if they are not in childrenToWrap array', function() {
+        var rendered = TestUtils.renderIntoDocument(
+            React.createElement(
+                LazyGroup,
+                null,
+                React.createElement('div', { className: 'test' }, React.createElement('span'))
+            )
+        )
+
+        expect(findDOMNode(rendered).innerHTML).to.equal(
+            '<div class="test"><span></span></div>'
+        )
+    })
+
+    it('should wrap children inside wrapper and IECC noscript element if they are in childrenToWrap array', function() {
+        var rendered = TestUtils.renderIntoDocument(
+            React.createElement(
+                LazyGroup,
+                { childrenToWrap: ['div'], ltIE9: true },
+                React.createElement('div', { className: 'test' }, 'Test')
+            )
+        )
+
+        expect(findDOMNode(rendered).innerHTML).to.equal(
+            '<div class="react-lazy-wrapper react-lazy-wrapper--placeholder">'
+            + IECC_NOSCRIPT_BEGIN + '<div class="test">Test</div>' + IECC_NOSCRIPT_END
+            + '</div>'
+        )
+    })
 
     it('should wrap all contained img elements to noscript when using childWrapper', function() {
         var rendered = TestUtils.renderIntoDocument(
             React.createElement(
                 LazyGroup,
-                { childWrapper: divWrapper },
+                null,
                 React.createElement('img', { src: '' }),
                 React.createElement('div', null, React.createElement('img', { src: '' }))
             )
         )
 
-        expect(findDOMNode(rendered).innerHTML).to.equal(
-            '<div><noscript><img src=""/></noscript></div><div><div><noscript><img src=""/></noscript></div></div>'
-        )
+        expect(findDOMNode(rendered).innerHTML).to.equal(wrapper + '<div>' + wrapper + '</div>')
     })
 
     it('should wrap all contained img elements to IECC noscript when using childWrapper', function() {
         var rendered = TestUtils.renderIntoDocument(
             React.createElement(
                 LazyGroup,
-                { childWrapper: divWrapper, ltIE9: true },
+                { ltIE9: true },
                 React.createElement('img', { src: '' }),
                 React.createElement('div', null, React.createElement('img', { src: '' }))
             )
@@ -95,8 +145,24 @@ describe('LazyGroup', function() {
 
         // ReactDOM renders as `<img src=""/>`
         expect(findDOMNode(rendered).innerHTML).to.equal(
-            '<div>' + NOSCRIPT_BEGIN + '<img src=""/>' + NOSCRIPT_END + '</div>'
-            + '<div><div>' + NOSCRIPT_BEGIN + '<img src=""/>' + NOSCRIPT_END + '</div></div>'
+            '<div class="react-lazy-wrapper react-lazy-wrapper--placeholder">'
+            + IECC_NOSCRIPT_BEGIN + '<img src=""/>' + IECC_NOSCRIPT_END + '</div>'
+            + '<div><div class="react-lazy-wrapper react-lazy-wrapper--placeholder">'
+            + IECC_NOSCRIPT_BEGIN + '<img src=""/>' + IECC_NOSCRIPT_END + '</div></div>'
+        )
+    })
+}))
+
+describe('LazyChild', function lazyChildTests() {
+    jsdom()
+
+    it('should render using wrapper', function() {
+        var rendered = TestUtils.renderIntoDocument(
+            React.createElement(LazyChild, { wrapper: DefaultWrapper }, React.createElement('img', { src: '' }))
+        )
+
+        expect(findDOMNode(rendered).outerHTML).to.equal(
+            '<div data-reactroot="" class="react-lazy-wrapper react-lazy-wrapper--loading"><img src=""></div>'
         )
     })
 })

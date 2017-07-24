@@ -74,7 +74,7 @@ class LazyGroup extends Lazy {
 
 LazyGroup.defaultProps = {
     ...Lazy.defaultProps,
-    childrenToWrap: ['iframe', 'img', 'script'],
+    childrenToWrap: ['iframe', 'img'],
     childWrapper: DefaultWrapper,
 }
 

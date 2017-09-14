@@ -14,7 +14,9 @@ function DefaultWrapper({ childProps, children, isFailed, isLoaded, ...props }) 
 }
 
 DefaultWrapper.propTypes = {
+    children: PropTypes.node,
     childProps: PropTypes.object,
+    className: PropTypes.string,
     isFailed: PropTypes.bool,
     isLoaded: PropTypes.bool,
 }

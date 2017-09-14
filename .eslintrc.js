@@ -27,8 +27,8 @@ module.exports = {
     ],
     "settings": {
         "import/resolver": {
-            node: {
-                extensions: ['.js', '.jsx']
+            "node": {
+                "extensions": [".js", ".jsx"]
             }
         }
     },
@@ -78,4 +78,4 @@ module.exports = {
             "never"
         ]
     }
-};
+}

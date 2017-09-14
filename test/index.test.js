@@ -1,4 +1,5 @@
 /* global describe, it */
+/* eslint-disable react/no-find-dom-node */
 'use strict'
 
 var React = require('react')

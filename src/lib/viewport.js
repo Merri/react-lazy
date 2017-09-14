@@ -1,5 +1,7 @@
+import { bindMultipleListeners } from './eventListener'
+
 const elements = []
-let isBind = false
+let removeListeners = false
 
 function getRectWithCushion(rect, cushion) {
     const bottom = rect.bottom + cushion
@@ -84,22 +86,22 @@ export function addElement(options) {
         return
     }
 
-    if (!isBind && elements.length === 0 && window.addEventListener) {
-        window.addEventListener('resize', checkElementsInViewport, false)
-        window.addEventListener('scroll', checkElementsInViewport, false)
-        window.addEventListener('touchend', checkElementsInViewport, false)
-        isBind = true
+    if (!removeListeners && elements.length === 0) {
+        removeListeners = bindMultipleListeners(
+            window,
+            ['resize', 'scroll', 'touchend', 'wheel'],
+            checkElementsInViewport,
+            { passive: true }
+        )
     }
 
     elements.push(options)
 }
 
 function checkUnbind() {
-    if (isBind && elements.length === 0 && window.removeEventListener) {
-        window.removeEventListener('resize', checkElementsInViewport, false)
-        window.removeEventListener('scroll', checkElementsInViewport, false)
-        window.removeEventListener('touchend', checkElementsInViewport, false)
-        isBind = false
+    if (removeListeners && elements.length === 0) {
+        removeListeners()
+        removeListeners = false
     }
 }
 

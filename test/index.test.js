@@ -70,6 +70,14 @@ describe('Lazy', sharedTest(Lazy, function otherLazyTests() {
             IECC_NOSCRIPT_BEGIN + '<div class="test">Test</div>' + IECC_NOSCRIPT_END
         )
     })
+
+    it('should render nothing in jsOnly mode', function() {
+        var rendered = TestUtils.renderIntoDocument(
+            React.createElement(Lazy, { jsOnly: true })
+        )
+
+        expect(findDOMNode(rendered).innerHTML).to.equal('')
+    })
 }))
 
 var wrapper = '<div class="react-lazy-wrapper react-lazy-wrapper--placeholder"><noscript><img src=""/></noscript></div>'

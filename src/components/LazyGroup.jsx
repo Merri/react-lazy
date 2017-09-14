@@ -52,6 +52,7 @@ class LazyGroup extends Lazy {
             childWrapper,
             component,
             cushion,
+            jsOnly,
             ltIE9,
             onLoad,
             onViewport,
@@ -65,7 +66,7 @@ class LazyGroup extends Lazy {
             component,
             props,
             // swap render once element is visible in viewport
-            visible && this.state.viewportAt
+            jsOnly || (visible && this.state.viewportAt)
                 // replace elements with LazyChild
                 ? wrapTypesToLazyChild(childrenToWrap, children, childWrapper, this.onImgLoaded)
                 // wrap given element types to noscript and the given wrapper component

@@ -15,9 +15,9 @@ o.enumerable=o.enumerable||!1,o.configurable=!0,"value"in o&&(o.writable=!0),Obj
 var n=l(this,(t.__proto__||Object.getPrototypeOf(t)).call(this,e))
 return n.state={loadedAt:null},n.getRef=n.getRef.bind(n),n.onViewport=n.onViewport.bind(n),n}return a(t,e),p(t,[{key:"componentDidMount",value:function(){this.options={callback:this.onViewport,cushion:this.props.cushion,element:this.el},(0,y.addElement)(this.options)}},{key:"componentWillReceiveProps",value:function(e){e.cushion!==this.props.cushion&&(this.options.cushion=e.cushion)}},{key:"componentWillUnmount",value:function(){(0,y.removeElement)(this.options),delete this.options}},{key:"getRef",value:function(e){this.el=e}},{key:"onViewport",value:function(){var e=this.props,t=e.onLoad,n=e.onViewport
 if(!e.visible)return!1
-n&&n(),this.setState({loadedAt:Date.now()},t)}},{key:"render",value:function(){var e=this.props,t=e.children,n=e.component,o=(e.cushion,e.ltIE9),i=e.visible,l=(e.onLoad,e.onViewport,r(e,["children","component","cushion","ltIE9","visible","onLoad","onViewport"])),a=c({},l,{ref:this.getRef})
-return i&&this.state.loadedAt?s.default.createElement(n,a,t):s.default.createElement(n,(0,b.propsWithNoScriptRender)(t,o,a))}}]),t}(s.default.PureComponent)
-v.defaultProps={component:"div",cushion:0,ltIE9:!1,visible:!0},v.propTypes={children:h.default.node,component:h.default.oneOfType([h.default.string,h.default.object,h.default.func]),cushion:h.default.number,ltIE9:h.default.bool,onLoad:h.default.func,onViewport:h.default.func,visible:h.default.bool},t.default=v},function(e,t,n){"use strict"
+n&&n(),this.setState({loadedAt:Date.now()},t)}},{key:"render",value:function(){var e=this.props,t=e.children,n=e.component,o=(e.cushion,e.jsOnly),i=e.ltIE9,l=e.visible,a=(e.onLoad,e.onViewport,r(e,["children","component","cushion","jsOnly","ltIE9","visible","onLoad","onViewport"])),u=c({},a,{ref:this.getRef})
+return o||l&&this.state.loadedAt?s.default.createElement(n,u,l&&this.state.loadedAt?t:null):s.default.createElement(n,(0,b.propsWithNoScriptRender)(t,i,u))}}]),t}(s.default.PureComponent)
+v.defaultProps={component:"div",cushion:0,ltIE9:!1,visible:!0},v.propTypes={children:h.default.node,component:h.default.oneOfType([h.default.string,h.default.object,h.default.func]),cushion:h.default.number,jsOnly:h.default.bool,ltIE9:h.default.bool,onLoad:h.default.func,onViewport:h.default.func,visible:h.default.bool},t.default=v},function(e,t,n){"use strict"
 function o(e,t){var n=e.bottom+t,o=e.left-t,r=e.right+t,i=e.top-t
 return{bottom:n,left:o,right:r,top:i,height:n-i,width:r-o}}function r(e,t){return!(!(e=e&&!e.nodeType?e[0]:e)||1!==e.nodeType)&&o(e.getBoundingClientRect(),t)}function i(){return{height:Math.max(document.documentElement.clientHeight,window.innerHeight),width:Math.max(document.documentElement.clientWidth,window.innerWidth)}}function l(e,t){var n=e.cushion,o=e.element
 if(null===o.offsetParent)return!1
@@ -64,8 +64,8 @@ if(!e.visible)return!1
 var i=(0,y.countTypesTags)(n,t)||null
 this.loadedImgTags=0,r&&r()
 var l=Date.now()
-this.setState({imgTagCount:i,loadedAt:i?null:l,viewportAt:l},i?null:o)}},{key:"render",value:function(){var e=this.props,t=e.children,n=e.childrenToWrap,o=e.childWrapper,i=e.component,l=(e.cushion,e.ltIE9),a=(e.onLoad,e.onViewport,e.visible),u=r(e,["children","childrenToWrap","childWrapper","component","cushion","ltIE9","onLoad","onViewport","visible"]),p=c({},u,{ref:this.getRef})
-return s.default.createElement(i,p,a&&this.state.viewportAt?(0,y.wrapTypesToLazyChild)(n,t,o,this.onImgLoaded):(0,y.wrapTypesToNoScript)(n,t,l,o))}}]),t}(w.default)
+this.setState({imgTagCount:i,loadedAt:i?null:l,viewportAt:l},i?null:o)}},{key:"render",value:function(){var e=this.props,t=e.children,n=e.childrenToWrap,o=e.childWrapper,i=e.component,l=(e.cushion,e.jsOnly),a=e.ltIE9,u=(e.onLoad,e.onViewport,e.visible),p=r(e,["children","childrenToWrap","childWrapper","component","cushion","jsOnly","ltIE9","onLoad","onViewport","visible"]),f=c({},p,{ref:this.getRef})
+return s.default.createElement(i,f,l||u&&this.state.viewportAt?(0,y.wrapTypesToLazyChild)(n,t,o,this.onImgLoaded):(0,y.wrapTypesToNoScript)(n,t,a,o))}}]),t}(w.default)
 O.defaultProps=c({},w.default.defaultProps,{childrenToWrap:["iframe","img"],childWrapper:v.default}),O.propTypes=c({},w.default.propTypes,{childrenToWrap:h.default.arrayOf(w.default.propTypes.component),childWrapper:h.default.oneOfType([h.default.object,h.default.func])}),t.default=O},function(e,t,n){"use strict"
 function o(e){return e&&e.__esModule?e:{default:e}}function r(e,t){var n=arguments.length>2&&void 0!==arguments[2]?arguments[2]:0
 return t?(c.default.Children.forEach(t,function(t){if(t&&t.type!==s.default&&t.type!==b.default&&t.type!==h.default)if(e.includes(t.type))n++

@@ -53,12 +53,12 @@ class Lazy extends React.PureComponent {
     }
 
     render() {
-        const { children, component, cushion, ltIE9, visible, onLoad, onViewport, ...rest } = this.props
+        const { children, component, cushion, jsOnly, ltIE9, visible, onLoad, onViewport, ...rest } = this.props
 
         const props = { ...rest, ref: this.getRef }
 
-        if (visible && this.state.loadedAt) {
-            return React.createElement(component, props, children)
+        if (jsOnly || (visible && this.state.loadedAt)) {
+            return React.createElement(component, props, visible && this.state.loadedAt ? children : null)
         }
 
         // wrap all contents inside noscript
@@ -81,6 +81,7 @@ Lazy.propTypes = {
         PropTypes.func,
     ]),
     cushion: PropTypes.number,
+    jsOnly: PropTypes.bool,
     ltIE9: PropTypes.bool,
     onLoad: PropTypes.func,
     onViewport: PropTypes.func,

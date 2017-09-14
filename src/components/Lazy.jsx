@@ -1,5 +1,4 @@
 import React from 'react'
-import { findDOMNode } from 'react-dom'
 import PropTypes from 'prop-types'
 
 import { addElement, removeElement } from '../lib/viewport'
@@ -11,6 +10,7 @@ class Lazy extends React.PureComponent {
 
         this.state = { loadedAt: null }
 
+        this.getRef = this.getRef.bind(this)
         this.onViewport = this.onViewport.bind(this)
     }
 
@@ -18,7 +18,7 @@ class Lazy extends React.PureComponent {
         this.options = {
             callback: this.onViewport,
             cushion: this.props.cushion,
-            element: findDOMNode(this),
+            element: this.el,
         }
         addElement(this.options)
     }
@@ -32,6 +32,10 @@ class Lazy extends React.PureComponent {
     componentWillUnmount() {
         removeElement(this.options)
         delete this.options
+    }
+
+    getRef(el) {
+        this.el = el
     }
 
     onViewport() {
@@ -49,7 +53,9 @@ class Lazy extends React.PureComponent {
     }
 
     render() {
-        const { children, component, cushion, ltIE9, visible, onLoad, onViewport, ...props } = this.props
+        const { children, component, cushion, ltIE9, visible, onLoad, onViewport, ...rest } = this.props
+
+        const props = { ...rest, ref: this.getRef }
 
         if (visible && this.state.loadedAt) {
             return React.createElement(component, props, children)

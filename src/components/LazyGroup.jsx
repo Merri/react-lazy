@@ -56,8 +56,10 @@ class LazyGroup extends Lazy {
             onLoad,
             onViewport,
             visible,
-            ...props
+            ...rest
         } = this.props
+
+        const props = { ...rest, ref: this.getRef }
 
         return React.createElement(
             component,

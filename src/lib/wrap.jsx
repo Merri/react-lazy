@@ -35,8 +35,8 @@ export function propsWithNoScriptRender(children, ltIE9, props = {}) {
         props.dangerouslySetInnerHTML = {
             __html: (
                 renderToStaticMarkup(React.createElement('noscript', null, children))
-                .replace('<noscript>', '<!--[if IE 9]><!--><noscript><!--<![endif]-->')
-                .replace('</noscript>', '<!--[if IE 9]><!--></noscript><!--<![endif]-->')
+                    .replace('<noscript>', '<!--[if IE 9]><!--><noscript><!--<![endif]-->')
+                    .replace('</noscript>', '<!--[if IE 9]><!--></noscript><!--<![endif]-->')
             )
         }
     }
@@ -54,7 +54,7 @@ export function wrapTypesToLazyChild(types, children, wrapper, callback) {
             return child
         } else if (types.includes(child.type)) {
             return (
-                <LazyChild callback={callback} children={child} wrapper={wrapper} />
+                <LazyChild callback={callback} wrapper={wrapper}>{child}</LazyChild>
             )
         } else {
             const props = child.props || (child._store && child._store.props) || {}

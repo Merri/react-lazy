@@ -11,6 +11,16 @@ Lazy load your content such as images without breaking the internet:
 
 [View demo](https://merri.github.io/react-lazy/)
 
+```js
+npm install react-lazy --save
+
+import { Lazy } from 'react-lazy'
+// or
+import { LazyGroup } from 'react-lazy'
+```
+
+----
+
 
 ### Why lazy load content such as images?
 

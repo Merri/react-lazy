@@ -69,6 +69,7 @@ class Lazy extends React.PureComponent {
 Lazy.defaultProps = {
     component: 'div',
     cushion: 0,
+    jsOnly: false,
     ltIE9: false,
     visible: true,
 }

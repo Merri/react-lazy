@@ -1,8 +1,5 @@
 # Thank you : https://github.com/github/gitignore/blob/master/Node.gitignore
 
-# source
-src
-
 # Storybook
 stories
 storybook-static

@@ -4,13 +4,15 @@
   "description": "Universal lazy loader component: SEO, no-JS and legacy browser friendly",
   "main": "dist/module/index.js",
   "scripts": {
-    "pretest": "npm run lint",
     "build": "npm run clean-dist && npm run build-modules && npm run build-umd",
     "build-modules": "cross-env BABEL_ENV=build babel src --out-dir dist/module ",
     "build-umd": "webpack --config webpack.config.js",
     "clean-dist": "rimraf dist",
     "lint": "eslint --ext .js,.jsx .",
-    "prepublish": "npm prune && npm run build && npm test",
+    "precommit": "npm run test",
+    "prepare": "npm run build",
+    "prepublish": "npm run build && npm test",
+    "pretest": "npm run lint",
     "test": "mocha --compilers js:babel-core/register --reporter spec"
   },
   "repository": {

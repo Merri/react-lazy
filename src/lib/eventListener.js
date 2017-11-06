@@ -1,7 +1,16 @@
 const options = ['capture', 'once', 'passive']
-const supports = {}
+const AEL = 'addEventListener'
+const REL = 'removeEventListener'
+const supports = {
+    dom: !!(
+        typeof window === 'object'
+        && window[AEL]
+        && window[REL]
+        && Object.defineProperty
+    )
+}
 
-if (typeof window === 'object' && window.addEventListener && window.removeEventListener && Object.defineProperty) {
+if (supports.dom) {
     const check = {}
 
     options.forEach(function(option) {
@@ -11,32 +20,30 @@ if (typeof window === 'object' && window.addEventListener && window.removeEventL
         })
     })
 
-    window.addEventListener('null', null, check)
-    window.removeEventListener('null', null, check)
-
-    supports.browser = true
+    window[AEL]('null', null, check)
+    window[REL]('null', null, check)
 }
 
-export function bindMultipleListeners(target, events, listener, options) {
-    if (!supports.browser) {
+export function bindEventsToListener(target, events, listener, options) {
+    if (!supports.dom || !target || !target[AEL] || !Array.isArray(events) || typeof listener !== 'function') {
         return false
     }
 
     const opts = getEventListenerOptions(options)
 
     events.forEach(function(event) {
-        target.addEventListener(event, listener, opts)
+        target[AEL](event, listener, opts)
     })
 
-    return function unbindMultipleListeners() {
+    return function unbindEventsOfListener() {
         events.forEach(function(event) {
-            target.removeEventListener(event, listener, opts)
+            target[REL](event, listener, opts)
         })
     }
 }
 
 export function getEventListenerOptions(options) {
-    if (supports.optionsObject) {
+    if (supports.optionsObject && Object.keys(options).every(isEventListenerOptionSupported)) {
         return options
     }
 

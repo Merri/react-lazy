@@ -1,4 +1,4 @@
-import { bindMultipleListeners } from './eventListener'
+import { bindEventsToListener } from './eventListener'
 
 const elements = []
 let removeListeners = false
@@ -87,7 +87,7 @@ export function addElement(options) {
     }
 
     if (!removeListeners && elements.length === 0) {
-        removeListeners = bindMultipleListeners(
+        removeListeners = bindEventsToListener(
             window,
             ['resize', 'scroll', 'touchend', 'wheel'],
             checkElementsInViewport,

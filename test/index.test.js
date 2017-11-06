@@ -80,7 +80,7 @@ describe('Lazy', sharedTest(Lazy, function otherLazyTests() {
     })
 }))
 
-var wrapper = '<div class="react-lazy-wrapper react-lazy-wrapper--placeholder"><noscript><img src=""/></noscript></div>'
+var wrapper = '<div class="react-lazy-wrapper react-lazy-wrapper--placeholder"><noscript><img src=""></noscript></div>'
 
 describe('LazyGroup', sharedTest(LazyGroup, function otherLazyGroupTests() {
     it('should be empty when no children is given', function() {
@@ -171,7 +171,7 @@ describe('LazyChild', function lazyChildTests() {
         )
 
         expect(findDOMNode(rendered).outerHTML).to.equal(
-            '<div data-reactroot="" class="react-lazy-wrapper react-lazy-wrapper--loading"><img src=""></div>'
+            '<div class="react-lazy-wrapper react-lazy-wrapper--loading"><img src=""></div>'
         )
     })
 })

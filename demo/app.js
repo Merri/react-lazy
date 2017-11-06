@@ -1,11 +1,11 @@
-/* global React, ReactDOM, ReactLazy */
+/* global createReactClass, React, ReactDOM, ReactLazy */
 (function() {
     var Lazy = React.createFactory(ReactLazy.Lazy)
     var LazyGroup = React.createFactory(ReactLazy.LazyGroup)
 
     var TRANSPARENT_GIF = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
 
-    var ImageLink = React.createFactory(React.createClass({
+    var ImageLink = React.createFactory(createReactClass({
         displayName: 'ImageLink',
 
         getInitialState: function() {
@@ -74,7 +74,7 @@
         }
     }
 
-    var ThreeImageContainer = React.createFactory(React.createClass({
+    var ThreeImageContainer = React.createFactory(createReactClass({
         displayName: 'ThreeImageContainer',
 
         getInitialState: function() {
@@ -117,7 +117,7 @@
         }
     }))
 
-    var Demo = React.createClass({
+    var Demo = createReactClass({
         displayName: 'Demo',
 
         render: function() {

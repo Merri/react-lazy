@@ -26,11 +26,7 @@ export function countTypesTags(types, children, count = 0) {
 
 export function propsWithNoScriptRender(children, ltIE9, props = {}) {
     if (!ltIE9) {
-        props.dangerouslySetInnerHTML = {
-            __html: (
-                renderToStaticMarkup(React.createElement('noscript', null, children))
-            )
-        }
+        props.children = <noscript>{children}</noscript>
     } else {
         props.dangerouslySetInnerHTML = {
             __html: (

@@ -1,3 +1,8 @@
+## v0.5.0 - 2017-11-07
+- Update to React 16
+- Add `jsOnly` option as a solution for less [React 16.0.0 errors](https://github.com/facebook/react/issues/10993)
+
+
 ## v0.4.1 - 2017-09-14
 - Update dependencies
 - Fix linting issues

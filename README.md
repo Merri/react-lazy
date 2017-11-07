@@ -2,6 +2,8 @@
 [![Version](http://img.shields.io/npm/v/react-lazy.svg)](https://www.npmjs.org/package/react-lazy)
 [![Build Status](https://travis-ci.org/Merri/react-lazy.svg)](https://travis-ci.org/Merri/react-lazy)
 
+NOTE: [React 16.0.0 has a bug with `<noscript />` hydrate](https://github.com/facebook/react/issues/10993)
+
 Lazy load your content such as images without breaking the internet:
 
 1. Supports all search engines and no-JS (disabled JavaScript) by using `noscript` element.

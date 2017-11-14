@@ -70,8 +70,8 @@ O.defaultProps=c({},w.default.defaultProps,{childrenToWrap:["iframe","img"],chil
 function o(e){return e&&e.__esModule?e:{default:e}}function r(e,t){var n=arguments.length>2&&void 0!==arguments[2]?arguments[2]:0
 return t?(c.default.Children.forEach(t,function(t){if(t&&t.type!==s.default&&t.type!==b.default&&t.type!==h.default)if(e.includes(t.type))n++
 else{var o=t.props||t._store&&t._store.props||{}
-n+=r(e,o.children)}}),n):n}function i(e,t){var n=arguments.length>2&&void 0!==arguments[2]?arguments[2]:{}
-return t?n.dangerouslySetInnerHTML={__html:(0,f.renderToStaticMarkup)(c.default.createElement("noscript",null,e)).replace("<noscript>","\x3c!--[if IE 9]>\x3c!--\x3e<noscript>\x3c!--<![endif]--\x3e").replace("</noscript>","\x3c!--[if IE 9]>\x3c!--\x3e</noscript>\x3c!--<![endif]--\x3e")}:n.children=c.default.createElement("noscript",null,e),n}function l(e,t,n,o){return t?c.default.Children.map(t,function(t){if(t&&t.type!==s.default&&t.type!==b.default&&t.type!==h.default){if(e.includes(t.type))return c.default.createElement(h.default,{callback:o,wrapper:n},t)
+n+=r(e,o.children)}}),n):n}function i(e,t){var n=arguments.length>2&&void 0!==arguments[2]?arguments[2]:{},o=(0,f.renderToStaticMarkup)(c.default.createElement("noscript",null,e)),r=t?o.replace("<noscript>","\x3c!--[if IE 9]>\x3c!--\x3e<noscript>\x3c!--<![endif]--\x3e").replace("</noscript>","\x3c!--[if IE 9]>\x3c!--\x3e</noscript>\x3c!--<![endif]--\x3e"):o
+return n.dangerouslySetInnerHTML={__html:r},n}function l(e,t,n,o){return t?c.default.Children.map(t,function(t){if(t&&t.type!==s.default&&t.type!==b.default&&t.type!==h.default){if(e.includes(t.type))return c.default.createElement(h.default,{callback:o,wrapper:n},t)
 var r=t.props||t._store&&t._store.props||{},i=l(e,r.children,n,o)
 return i!==r.children?c.default.cloneElement(t,null,i):t}return t}):t}function a(e,t,n,o){return t?c.default.Children.map(t,function(t){if(t&&t.type!==s.default&&t.type!==b.default&&t.type!==h.default){if(e.includes(t.type))return c.default.createElement(o,i(t,n))
 var r=t.props||t._store&&t._store.props||{},l=a(e,r.children,n,o)

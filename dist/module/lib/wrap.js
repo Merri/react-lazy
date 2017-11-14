@@ -52,17 +52,11 @@ function countTypesTags(types, children) {
 function propsWithNoScriptRender(children, ltIE9) {
     var props = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
-    if (!ltIE9) {
-        props.children = _react2.default.createElement(
-            'noscript',
-            null,
-            children
-        );
-    } else {
-        props.dangerouslySetInnerHTML = {
-            __html: (0, _server.renderToStaticMarkup)(_react2.default.createElement('noscript', null, children)).replace('<noscript>', '<!--[if IE 9]><!--><noscript><!--<![endif]-->').replace('</noscript>', '<!--[if IE 9]><!--></noscript><!--<![endif]-->')
-        };
-    }
+    var noscript = (0, _server.renderToStaticMarkup)(_react2.default.createElement('noscript', null, children));
+
+    var __html = !ltIE9 ? noscript : noscript.replace('<noscript>', '<!--[if IE 9]><!--><noscript><!--<![endif]-->').replace('</noscript>', '<!--[if IE 9]><!--></noscript><!--<![endif]-->');
+
+    props.dangerouslySetInnerHTML = { __html: __html };
 
     return props;
 }

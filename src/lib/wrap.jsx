@@ -25,17 +25,13 @@ export function countTypesTags(types, children, count = 0) {
 }
 
 export function propsWithNoScriptRender(children, ltIE9, props = {}) {
-    if (!ltIE9) {
-        props.children = <noscript>{children}</noscript>
-    } else {
-        props.dangerouslySetInnerHTML = {
-            __html: (
-                renderToStaticMarkup(React.createElement('noscript', null, children))
-                    .replace('<noscript>', '<!--[if IE 9]><!--><noscript><!--<![endif]-->')
-                    .replace('</noscript>', '<!--[if IE 9]><!--></noscript><!--<![endif]-->')
-            )
-        }
-    }
+    const noscript = renderToStaticMarkup(React.createElement('noscript', null, children))
+
+    const __html = !ltIE9 ? noscript : noscript
+        .replace('<noscript>', '<!--[if IE 9]><!--><noscript><!--<![endif]-->')
+        .replace('</noscript>', '<!--[if IE 9]><!--></noscript><!--<![endif]-->')
+
+    props.dangerouslySetInnerHTML = { __html }
 
     return props
 }

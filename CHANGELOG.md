@@ -1,3 +1,9 @@
+## v0.5.1 - 2017-11-14
+- Update to React 16.1.1
+- Update to Node 8 LTS; run Travis in it and include a `package-lock.json`
+- Fix render mismatch in certain cases
+
+
 ## v0.5.0 - 2017-11-07
 - Update to React 16
 - Add `jsOnly` option as a solution for less [React 16.0.0 errors](https://github.com/facebook/react/issues/10993)

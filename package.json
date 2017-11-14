@@ -11,7 +11,6 @@
     "lint": "eslint --ext .js,.jsx .",
     "precommit": "npm run test",
     "prepare": "npm run build",
-    "prepublish": "npm run build && npm test",
     "pretest": "npm run lint",
     "test": "mocha --compilers js:babel-core/register --reporter spec"
   },

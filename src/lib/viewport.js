@@ -46,6 +46,36 @@ function inViewport({ cushion, element }, viewport) {
     return !!rect && rect.bottom >= 0 && rect.right >= 0 && rect.top < viewport.height && rect.left < viewport.width
 }
 
+function throttle(func, wait) {
+    var context, args, result
+    var timeout = null
+    var previous = 0
+    var later = function() {
+        previous = Date.now()
+        timeout = null
+        result = func.apply(context, args)
+        if (!timeout) context = args = null
+    }
+    return function() {
+        var now = Date.now()
+        var remaining = wait - (now - previous)
+        context = this
+        args = arguments
+        if (remaining <= 0 || remaining > wait) {
+            if (timeout) {
+                clearTimeout(timeout)
+                timeout = null
+            }
+            previous = now
+            result = func.apply(context, args)
+            if (!timeout) context = args = null
+        } else if (!timeout) {
+            timeout = setTimeout(later, remaining)
+        }
+        return result
+    }
+}
+
 function debounce(func, wait) {
     var timeout
 
@@ -62,7 +92,7 @@ function debounce(func, wait) {
     }
 }
 
-export const checkElementsInViewport = debounce(function checkElementsInViewport() {
+function checkElements(checkThrottled) {
     if (elements.length === 0) {
         return
     }
@@ -70,6 +100,10 @@ export const checkElementsInViewport = debounce(function checkElementsInViewport
     const size = getViewportSize()
 
     for (let i = elements.length - 1; i >= 0; i--) {
+        if ((checkThrottled && elements[i].throttle !== true) ||
+          (!checkThrottled && elements[i].throttle === true)) {
+            continue
+        }
         if (inViewport(elements[i], size)) {
             // callback may return false to prevent lazy loading items in viewport
             if (elements[i].callback() !== false) {
@@ -78,7 +112,15 @@ export const checkElementsInViewport = debounce(function checkElementsInViewport
         }
     }
     checkUnbind()
-}, 50)
+}
+
+const debouncedCheckElements = debounce(function(){ checkElements(false) }, 50)
+const throttledCheckElements = throttle(function(){ checkElements(true) }, 50)
+
+export function checkElementsInViewport() {
+    debouncedCheckElements()
+    throttledCheckElements()
+}
 
 export function addElement(options) {
     // callback may return false to prevent lazy loading items in viewport

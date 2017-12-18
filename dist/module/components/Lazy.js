@@ -51,7 +51,8 @@ var Lazy = function (_React$PureComponent) {
             this.options = {
                 callback: this.onViewport,
                 cushion: this.props.cushion,
-                element: this.el
+                element: this.el,
+                throttle: this.props.throttle
             };
             (0, _viewport.addElement)(this.options);
         }
@@ -104,7 +105,8 @@ var Lazy = function (_React$PureComponent) {
                 visible = _props2.visible,
                 onLoad = _props2.onLoad,
                 onViewport = _props2.onViewport,
-                rest = _objectWithoutProperties(_props2, ['children', 'component', 'cushion', 'jsOnly', 'ltIE9', 'visible', 'onLoad', 'onViewport']);
+                throttle = _props2.throttle,
+                rest = _objectWithoutProperties(_props2, ['children', 'component', 'cushion', 'jsOnly', 'ltIE9', 'visible', 'onLoad', 'onViewport', 'throttle']);
 
             var props = _extends({}, rest, { ref: this.getRef });
 
@@ -125,7 +127,8 @@ Lazy.defaultProps = {
     cushion: 0,
     jsOnly: false,
     ltIE9: false,
-    visible: true
+    visible: true,
+    throttle: false
 };
 
 Lazy.propTypes = {
@@ -136,7 +139,8 @@ Lazy.propTypes = {
     ltIE9: _propTypes2.default.bool,
     onLoad: _propTypes2.default.func,
     onViewport: _propTypes2.default.func,
-    visible: _propTypes2.default.bool
+    visible: _propTypes2.default.bool,
+    throttle: _propTypes2.default.bool
 };
 
 exports.default = Lazy;

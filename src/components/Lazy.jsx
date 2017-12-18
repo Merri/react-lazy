@@ -19,6 +19,7 @@ class Lazy extends React.PureComponent {
             callback: this.onViewport,
             cushion: this.props.cushion,
             element: this.el,
+            throttle: this.props.throttle,
         }
         addElement(this.options)
     }
@@ -53,7 +54,7 @@ class Lazy extends React.PureComponent {
     }
 
     render() {
-        const { children, component, cushion, jsOnly, ltIE9, visible, onLoad, onViewport, ...rest } = this.props
+        const { children, component, cushion, jsOnly, ltIE9, visible, onLoad, onViewport, throttle, ...rest } = this.props
 
         const props = { ...rest, ref: this.getRef }
 
@@ -72,6 +73,7 @@ Lazy.defaultProps = {
     jsOnly: false,
     ltIE9: false,
     visible: true,
+    throttle: false,
 }
 
 Lazy.propTypes = {
@@ -87,6 +89,7 @@ Lazy.propTypes = {
     onLoad: PropTypes.func,
     onViewport: PropTypes.func,
     visible: PropTypes.bool,
+    throttle: PropTypes.bool,
 }
 
 export default Lazy

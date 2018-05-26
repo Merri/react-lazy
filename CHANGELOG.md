@@ -1,3 +1,6 @@
+## v0.6.1 - 2018-05-26
+- Fix dependency issue with `uglifyjs-webpack-plugin`
+
 ## v0.6.0 - 2018-05-26
 - Update to React 16.4
 - Use throttle instead of debounce

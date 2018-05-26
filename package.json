@@ -1,6 +1,6 @@
 {
   "name": "react-lazy",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Universal lazy loader component: search engine and no-JS friendly",
   "main": "dist/module/index.js",
   "scripts": {
@@ -38,7 +38,7 @@
     "react": ">=15"
   },
   "devDependencies": {
-    "ajv": "^5.5.2",
+    "ajv": "^6.5.0",
     "babel-cli": "^6.24.1",
     "babel-core": "^6.26.3",
     "babel-eslint": "^8.2.3",
@@ -58,10 +58,9 @@
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
     "rimraf": "^2.6.2",
+    "uglifyjs-webpack-plugin": "^1.2.5",
     "webpack": "^4.9.1",
     "webpack-cli": "^2.1.4"
   },
-  "dependencies": {
-    "uglifyjs-webpack-plugin": "^1.2.5"
-  }
+  "dependencies": {}
 }

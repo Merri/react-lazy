@@ -38,7 +38,7 @@
     "react": ">=15"
   },
   "devDependencies": {
-    "ajv": "^5.3.0",
+    "ajv": "^5.5.2",
     "babel-cli": "^6.24.1",
     "babel-core": "^6.25.0",
     "babel-eslint": "^7.2.3",

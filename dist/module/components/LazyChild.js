@@ -51,13 +51,13 @@ var LazyChild = function (_React$PureComponent) {
     }
 
     _createClass(LazyChild, [{
-        key: 'componentWillReceiveProps',
-        value: function componentWillReceiveProps(nextProps) {
-            if (nextProps.children === this.props.children) {
+        key: 'componentDidUpdate',
+        value: function componentDidUpdate(prevProps) {
+            if (prevProps.children === this.props.children) {
                 return;
             }
 
-            var _ref2 = nextProps.children && (nextProps.children.props || nextProps.children._store && nextProps.children._store.props) || {},
+            var _ref2 = this.props.children && (this.props.children.props || this.props.children._store && this.props.children._store.props) || {},
                 onError = _ref2.onError,
                 onLoad = _ref2.onLoad,
                 childProps = _objectWithoutProperties(_ref2, ['onError', 'onLoad']);

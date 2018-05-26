@@ -58,23 +58,31 @@ function inViewport(_ref, viewport) {
     return !!rect && rect.bottom >= 0 && rect.right >= 0 && rect.top < viewport.height && rect.left < viewport.width;
 }
 
-function debounce(func, wait) {
-    var timeout;
+function throttle(func, limit) {
+    var timeout = void 0;
+    var time = void 0;
 
     return function () {
-        var call = !timeout;
-        clearTimeout(timeout);
-        timeout = setTimeout(function (args) {
-            timeout = null;
-            func.apply(this, args);
-        }.bind(this, arguments), wait);
-        if (call) {
-            func.apply(this, arguments);
+        var context = this;
+        var args = arguments;
+
+        if (!time) {
+            func.apply(context, args);
+            time = Date.now();
+        } else {
+            clearTimeout(timeout);
+
+            timeout = setTimeout(function () {
+                if (Date.now() - time >= limit) {
+                    func.apply(context, args);
+                    time = Date.now();
+                }
+            }, limit - (Date.now() - time));
         }
     };
 }
 
-var checkElementsInViewport = exports.checkElementsInViewport = debounce(function checkElementsInViewport() {
+var checkElementsInViewport = exports.checkElementsInViewport = throttle(function checkElementsInViewport() {
     if (elements.length === 0) {
         return;
     }

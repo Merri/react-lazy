@@ -56,10 +56,10 @@ var Lazy = function (_React$PureComponent) {
             (0, _viewport.addElement)(this.options);
         }
     }, {
-        key: 'componentWillReceiveProps',
-        value: function componentWillReceiveProps(nextProps) {
-            if (nextProps.cushion !== this.props.cushion) {
-                this.options.cushion = nextProps.cushion;
+        key: 'componentDidUpdate',
+        value: function componentDidUpdate(prevProps) {
+            if (prevProps.cushion !== this.props.cushion) {
+                this.options.cushion = this.props.cushion;
             }
         }
     }, {

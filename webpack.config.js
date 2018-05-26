@@ -1,3 +1,4 @@
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 const webpack = require('webpack')
 
 module.exports = {
@@ -11,39 +12,47 @@ module.exports = {
         libraryTarget: 'umd'
     },
     module: {
-        loaders: [
-            { test: /\.(js|jsx)?$/,
-                loader: 'babel-loader',
+        rules: [
+            {
+                test: /\.(js|jsx)?$/,
+                use: {
+                    loader: 'babel-loader'
+                },
                 exclude: [
                     '/demo/',
                     '/dist/',
                     '/node_modules/',
                     '/style/',
-                    '/test/',
-                ],
-                query: {
-                    presets: [['es2015', { loose: true, modules: false }], 'stage-0', 'react']
-                }
+                    '/test/'
+                ]
             }
         ]
     },
     plugins: [
-        new webpack.optimize.OccurrenceOrderPlugin(),
-        new webpack.optimize.UglifyJsPlugin({
-            beautify: false,
-            comments: /^$/,
-            compress: {
-                warnings: false
-            },
-            mangle: true,
-            output: {
-                comments: false,
-                semicolons: false
-            },
-            sourceMap: true
-        }),
-        new webpack.optimize.ModuleConcatenationPlugin(),
+        new webpack.optimize.OccurrenceOrderPlugin()
     ],
+    optimization: {
+        concatenateModules: true,
+        minimizer: [
+            new UglifyJSPlugin({
+                cache: true,
+                parallel: true,
+                sourceMap: true,
+                uglifyOptions: {
+                    beautify: false,
+                    comments: /^$/,
+                    compress: {
+                        warnings: false
+                    },
+                    mangle: true,
+                    output: {
+                        comments: false,
+                        semicolons: false
+                    }
+                }
+            })
+        ]
+    },
     externals: [
         {
             react: {

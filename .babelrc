@@ -1,15 +1,30 @@
 {
     "env": {
         "development": {
-            "presets": ["es2015", "stage-0", "react"]
+            "presets": [
+                ["env", {
+                    "targets": {
+                        "browsers": ["last 2 versions", "safari >= 7", "ie >= 11"]
+                    }
+                }],
+                "react"
+            ],
+            "plugins": ["transform-export-extensions", "transform-object-rest-spread"]
         },
         "build": {
-            "presets": ["es2015", "stage-0", "react"],
+            "presets": [
+                ["env", {
+                    "targets": {
+                        "browsers": ["last 2 versions", "safari >= 7", "ie >= 11"]
+                    }
+                }],
+                "react"
+            ],
+            "plugins": ["transform-export-extensions", "transform-object-rest-spread"],
             "ignore": [
                 "**/__tests__/*.js",
                 "**/fake-*"
             ]
         }
-
     }
 }

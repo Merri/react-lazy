@@ -1,3 +1,8 @@
+## v0.6.0 - 2018-05-26
+- Update to React 16.4
+- Use throttle instead of debounce
+- Update to Webpack 4 and other latest packages (except for the tests because I am lazy)
+
 ## v0.5.1 - 2017-11-14
 - Update to React 16.1.1
 - Update to Node 8 LTS; run Travis in it and include a `package-lock.json`

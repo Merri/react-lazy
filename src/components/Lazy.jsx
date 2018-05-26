@@ -23,9 +23,9 @@ class Lazy extends React.PureComponent {
         addElement(this.options)
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.cushion !== this.props.cushion) {
-            this.options.cushion = nextProps.cushion
+    componentDidUpdate(prevProps) {
+        if (prevProps.cushion !== this.props.cushion) {
+            this.options.cushion = this.props.cushion
         }
     }
 

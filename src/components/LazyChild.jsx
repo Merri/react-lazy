@@ -19,13 +19,13 @@ class LazyChild extends React.PureComponent {
         this.onLoad = this.onLoad.bind(this)
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.children === this.props.children) {
+    componentDidUpdate(prevProps) {
+        if (prevProps.children === this.props.children) {
             return
         }
 
-        const { onError, onLoad, ...childProps } = nextProps.children && (
-            nextProps.children.props || (nextProps.children._store && (nextProps.children._store.props))
+        const { onError, onLoad, ...childProps } = this.props.children && (
+            this.props.children.props || (this.props.children._store && (this.props.children._store.props))
         ) || {}
 
         this.childOnError = onError

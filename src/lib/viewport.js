@@ -46,23 +46,34 @@ function inViewport({ cushion, element }, viewport) {
     return !!rect && rect.bottom >= 0 && rect.right >= 0 && rect.top < viewport.height && rect.left < viewport.width
 }
 
-function debounce(func, wait) {
-    var timeout
+function throttle(func, limit) {
+    let timeout
+    let time
 
     return function() {
-        var call = !timeout
-        clearTimeout(timeout)
-        timeout = setTimeout(function(args) {
-            timeout = null
-            func.apply(this, args)
-        }.bind(this, arguments), wait)
-        if (call) {
-            func.apply(this, arguments)
+        const context = this
+        const args = arguments
+
+        if (!time) {
+            func.apply(context, args)
+            time = Date.now()
+        } else {
+            clearTimeout(timeout)
+
+            timeout = setTimeout(
+                function() {
+                    if ((Date.now() - time) >= limit) {
+                        func.apply(context, args)
+                        time = Date.now()
+                    }
+                },
+                limit - (Date.now() - time)
+            )
         }
     }
 }
 
-export const checkElementsInViewport = debounce(function checkElementsInViewport() {
+export const checkElementsInViewport = throttle(function checkElementsInViewport() {
     if (elements.length === 0) {
         return
     }

@@ -2,14 +2,11 @@
 [![Version](http://img.shields.io/npm/v/react-lazy.svg)](https://www.npmjs.org/package/react-lazy)
 [![Build Status](https://travis-ci.org/Merri/react-lazy.svg)](https://travis-ci.org/Merri/react-lazy)
 
-NOTE: [React 16.0.0 has a bug with `<noscript />` hydrate](https://github.com/facebook/react/issues/10993)
+Lazy load your content such as images without breaking the internet!
 
-Lazy load your content such as images without breaking the internet:
+Supports universal rendering including disabled JavaScript by using `noscript` elements that are also friendly to all search engines. Uses modern ... (phone call interruption)
 
-1. Supports all search engines and no-JS (disabled JavaScript) by using `noscript` element.
-2. Supports universal rendering (isomorphic JS) so works both client and server side.
-3. Supports both vertical and horizontal scrolling.
-4. Optional: supports rendering images on IE8 and earlier by adding conditional comments to skip `noscript` elements.
+Also optionally supports rendering content on IE8 and earlier by adding conditional comments to skip `noscript` elements: this case expects your JavaScript does not execute in the browser.
 
 [View demo](https://merri.github.io/react-lazy/)
 

@@ -1,75 +1,74 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { addElement, removeElement } from '../lib/viewport'
+import Observer from './Observer'
+
 import { propsWithNoScriptRender } from '../lib/wrap'
 
 class Lazy extends React.PureComponent {
     constructor(props) {
         super(props)
 
-        this.state = { loadedAt: null }
+        this.state = { show: false }
 
-        this.getRef = this.getRef.bind(this)
         this.onViewport = this.onViewport.bind(this)
     }
 
-    componentDidMount() {
-        this.options = {
-            callback: this.onViewport,
-            cushion: this.props.cushion,
-            element: this.el,
-        }
-        addElement(this.options)
-    }
-
-    componentDidUpdate(prevProps) {
-        if (prevProps.cushion !== this.props.cushion) {
-            this.options.cushion = this.props.cushion
-        }
-    }
-
-    componentWillUnmount() {
-        removeElement(this.options)
-        delete this.options
-    }
-
-    getRef(el) {
-        this.el = el
-    }
-
-    onViewport() {
+    onViewport(event, unobserve) {
         const { onLoad, onViewport, visible } = this.props
 
         if (!visible) {
-            return false
+            return
         }
+
+        if (!event.isIntersecting || event.defaultPrevented) {
+            return
+        }
+
+        unobserve()
 
         if (onViewport) {
-            onViewport()
+            onViewport(event)
         }
 
-        this.setState({ loadedAt: Date.now() }, onLoad)
+        this.setState({ show: true }, onLoad)
     }
 
     render() {
-        const { children, component, cushion, jsOnly, ltIE9, visible, onLoad, onViewport, ...rest } = this.props
+        const {
+            children,
+            clientOnly,
+            component,
+            cushion,
+            ltIE9,
+            visible,
+            onLoad,
+            onViewport,
+            threshold,
+            viewport,
+            ...props
+        } = this.props
 
-        const props = { ...rest, ref: this.getRef }
-
-        if (jsOnly || (visible && this.state.loadedAt)) {
-            return React.createElement(component, props, visible && this.state.loadedAt ? children : null)
+        if (clientOnly || (visible && this.state.show)) {
+            return (
+                <Observer cushion={cushion} onChange={this.onViewport} threshold={threshold} viewport={viewport}>
+                    {React.createElement(component, props, visible && this.state.show ? children : null)}
+                </Observer>
+            )
         }
 
         // wrap all contents inside noscript
-        return React.createElement(component, propsWithNoScriptRender(children, ltIE9, props))
+        return (
+            <Observer cushion={cushion} onChange={this.onViewport}>
+                {React.createElement(component, propsWithNoScriptRender(children, ltIE9, props))}
+            </Observer>
+        )
     }
 }
 
 Lazy.defaultProps = {
+    clientOnly: false,
     component: 'div',
-    cushion: 0,
-    jsOnly: false,
     ltIE9: false,
     visible: true,
 }
@@ -79,14 +78,18 @@ Lazy.propTypes = {
     component: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.object,
-        PropTypes.func,
+        PropTypes.func
     ]),
-    cushion: PropTypes.number,
-    jsOnly: PropTypes.bool,
+    cushion: PropTypes.string,
+    clientOnly: PropTypes.bool,
     ltIE9: PropTypes.bool,
     onLoad: PropTypes.func,
     onViewport: PropTypes.func,
-    visible: PropTypes.bool,
+    threshold: PropTypes.oneOfType([PropTypes.number, PropTypes.arrayOf(PropTypes.number)]),
+    viewport: PropTypes.oneOfType(
+        [PropTypes.string].concat(typeof HTMLElement === 'undefined' ? [] : PropTypes.instanceOf(HTMLElement))
+    ),
+    visible: PropTypes.bool
 }
 
 export default Lazy

@@ -4,8 +4,6 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = require('react');
@@ -16,7 +14,9 @@ var _propTypes = require('prop-types');
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _viewport = require('../lib/viewport');
+var _Observer = require('./Observer');
+
+var _Observer2 = _interopRequireDefault(_Observer);
 
 var _wrap = require('../lib/wrap');
 
@@ -38,44 +38,15 @@ var Lazy = function (_React$PureComponent) {
 
         var _this = _possibleConstructorReturn(this, (Lazy.__proto__ || Object.getPrototypeOf(Lazy)).call(this, props));
 
-        _this.state = { loadedAt: null };
+        _this.state = { show: false };
 
-        _this.getRef = _this.getRef.bind(_this);
         _this.onViewport = _this.onViewport.bind(_this);
         return _this;
     }
 
     _createClass(Lazy, [{
-        key: 'componentDidMount',
-        value: function componentDidMount() {
-            this.options = {
-                callback: this.onViewport,
-                cushion: this.props.cushion,
-                element: this.el
-            };
-            (0, _viewport.addElement)(this.options);
-        }
-    }, {
-        key: 'componentDidUpdate',
-        value: function componentDidUpdate(prevProps) {
-            if (prevProps.cushion !== this.props.cushion) {
-                this.options.cushion = this.props.cushion;
-            }
-        }
-    }, {
-        key: 'componentWillUnmount',
-        value: function componentWillUnmount() {
-            (0, _viewport.removeElement)(this.options);
-            delete this.options;
-        }
-    }, {
-        key: 'getRef',
-        value: function getRef(el) {
-            this.el = el;
-        }
-    }, {
         key: 'onViewport',
-        value: function onViewport() {
+        value: function onViewport(event, unobserve) {
             var _props = this.props,
                 onLoad = _props.onLoad,
                 onViewport = _props.onViewport,
@@ -83,37 +54,51 @@ var Lazy = function (_React$PureComponent) {
 
 
             if (!visible) {
-                return false;
+                return;
             }
+
+            if (!event.isIntersecting || event.defaultPrevented) {
+                return;
+            }
+
+            unobserve();
 
             if (onViewport) {
-                onViewport();
+                onViewport(event);
             }
 
-            this.setState({ loadedAt: Date.now() }, onLoad);
+            this.setState({ show: true }, onLoad);
         }
     }, {
         key: 'render',
         value: function render() {
             var _props2 = this.props,
                 children = _props2.children,
+                clientOnly = _props2.clientOnly,
                 component = _props2.component,
                 cushion = _props2.cushion,
-                jsOnly = _props2.jsOnly,
                 ltIE9 = _props2.ltIE9,
                 visible = _props2.visible,
                 onLoad = _props2.onLoad,
                 onViewport = _props2.onViewport,
-                rest = _objectWithoutProperties(_props2, ['children', 'component', 'cushion', 'jsOnly', 'ltIE9', 'visible', 'onLoad', 'onViewport']);
+                threshold = _props2.threshold,
+                viewport = _props2.viewport,
+                props = _objectWithoutProperties(_props2, ['children', 'clientOnly', 'component', 'cushion', 'ltIE9', 'visible', 'onLoad', 'onViewport', 'threshold', 'viewport']);
 
-            var props = _extends({}, rest, { ref: this.getRef });
-
-            if (jsOnly || visible && this.state.loadedAt) {
-                return _react2.default.createElement(component, props, visible && this.state.loadedAt ? children : null);
+            if (clientOnly || visible && this.state.show) {
+                return _react2.default.createElement(
+                    _Observer2.default,
+                    { cushion: cushion, onChange: this.onViewport, threshold: threshold, viewport: viewport },
+                    _react2.default.createElement(component, props, visible && this.state.show ? children : null)
+                );
             }
 
             // wrap all contents inside noscript
-            return _react2.default.createElement(component, (0, _wrap.propsWithNoScriptRender)(children, ltIE9, props));
+            return _react2.default.createElement(
+                _Observer2.default,
+                { cushion: cushion, onChange: this.onViewport },
+                _react2.default.createElement(component, (0, _wrap.propsWithNoScriptRender)(children, ltIE9, props))
+            );
         }
     }]);
 
@@ -121,9 +106,8 @@ var Lazy = function (_React$PureComponent) {
 }(_react2.default.PureComponent);
 
 Lazy.defaultProps = {
+    clientOnly: false,
     component: 'div',
-    cushion: 0,
-    jsOnly: false,
     ltIE9: false,
     visible: true
 };
@@ -131,11 +115,13 @@ Lazy.defaultProps = {
 Lazy.propTypes = {
     children: _propTypes2.default.node,
     component: _propTypes2.default.oneOfType([_propTypes2.default.string, _propTypes2.default.object, _propTypes2.default.func]),
-    cushion: _propTypes2.default.number,
-    jsOnly: _propTypes2.default.bool,
+    cushion: _propTypes2.default.string,
+    clientOnly: _propTypes2.default.bool,
     ltIE9: _propTypes2.default.bool,
     onLoad: _propTypes2.default.func,
     onViewport: _propTypes2.default.func,
+    threshold: _propTypes2.default.oneOfType([_propTypes2.default.number, _propTypes2.default.arrayOf(_propTypes2.default.number)]),
+    viewport: _propTypes2.default.oneOfType([_propTypes2.default.string].concat(typeof HTMLElement === 'undefined' ? [] : _propTypes2.default.instanceOf(HTMLElement))),
     visible: _propTypes2.default.bool
 };
 

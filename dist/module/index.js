@@ -3,16 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Lazy = exports.LazyGroup = exports.LazyChild = exports.DefaultWrapper = exports.checkElementsInViewport = undefined;
-
-var _viewport = require('./lib/viewport');
-
-Object.defineProperty(exports, 'checkElementsInViewport', {
-  enumerable: true,
-  get: function get() {
-    return _viewport.checkElementsInViewport;
-  }
-});
+exports.Observer = exports.Lazy = exports.LazyGroup = exports.LazyChild = exports.DefaultWrapper = undefined;
 
 var _DefaultWrapper2 = require('./components/DefaultWrapper');
 
@@ -30,9 +21,14 @@ var _Lazy2 = require('./components/Lazy');
 
 var _Lazy3 = _interopRequireDefault(_Lazy2);
 
+var _Observer2 = require('./components/Observer');
+
+var _Observer3 = _interopRequireDefault(_Observer2);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.DefaultWrapper = _DefaultWrapper3.default;
 exports.LazyChild = _LazyChild3.default;
 exports.LazyGroup = _LazyGroup3.default;
 exports.Lazy = _Lazy3.default;
+exports.Observer = _Observer3.default;

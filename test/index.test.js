@@ -2,6 +2,14 @@
 /* eslint-disable react/no-find-dom-node */
 'use strict'
 
+global.IntersectionObserver = function() {
+    return {
+        disconnect: function() {},
+        observe: function() {},
+        unobserve: function() {}
+    }
+}
+
 var React = require('react')
 var ReactDOM = require('react-dom')
 var TestUtils = require('react-dom/test-utils')
@@ -71,9 +79,9 @@ describe('Lazy', sharedTest(Lazy, function otherLazyTests() {
         )
     })
 
-    it('should render nothing in jsOnly mode', function() {
+    it('should render nothing in clientOnly mode', function() {
         var rendered = TestUtils.renderIntoDocument(
-            React.createElement(Lazy, { jsOnly: true })
+            React.createElement(Lazy, { clientOnly: true })
         )
 
         expect(findDOMNode(rendered).innerHTML).to.equal('')

@@ -1,7 +1,7 @@
 {
   "name": "react-lazy",
-  "version": "0.6.1",
-  "description": "Universal lazy loader component: search engine and no-JS friendly",
+  "version": "1.0.0",
+  "description": "Performant search engine and no-JS friendly universally rendering components for lazy loading, ad impressions, occlusion culling and sentinel scrolling",
   "main": "dist/module/index.js",
   "scripts": {
     "build": "npm run clean-dist && npm run build-modules && npm run build-umd",
@@ -27,11 +27,22 @@
   "keywords": [
     "react",
     "react-component",
+    "react-intersection-observer",
+    "react-lazy-load",
     "lazy",
+    "lazy-load",
+    "lazyload",
+    "lazy loading",
     "load",
     "isomorphic",
     "render",
-    "universal"
+    "universal",
+    "performance",
+    "Intersection",
+    "Observer",
+    "invisible",
+    "viewport",
+    "visible"
   ],
   "peerDependencies": {
     "prop-types": ">=15",

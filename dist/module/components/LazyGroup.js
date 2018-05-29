@@ -26,6 +26,10 @@ var _Lazy2 = require('./Lazy');
 
 var _Lazy3 = _interopRequireDefault(_Lazy2);
 
+var _Observer = require('./Observer');
+
+var _Observer2 = _interopRequireDefault(_Observer);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
@@ -64,7 +68,7 @@ var LazyGroup = function (_Lazy) {
         }
     }, {
         key: 'onViewport',
-        value: function onViewport() {
+        value: function onViewport(event, unobserve) {
             var _props = this.props,
                 children = _props.children,
                 childrenToWrap = _props.childrenToWrap,
@@ -77,10 +81,16 @@ var LazyGroup = function (_Lazy) {
                 return false;
             }
 
+            if (!event.isIntersecting || event.defaultPrevented) {
+                return;
+            }
+
+            unobserve();
+
             var imgTagCount = (0, _wrap.countTypesTags)(childrenToWrap, children) || null;
             this.loadedImgTags = 0;
             if (onViewport) {
-                onViewport();
+                onViewport(event);
             }
             var viewportAt = Date.now();
             this.setState({ imgTagCount: imgTagCount, loadedAt: !imgTagCount ? viewportAt : null, viewportAt: viewportAt }, !imgTagCount ? onLoad : null);
@@ -92,24 +102,28 @@ var LazyGroup = function (_Lazy) {
                 children = _props2.children,
                 childrenToWrap = _props2.childrenToWrap,
                 childWrapper = _props2.childWrapper,
+                clientOnly = _props2.clientOnly,
                 component = _props2.component,
                 cushion = _props2.cushion,
-                jsOnly = _props2.jsOnly,
                 ltIE9 = _props2.ltIE9,
                 onLoad = _props2.onLoad,
                 onViewport = _props2.onViewport,
+                threshold = _props2.threshold,
+                viewport = _props2.viewport,
                 visible = _props2.visible,
-                rest = _objectWithoutProperties(_props2, ['children', 'childrenToWrap', 'childWrapper', 'component', 'cushion', 'jsOnly', 'ltIE9', 'onLoad', 'onViewport', 'visible']);
+                props = _objectWithoutProperties(_props2, ['children', 'childrenToWrap', 'childWrapper', 'clientOnly', 'component', 'cushion', 'ltIE9', 'onLoad', 'onViewport', 'threshold', 'viewport', 'visible']);
 
-            var props = _extends({}, rest, { ref: this.getRef });
-
-            return _react2.default.createElement(component, props,
-            // swap render once element is visible in viewport
-            jsOnly || visible && this.state.viewportAt
-            // replace elements with LazyChild
-            ? (0, _wrap.wrapTypesToLazyChild)(childrenToWrap, children, childWrapper, this.onImgLoaded)
-            // wrap given element types to noscript and the given wrapper component
-            : (0, _wrap.wrapTypesToNoScript)(childrenToWrap, children, ltIE9, childWrapper));
+            return _react2.default.createElement(
+                _Observer2.default,
+                { cushion: cushion, onChange: this.onViewport, threshold: threshold, viewport: viewport },
+                _react2.default.createElement(component, props,
+                // swap render once element is visible in viewport
+                clientOnly || visible && this.state.viewportAt
+                // replace elements with LazyChild
+                ? (0, _wrap.wrapTypesToLazyChild)(childrenToWrap, children, childWrapper, this.onImgLoaded)
+                // wrap given element types to noscript and the given wrapper component
+                : (0, _wrap.wrapTypesToNoScript)(childrenToWrap, children, ltIE9, childWrapper))
+            );
         }
     }]);
 

@@ -5,6 +5,7 @@ import { countTypesTags, wrapTypesToLazyChild, wrapTypesToNoScript } from '../li
 
 import DefaultWrapper from './DefaultWrapper'
 import Lazy from './Lazy'
+import Observer from './Observer'
 
 class LazyGroup extends Lazy {
     constructor(props) {
@@ -26,17 +27,23 @@ class LazyGroup extends Lazy {
         }
     }
 
-    onViewport() {
+    onViewport(event, unobserve) {
         const { children, childrenToWrap, onLoad, onViewport, visible } = this.props
 
         if (!visible) {
             return false
         }
 
+        if (!event.isIntersecting || event.defaultPrevented) {
+            return
+        }
+
+        unobserve()
+
         const imgTagCount = countTypesTags(childrenToWrap, children) || null
         this.loadedImgTags = 0
         if (onViewport) {
-            onViewport()
+            onViewport(event)
         }
         const viewportAt = Date.now()
         this.setState(
@@ -50,27 +57,31 @@ class LazyGroup extends Lazy {
             children,
             childrenToWrap,
             childWrapper,
+            clientOnly,
             component,
             cushion,
-            jsOnly,
             ltIE9,
             onLoad,
             onViewport,
+            threshold,
+            viewport,
             visible,
-            ...rest
+            ...props
         } = this.props
 
-        const props = { ...rest, ref: this.getRef }
-
-        return React.createElement(
-            component,
-            props,
-            // swap render once element is visible in viewport
-            jsOnly || (visible && this.state.viewportAt)
-                // replace elements with LazyChild
-                ? wrapTypesToLazyChild(childrenToWrap, children, childWrapper, this.onImgLoaded)
-                // wrap given element types to noscript and the given wrapper component
-                : wrapTypesToNoScript(childrenToWrap, children, ltIE9, childWrapper)
+        return (
+            <Observer cushion={cushion} onChange={this.onViewport} threshold={threshold} viewport={viewport}>
+                {React.createElement(
+                    component,
+                    props,
+                    // swap render once element is visible in viewport
+                    clientOnly || (visible && this.state.viewportAt)
+                        // replace elements with LazyChild
+                        ? wrapTypesToLazyChild(childrenToWrap, children, childWrapper, this.onImgLoaded)
+                        // wrap given element types to noscript and the given wrapper component
+                        : wrapTypesToNoScript(childrenToWrap, children, ltIE9, childWrapper)
+                )}
+            </Observer>
         )
     }
 }

@@ -245,7 +245,7 @@ Use this array to decide which components are wrapped by `childWrapper`. Default
 
 ## Other components
 
-Some internal components have been exposed in addition to the main components.
+You can see these components via React developer tools, but as of 1.0.2 they have not been exposed.
 
 
 ### `DefaultWrapper`

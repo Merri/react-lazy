@@ -2,7 +2,7 @@
 [![Version](http://img.shields.io/npm/v/react-lazy.svg)](https://www.npmjs.org/package/react-lazy)
 [![Build Status](https://travis-ci.org/Merri/react-lazy.svg)](https://travis-ci.org/Merri/react-lazy)
 
-    Lazy load your content without breaking the internet!
+> Lazy load your content without breaking the internet!
 
 Supports universal rendering including disabled JavaScript by using `noscript` elements that are also friendly to all
 search engines. Uses modern IntersectionObserver API and exposes `Observer` component which works exactly like the

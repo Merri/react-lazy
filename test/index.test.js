@@ -15,9 +15,9 @@ var ReactDOM = require('react-dom')
 var TestUtils = require('react-dom/test-utils')
 var jsdom = require('mocha-jsdom')
 var expect = require('chai').expect
-var DefaultWrapper = require('../dist/module/').DefaultWrapper
+var DefaultWrapper = require('../dist/module/components/DefaultWrapper').default
 var Lazy = require('../dist/module/').Lazy
-var LazyChild = require('../dist/module/').LazyChild
+var LazyChild = require('../dist/module/components/LazyChild').default
 var LazyGroup = require('../dist/module/').LazyGroup
 var findDOMNode = ReactDOM.findDOMNode
 

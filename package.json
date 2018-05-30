@@ -1,6 +1,6 @@
 {
   "name": "react-lazy",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Performant search engine and no-JS friendly universally rendering components for lazy loading, ad impressions, occlusion culling and sentinel scrolling",
   "main": "dist/module/index.js",
   "scripts": {
@@ -46,7 +46,7 @@
   ],
   "peerDependencies": {
     "prop-types": ">=15",
-    "react": ">=15"
+    "react": ">=16"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",

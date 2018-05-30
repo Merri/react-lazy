@@ -105,24 +105,12 @@ var Lazy = function (_React$PureComponent) {
     return Lazy;
 }(_react2.default.PureComponent);
 
+exports.default = Lazy;
+
+
 Lazy.defaultProps = {
     clientOnly: false,
     component: 'div',
     ltIE9: false,
     visible: true
 };
-
-Lazy.propTypes = {
-    children: _propTypes2.default.node,
-    component: _propTypes2.default.oneOfType([_propTypes2.default.string, _propTypes2.default.object, _propTypes2.default.func]),
-    cushion: _propTypes2.default.string,
-    clientOnly: _propTypes2.default.bool,
-    ltIE9: _propTypes2.default.bool,
-    onLoad: _propTypes2.default.func,
-    onViewport: _propTypes2.default.func,
-    threshold: _propTypes2.default.oneOfType([_propTypes2.default.number, _propTypes2.default.arrayOf(_propTypes2.default.number)]),
-    viewport: _propTypes2.default.oneOfType([_propTypes2.default.string].concat(typeof HTMLElement === 'undefined' ? [] : _propTypes2.default.instanceOf(HTMLElement))),
-    visible: _propTypes2.default.bool
-};
-
-exports.default = Lazy;

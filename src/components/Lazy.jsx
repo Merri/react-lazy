@@ -5,7 +5,7 @@ import Observer from './Observer'
 
 import { propsWithNoScriptRender } from '../lib/wrap'
 
-class Lazy extends React.PureComponent {
+export default class Lazy extends React.PureComponent {
     constructor(props) {
         super(props)
 
@@ -70,16 +70,12 @@ Lazy.defaultProps = {
     clientOnly: false,
     component: 'div',
     ltIE9: false,
-    visible: true,
+    visible: true
 }
 
 Lazy.propTypes = {
     children: PropTypes.node,
-    component: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.object,
-        PropTypes.func
-    ]),
+    component: PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.string]),
     cushion: PropTypes.string,
     clientOnly: PropTypes.bool,
     ltIE9: PropTypes.bool,
@@ -91,5 +87,3 @@ Lazy.propTypes = {
     ),
     visible: PropTypes.bool
 }
-
-export default Lazy

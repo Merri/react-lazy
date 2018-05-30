@@ -55,10 +55,15 @@ export default class Observer extends React.Component {
         const props = this.props
 
         return observerOptions.reduce(function(options, option) {
-            const key = optToProp(option)
+            const prop = optToProp(option)
+            // allow usage of root and rootMargin props, but prefer viewport and cushion
+            const key =
+                (objectProto.hasOwnProperty.call(props, prop) && prop) ||
+                (objectProto.hasOwnProperty.call(props, option) && option) ||
+                ''
 
-            if (objectProto.hasOwnProperty.call(props, key)) {
-                const useQuery = key === 'viewport' && objectProto.toString.call(props[key]) === '[object String]'
+            if (key) {
+                const useQuery = option === 'root' && objectProto.toString.call(props[key]) === '[object String]'
 
                 options[option] = useQuery ? document.querySelector(props[key]) : props[key]
             }
@@ -146,6 +151,7 @@ Observer.propTypes = {
      * Defaults to all zeros.
      */
     cushion: PropTypes.string,
+    rootMargin: PropTypes.string,
 
     /**
      * Controls whether the element should stop being observed by its IntersectionObserver instance.
@@ -175,6 +181,9 @@ Observer.propTypes = {
      * Defaults to the browser viewport if not specified or if null.
      */
     viewport: PropTypes.oneOfType(
+        [PropTypes.string].concat(typeof HTMLElement === 'undefined' ? [] : PropTypes.instanceOf(HTMLElement))
+    ),
+    root: PropTypes.oneOfType(
         [PropTypes.string].concat(typeof HTMLElement === 'undefined' ? [] : PropTypes.instanceOf(HTMLElement))
     )
 }

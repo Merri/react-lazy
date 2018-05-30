@@ -4,10 +4,9 @@ import PropTypes from 'prop-types'
 import { countTypesTags, wrapTypesToLazyChild, wrapTypesToNoScript } from '../lib/wrap'
 
 import DefaultWrapper from './DefaultWrapper'
-import Lazy from './Lazy'
 import Observer from './Observer'
 
-class LazyGroup extends Lazy {
+export default class LazyGroup extends React.PureComponent {
     constructor(props) {
         super(props)
 
@@ -87,15 +86,27 @@ class LazyGroup extends Lazy {
 }
 
 LazyGroup.defaultProps = {
-    ...Lazy.defaultProps,
     childrenToWrap: ['iframe', 'img'],
     childWrapper: DefaultWrapper,
+    clientOnly: false,
+    component: 'div',
+    ltIE9: false,
+    visible: true
 }
 
 LazyGroup.propTypes = {
-    ...Lazy.propTypes,
-    childrenToWrap: PropTypes.arrayOf(Lazy.propTypes.component),
-    childWrapper: PropTypes.oneOfType([ PropTypes.object, PropTypes.func ]),
+    children: PropTypes.node,
+    childrenToWrap: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.string])),
+    childWrapper: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
+    component: PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.string]),
+    cushion: PropTypes.string,
+    clientOnly: PropTypes.bool,
+    ltIE9: PropTypes.bool,
+    onLoad: PropTypes.func,
+    onViewport: PropTypes.func,
+    threshold: PropTypes.oneOfType([PropTypes.number, PropTypes.arrayOf(PropTypes.number)]),
+    viewport: PropTypes.oneOfType(
+        [PropTypes.string].concat(typeof HTMLElement === 'undefined' ? [] : PropTypes.instanceOf(HTMLElement))
+    ),
+    visible: PropTypes.bool
 }
-
-export default LazyGroup

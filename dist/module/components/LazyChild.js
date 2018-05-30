@@ -102,10 +102,4 @@ var LazyChild = function (_React$PureComponent) {
     return LazyChild;
 }(_react2.default.PureComponent);
 
-LazyChild.propTypes = {
-    callback: _propTypes2.default.func,
-    children: _propTypes2.default.node.isRequired,
-    wrapper: _propTypes2.default.oneOfType([_propTypes2.default.object, _propTypes2.default.func]).isRequired
-};
-
 exports.default = LazyChild;

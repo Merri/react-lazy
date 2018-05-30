@@ -19,8 +19,8 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 function getPooled() {
     var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    var root = options.viewport || null;
-    var rootMargin = (0, _utils.parseRootMargin)(options.cushion);
+    var root = options.root || null;
+    var rootMargin = (0, _utils.parseRootMargin)(options.rootMargin);
     var threshold = Array.isArray(options.threshold) ? options.threshold : [options.threshold != null ? options.threshold : 0];
 
     var _iteratorNormalCompletion = true;

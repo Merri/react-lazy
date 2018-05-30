@@ -34,12 +34,4 @@ function DefaultWrapper(_ref) {
     );
 }
 
-DefaultWrapper.propTypes = {
-    children: _propTypes2.default.node,
-    childProps: _propTypes2.default.object,
-    className: _propTypes2.default.string,
-    isFailed: _propTypes2.default.bool,
-    isLoaded: _propTypes2.default.bool
-};
-
 exports.default = DefaultWrapper;

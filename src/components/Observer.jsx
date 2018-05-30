@@ -49,7 +49,7 @@ export default class Observer extends React.Component {
             // allow usage of root and rootMargin props, but prefer viewport and cushion
             const key =
                 (objectProto.hasOwnProperty.call(props, prop) && prop) ||
-                (objectProto.hasOwnProperty.call(props, option) && option) ||
+                (prop !== option && objectProto.hasOwnProperty.call(props, option) && option) ||
                 ''
 
             if (key) {

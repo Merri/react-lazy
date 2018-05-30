@@ -8,15 +8,16 @@ export function getPooled(options = {}) {
         ? options.threshold
         : [options.threshold != null ? options.threshold : 0]
 
-    for (const observer of storage.keys()) {
-        const unmatched = [
-            [root, observer.root],
-            [rootMargin, observer.rootMargin],
-            [threshold, observer.thresholds],
-        ].some(option => shallowCompareOptions(...option))
+    const observers = storage.keys()
+
+    for (let observer = observers.next(); !observer.done; observer = observers.next()) {
+        const unmatched =
+            shallowCompareOptions(root, observer.value.root) ||
+            shallowCompareOptions(rootMargin, observer.value.rootMargin) ||
+            shallowCompareOptions(threshold, observer.value.threshold)
 
         if (!unmatched) {
-            return observer
+            return observer.value
         }
     }
 
@@ -31,11 +32,14 @@ export default class ObserverContainer {
     }
 
     static findElement(entry, observer) {
-        const elements = storage.get(observer)
-        if (elements) {
-            for (const element of elements.values()) {
-                if (element.target === entry.target) {
-                    return element
+        const observerElements = storage.get(observer)
+
+        if (observerElements) {
+            const elements = observerElements.values()
+
+            for (let element = elements.next(); !element.done; element = elements.next()) {
+                if (element.value.target === entry.target) {
+                    return element.value
                 }
             }
         }

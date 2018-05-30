@@ -53,19 +53,9 @@ function callback(changes, observer) {
     }
 }
 
-var optToPropMapper = { root: 'viewport', rootMargin: 'cushion'
-
-    /**
-     * Terminology rename.
-     * @param {string} option
-     * @return {string} prop
-     */
-};function optToProp(option) {
-    return optToPropMapper[option] || option;
-}
-
 var observerOptions = ['root', 'rootMargin', 'threshold'];
-var observerProps = observerOptions.map(optToProp).concat('disabled');
+var optToPropMapper = { root: 'viewport', rootMargin: 'cushion' };
+var observerProps = ['viewport', 'cushion', 'disabled'].concat(observerOptions);
 var objectProto = Object.prototype;
 
 var Observer = function (_React$Component) {
@@ -158,9 +148,9 @@ var Observer = function (_React$Component) {
             var props = this.props;
 
             return observerOptions.reduce(function (options, option) {
-                var prop = optToProp(option);
+                var prop = optToPropMapper[option] || option;
                 // allow usage of root and rootMargin props, but prefer viewport and cushion
-                var key = objectProto.hasOwnProperty.call(props, prop) && prop || objectProto.hasOwnProperty.call(props, option) && option || '';
+                var key = objectProto.hasOwnProperty.call(props, prop) && prop || prop !== option && objectProto.hasOwnProperty.call(props, option) && option || '';
 
                 if (key) {
                     var useQuery = option === 'root' && objectProto.toString.call(props[key]) === '[object String]';

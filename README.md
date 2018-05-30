@@ -2,7 +2,7 @@
 [![Version](http://img.shields.io/npm/v/react-lazy.svg)](https://www.npmjs.org/package/react-lazy)
 [![Build Status](https://travis-ci.org/Merri/react-lazy.svg)](https://travis-ci.org/Merri/react-lazy)
 
-Lazy load your content without breaking the internet!
+    Lazy load your content without breaking the internet!
 
 Supports universal rendering including disabled JavaScript by using `noscript` elements that are also friendly to all
 search engines. Uses modern IntersectionObserver API and exposes `Observer` component which works exactly like the
@@ -10,7 +10,7 @@ excellent [@researchgate/react-intersection-observer](https://github.com/researc
 with a few minor changes.
 
 Also optionally supports displaying the content on IE8 and earlier by adding conditional comments to skip `noscript`
-elements: this case expects your JavaScript does not execute in the browser.
+elements.
 
 [View lazy loading demo](https://merri.github.io/react-lazy/)
 
@@ -25,8 +25,8 @@ import { Observer } from 'react-lazy'
 ```
 
 You also need to polyfill `intersection-observer`! Use polyfill.io or `require('intersection-observer')`. Check
-[Can I use](https://caniuse.com/#feat=intersectionobserver) for browser support status. Also, features like `Map` and
-`Set` are also required.
+[Can I use](https://caniuse.com/#feat=intersectionobserver) for browser support status. Additionally features like `Map`
+and `Set` are also required.
 
 
 ----

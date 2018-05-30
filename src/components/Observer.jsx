@@ -53,7 +53,6 @@ export default class Observer extends React.Component {
         this.handleChange = this.handleChange.bind(this)
         this.handleNode = this.handleNode.bind(this)
         this.observe = this.observe.bind(this)
-        this.reobserve = this.reobserve.bind(this)
         this.unobserve = this.unobserve.bind(this)
     }
 
@@ -104,14 +103,6 @@ export default class Observer extends React.Component {
         }
     }
 
-    reobserve() {
-        this.unobserve()
-
-        if (!this.props.disabled) {
-            this.observe()
-        }
-    }
-
     componentDidMount() {
         if (!this.props.disabled) {
             this.observe()
@@ -123,7 +114,11 @@ export default class Observer extends React.Component {
             this.targetChanged ||
             observerProps.some(option => shallowCompareOptions(this.props[option], prevProps[option]))
         ) {
-            this.reobserve()
+            this.unobserve()
+
+            if (!this.props.disabled) {
+                this.observe()
+            }
         }
     }
 

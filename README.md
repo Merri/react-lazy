@@ -31,7 +31,6 @@ You also need to polyfill `intersection-observer`! Use polyfill.io or `require('
 
 ----
 
-
 ## Why `react-lazy`?
 
 1. Minimalistic and performant implementation with less dependancies than other solutions
@@ -40,7 +39,6 @@ You also need to polyfill `intersection-observer`! Use polyfill.io or `require('
 
 
 ----
-
 
 ### Why lazy load content such as images?
 
@@ -61,7 +59,6 @@ once in a while.
 
 
 ----
-
 
 ## Usage: `<Lazy />`
 

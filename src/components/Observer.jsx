@@ -26,20 +26,15 @@ export function callback(changes, observer) {
     }
 }
 
+const optToPropMapper = { root: 'viewport', rootMargin: 'cushion' }
+
 /**
  * Terminology rename.
  * @param {string} option
  * @return {string} prop
  */
 function optToProp(option) {
-    switch (option) {
-        case 'root':
-            return 'viewport'
-        case 'rootMargin':
-            return 'cushion'
-        default:
-            return option
-    }
+    return optToPropMapper[option] || option
 }
 
 const observerOptions = ['root', 'rootMargin', 'threshold']

@@ -66,16 +66,11 @@ var ObserverContainer = function () {
     }, {
         key: 'observe',
         value: function observe(element) {
-            var targets = void 0;
-
-            if (storage.has(element.observer)) {
-                targets = storage.get(element.observer);
-            } else {
-                targets = new Set();
-                storage.set(element.observer, targets);
+            if (!storage.has(element.observer)) {
+                storage.set(element.observer, new Set());
             }
 
-            targets.add(element);
+            storage.get(element.observer).add(element);
             element.observer.observe(element.target);
         }
     }, {

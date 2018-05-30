@@ -112,8 +112,7 @@ t.getPooled=i
 var o=r(8)
 function i(){for(var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},t=e.root||null,r=(0,o.parseRootMargin)(e.rootMargin),n=Array.isArray(e.threshold)?e.threshold:[null!=e.threshold?e.threshold:0],i=a.keys(),l=i.next();!l.done;l=i.next()){if(!((0,o.shallowCompareOptions)(t,l.value.root)||(0,o.shallowCompareOptions)(r,l.value.rootMargin)||(0,o.shallowCompareOptions)(n,l.value.threshold)))return l.value}return null}var a=t.storage=new Map,l=function(){function e(){!function(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}(this,e)}return n(e,null,[{key:"create",value:function(e,t){return i(t)||new IntersectionObserver(e,t)}},{key:"findElement",value:function(e,t){var r=a.get(t)
 if(r)for(var n=r.values(),o=n.next();!o.done;o=n.next())if(o.value.target===e.target)return o.value
-return null}},{key:"observe",value:function(e){var t=void 0
-a.has(e.observer)?t=a.get(e.observer):(t=new Set,a.set(e.observer,t)),t.add(e),e.observer.observe(e.target)}},{key:"unobserve",value:function(e){if(a.has(e.observer)){var t=a.get(e.observer)
+return null}},{key:"observe",value:function(e){a.has(e.observer)||a.set(e.observer,new Set),a.get(e.observer).add(e),e.observer.observe(e.target)}},{key:"unobserve",value:function(e){if(a.has(e.observer)){var t=a.get(e.observer)
 t.delete(e)&&(t.size>0?e.observer.unobserve(e.target):(e.observer.disconnect(),a.delete(e.observer)))}}},{key:"clear",value:function(){a.clear()}},{key:"count",value:function(){return a.size}}]),e}()
 t.default=l}])})
 

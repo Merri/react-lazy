@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Viewport detection to use IntersectionObserver API with code heavily based on
   [@researchgate/react-intersection-observer](https://github.com/researchgate/react-intersection-observer)
 - `LazyGroup` no longer extends from `Lazy` as both use `Observer` now
+- `onViewport` receives intersection observer event as first parameter
 
 ### Removed
 - `checkElementsInViewport`

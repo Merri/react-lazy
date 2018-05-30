@@ -2,21 +2,42 @@
 [![Version](http://img.shields.io/npm/v/react-lazy.svg)](https://www.npmjs.org/package/react-lazy)
 [![Build Status](https://travis-ci.org/Merri/react-lazy.svg)](https://travis-ci.org/Merri/react-lazy)
 
-Lazy load your content such as images without breaking the internet!
+Lazy load your content without breaking the internet!
 
-Supports universal rendering including disabled JavaScript by using `noscript` elements that are also friendly to all search engines. Uses modern ... (phone call interruption)
+Supports universal rendering including disabled JavaScript by using `noscript` elements that are also friendly to all
+search engines. Uses modern IntersectionObserver API and exposes `Observer` component which works exactly like the
+excellent [@researchgate/react-intersection-observer](https://github.com/researchgate/react-intersection-observer), but
+with a few minor changes.
 
-Also optionally supports rendering content on IE8 and earlier by adding conditional comments to skip `noscript` elements: this case expects your JavaScript does not execute in the browser.
+Also optionally supports displaying the content on IE8 and earlier by adding conditional comments to skip `noscript`
+elements: this case expects your JavaScript does not execute in the browser.
 
-[View demo](https://merri.github.io/react-lazy/)
+[View lazy loading demo](https://merri.github.io/react-lazy/)
 
 ```js
-npm install react-lazy --save
+npm install react-lazy
 
 import { Lazy } from 'react-lazy'
 // or
 import { LazyGroup } from 'react-lazy'
+// or
+import { Observer } from 'react-lazy'
 ```
+
+You also need to polyfill `intersection-observer`! Use polyfill.io or `require('intersection-observer')`. Check
+[Can I use](https://caniuse.com/#feat=intersectionobserver) for browser support status. Also, features like `Map` and
+`Set` are also required.
+
+
+----
+
+
+## Why `react-lazy`?
+
+1. Minimalistic and performant implementation with less dependancies than other solutions
+2. You can choose between ease-of-use (LazyGroup) and do-it-yourself (Lazy, Observer)
+3. The hard part of handling `noscript` is done for you (Lazy, LazyGroup)
+
 
 ----
 
@@ -41,6 +62,7 @@ once in a while.
 
 ----
 
+
 ## Usage: `<Lazy />`
 
 ```jsx
@@ -55,7 +77,7 @@ import { Lazy } from 'react-lazy'
 ```
 
 ```html
-<!-- server render and render before component is in client viewport -->
+<!-- server render and render before component is in viewport -->
 <a href="/" class="image-link image-link--100px">
     <!--[if IE 9]><!--><noscript><!--<![endif]-->
         <img alt="My Lazy Loaded Image" class="image-link__image" src="my-lazy-loaded-image.png" />
@@ -73,7 +95,21 @@ import { Lazy } from 'react-lazy'
 
 ## Component introduction
 
-There are two ways to use `react-lazy`: `<Lazy />` and `<LazyGroup />`.
+First of all, `Observer` component is exposed. This is a powerful component for using the new IntersectionObserver API.
+The notable differences to the implementation of
+[@researchgate/react-intersection-observer](https://github.com/researchgate/react-intersection-observer) are:
+
+- `viewport` prop is added and preferred over `root` prop
+- `cushion` prop is added and preferred over `rootMargin` prop
+- `onlyOnce` prop deprecation has been enforced and is unsupported
+- Other changes are internal code optimizations for further minor speed improvements and reduced code size
+
+Essentially `react-lazy`'s implementation of `<Observer />` is fully compatible with all the examples and demos you find
+at [@researchgate/react-intersection-observer](https://github.com/researchgate/react-intersection-observer). (This part
+of the text holds true in 2018-05-30 at version 0.7.1 - throw issue if this state changes).
+
+
+As for lazy loading there are two components: `<Lazy />` and `<LazyGroup />`.
 
 **Lazy** provides basic functionality for lazy loading: it keeps render in `noscript` element until it has come into
 viewport and then simply swaps render. **Everything** inside the component is wrapped into `noscript`. As the component
@@ -95,17 +131,22 @@ single place to control lifecycles as images or other content is loaded.
 These features are supported by both `<Lazy />` and `<LazyGroup />`.
 
 
-### `cushion`
+### IntersectionObserver props
 
-You can apply "cushion" around elements so they are loaded slighly before coming into the actual viewport:
+- `viewport` (= `root` option)
+- `cushion` (= `rootMargin` option)
+- `threshold`
 
-```jsx
-// element content appear if it is in viewport or within 100px radius of it
-<Lazy cushion={100}>...</Lazy>
-```
+These props work like you would expect them to work with IntersectionObserver.
 
 
-### `ltIE9`
+### `clientOnly` prop
+
+Disables `noscript` element rendering, instead rendering no HTML for the contents in server side. This gives behavior
+similar to most other lazy loaders, which is why it is not enabled by default in `react-lazy`.
+
+
+### `ltIE9` prop
 
 Renders Internet Explorer 8 friendly syntax by adding conditional comments around `noscript`, effectively hiding
 existance of the tag from IE8 and earlier. This allows for minimal legacy browser support, since it is highly unlikely
@@ -115,6 +156,8 @@ Essentially this feature allows to render a visually non-broken page to users of
 give minimally acceptable user experience to users of browsers that should be dead.
 
 This means there is no lazy rendering on legacy browsers, images load immediately.
+
+This prop has no effect if `clientOnly` is enabled.
 
 
 ### `onLoad`
@@ -129,40 +172,12 @@ This means there is no lazy rendering on legacy browsers, images load immediatel
 
 ### `onViewport`
 
-Triggers before removing `noscript` elements.
+Triggers before removing `noscript` elements. Given function receives IntersectionObserver event object.
 
 
 ### `visible`
 
 Allows you to manually tell if the element is actually visible to the user or not.
-
-
-### `checkElementsInViewport`
-
-You can manually trigger checking for elements in viewport, which can be useful if you toggle element resize (which
-won't cause resize or scroll events). Or you can use setInterval if you want to be very lazy.
-
-```js
-import { checkElementsInViewport } from 'react-lazy'
-
-// now you're being a very lazy dev...
-setInterval(checkElementsInViewport, 250)
-```
-
-
-----
-
-## Notes about performance
-
-`checkElementsInViewport` is debounced by 50ms so it never executes more than 20 times a second. Checking element's
-position in viewport is costly, which is why `react-lazy` uses the most lightweight solution for checking if element is
-in viewport: it only checks if none of the parent elements has `display: none;` (this particular case is cheap to check)
-and then the position in the viewport.
-
-This means the check lacks some features such as seeing whether the child is actually visible in the screen, for example
-things like `visibility`, `opacity` or `overflow: hidden;` are not checked for, and there is no recursive logic.
-However, with React you usually have other means to know real visibility via component states, which is why `visible`
-property is provided for both `<Lazy />` and `<LazyGroup />`.
 
 
 ----

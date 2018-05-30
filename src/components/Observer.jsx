@@ -26,19 +26,9 @@ export function callback(changes, observer) {
     }
 }
 
-const optToPropMapper = { root: 'viewport', rootMargin: 'cushion' }
-
-/**
- * Terminology rename.
- * @param {string} option
- * @return {string} prop
- */
-function optToProp(option) {
-    return optToPropMapper[option] || option
-}
-
 const observerOptions = ['root', 'rootMargin', 'threshold']
-const observerProps = observerOptions.map(optToProp).concat('disabled')
+const optToPropMapper = { root: 'viewport', rootMargin: 'cushion' }
+const observerProps = ['viewport', 'cushion', 'disabled'].concat(observerOptions)
 const objectProto = Object.prototype
 
 export default class Observer extends React.Component {
@@ -55,7 +45,7 @@ export default class Observer extends React.Component {
         const props = this.props
 
         return observerOptions.reduce(function(options, option) {
-            const prop = optToProp(option)
+            const prop = optToPropMapper[option] || option
             // allow usage of root and rootMargin props, but prefer viewport and cushion
             const key =
                 (objectProto.hasOwnProperty.call(props, prop) && prop) ||

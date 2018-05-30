@@ -33,7 +33,7 @@ and `Set` are also required.
 
 ## Why `react-lazy`?
 
-1. Minimalistic and performant implementation with less dependancies than other solutions
+1. Minimalistic and performant implementation with less dependencies than other solutions
 2. You can choose between ease-of-use (LazyGroup) and do-it-yourself (Lazy, Observer)
 3. The hard part of handling `noscript` is done for you (Lazy, LazyGroup)
 

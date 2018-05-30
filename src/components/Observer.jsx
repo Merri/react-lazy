@@ -1,6 +1,7 @@
 // based on @researchgate/react-intersection-observer
 import React from 'react'
 import PropTypes from 'prop-types'
+/* eslint-disable react/no-find-dom-node */
 import { findDOMNode } from 'react-dom'
 
 import ObserverContainer from './ObserverContainer'
@@ -25,15 +26,30 @@ export function callback(changes, observer) {
     }
 }
 
-const observerOptions = ['viewport', 'cushion', 'threshold']
-const compareObserverOptions = observerOptions.concat('disabled')
+/**
+ * Terminology rename.
+ * @param {string} option
+ * @return {string} prop
+ */
+function optToProp(option) {
+    switch (option) {
+        case 'root':
+            return 'viewport'
+        case 'rootMargin':
+            return 'cushion'
+        default:
+            return option
+    }
+}
+
+const observerOptions = ['root', 'rootMargin', 'threshold']
+const observerProps = observerOptions.map(optToProp).concat('disabled')
 const objectProto = Object.prototype
 
 export default class Observer extends React.Component {
     constructor(props) {
         super(props)
 
-        this.compareObserverProps = this.compareObserverProps.bind(this)
         this.handleChange = this.handleChange.bind(this)
         this.handleNode = this.handleNode.bind(this)
         this.observe = this.observe.bind(this)
@@ -44,14 +60,16 @@ export default class Observer extends React.Component {
     get options() {
         const props = this.props
 
-        return observerOptions.reduce(function(prev, key) {
+        return observerOptions.reduce(function(options, option) {
+            const key = optToProp(option)
+
             if (objectProto.hasOwnProperty.call(props, key)) {
                 const useQuery = key === 'viewport' && objectProto.toString.call(props[key]) === '[object String]'
 
-                prev[key] = useQuery ? document.querySelector(props[key]) : props[key]
+                options[option] = useQuery ? document.querySelector(props[key]) : props[key]
             }
 
-            return prev
+            return options
         }, {})
     }
 
@@ -74,14 +92,7 @@ export default class Observer extends React.Component {
         this.target = target
     }
 
-    compareObserverProps(prevProps) {
-        return compareObserverOptions.some(
-            option => shallowCompareOptions(this.props[option], prevProps[option])
-        )
-    }
-
     observe() {
-        // eslint-disable-next-line react/no-find-dom-node
         this.target = isDOMTypeElement(this.target) ? this.target : findDOMNode(this.target)
         this.observer = ObserverContainer.create(callback, this.options)
         ObserverContainer.observe(this)
@@ -108,7 +119,10 @@ export default class Observer extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (this.targetChanged || this.compareObserverProps(prevProps)) {
+        if (
+            this.targetChanged ||
+            observerProps.some(option => shallowCompareOptions(this.props[option], prevProps[option]))
+        ) {
             this.reobserve()
         }
     }

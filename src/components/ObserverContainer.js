@@ -2,8 +2,8 @@
 import { parseRootMargin, shallowCompareOptions } from '../lib/utils'
 
 export function getPooled(options = {}) {
-    const root = options.viewport || null
-    const rootMargin = parseRootMargin(options.cushion)
+    const root = options.root || null
+    const rootMargin = parseRootMargin(options.rootMargin)
     const threshold = Array.isArray(options.threshold)
         ? options.threshold
         : [options.threshold != null ? options.threshold : 0]

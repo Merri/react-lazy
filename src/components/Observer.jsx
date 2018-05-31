@@ -4,8 +4,7 @@ import PropTypes from 'prop-types'
 /* eslint-disable react/no-find-dom-node */
 import { findDOMNode } from 'react-dom'
 
-import { createObserver, observeElement, unobserveElement } from './ObserverContainer'
-
+import { createObserver, observeElement, unobserveElement } from '../lib/IntersectionObserver'
 import { isDOMTypeElement, shallowCompareOptions } from '../lib/utils'
 
 const observerOptions = ['root', 'rootMargin', 'threshold']

@@ -1,5 +1,5 @@
 // based on @researchgate/react-intersection-observer
-import { parseRootMargin, shallowCompareOptions } from '../lib/utils'
+import { parseRootMargin, shallowCompareOptions } from './utils'
 
 export const storage = new Map()
 

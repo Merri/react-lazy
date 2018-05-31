@@ -1,7 +1,7 @@
 {
   "name": "react-lazy",
-  "version": "1.0.1",
-  "description": "Performant search engine and no-JS friendly universally rendering components for lazy loading, ad impressions, occlusion culling and sentinel scrolling",
+  "version": "1.0.2",
+  "description": "Universally rendering, lightweight and performant components for lazy loading with the noscript solution, and Intersection Observer component for ad impressions, occlusion culling and sentinel scrolling",
   "main": "dist/module/index.js",
   "scripts": {
     "build": "npm run clean-dist && npm run build-modules && npm run build-umd",

@@ -6,8 +6,6 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-exports.callback = callback;
-
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
@@ -18,9 +16,7 @@ var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _reactDom = require('react-dom');
 
-var _ObserverContainer = require('./ObserverContainer');
-
-var _ObserverContainer2 = _interopRequireDefault(_ObserverContainer);
+var _intersectionObserver = require('../lib/intersectionObserver');
 
 var _utils = require('../lib/utils');
 
@@ -34,24 +30,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /* eslint-disable react/no-find-dom-node */
 
-
-/**
- * The Intersection Observer API callback that is called whenever one element,
- * called the target, intersects either the device viewport or a specified element.
- * Also will get called whenever the visibility of the target element changes and
- * crosses desired amounts of intersection with the viewport element.
- * @param {array} changes
- * @param {IntersectionObserver} observer
- */
-function callback(changes, observer) {
-    for (var i = 0; i < changes.length; i++) {
-        var instance = _ObserverContainer2.default.findElement(changes[i], observer);
-
-        if (instance) {
-            instance.handleChange(changes[i]);
-        }
-    }
-}
 
 var observerOptions = ['root', 'rootMargin', 'threshold'];
 var optToPropMapper = { root: 'viewport', rootMargin: 'cushion' };
@@ -97,15 +75,20 @@ var Observer = function (_React$Component) {
     }, {
         key: 'observe',
         value: function observe() {
-            this.target = (0, _utils.isDOMTypeElement)(this.target) ? this.target : (0, _reactDom.findDOMNode)(this.target);
-            this.observer = _ObserverContainer2.default.create(callback, this.options);
-            _ObserverContainer2.default.observe(this);
+            var isDOMTypeElement = _react2.default.isValidElement(this.target) && typeof this.target.type === 'string';
+
+            if (!isDOMTypeElement) {
+                this.target = (0, _reactDom.findDOMNode)(this.target);
+            }
+
+            this.observer = (0, _intersectionObserver.createObserver)(this.options);
+            (0, _intersectionObserver.observeElement)(this);
         }
     }, {
         key: 'unobserve',
         value: function unobserve() {
             if (this.target != null) {
-                _ObserverContainer2.default.unobserve(this);
+                (0, _intersectionObserver.unobserveElement)(this);
             }
         }
     }, {
@@ -121,7 +104,7 @@ var Observer = function (_React$Component) {
             var _this2 = this;
 
             if (this.targetChanged || observerProps.some(function (option) {
-                return (0, _utils.shallowCompareOptions)(_this2.props[option], prevProps[option]);
+                return (0, _utils.shallowCompare)(_this2.props[option], prevProps[option]);
             })) {
                 this.unobserve();
 

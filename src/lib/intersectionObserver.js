@@ -30,8 +30,8 @@ export function getPooled(options = {}) {
 
     for (let observer = observers.next(); !observer.done; observer = observers.next()) {
         const unmatched =
-            shallowCompare(root, observer.value.root) ||
-            shallowCompare(rootMargin, observer.value.rootMargin) ||
+            root !== observer.value.root ||
+            rootMargin !== observer.value.rootMargin ||
             shallowCompare(threshold, observer.value.threshold)
 
         if (!unmatched) {

@@ -1,10 +1,4 @@
 // from @researchgate/react-intersection-observer
-import React from 'react'
-
-export function isDOMTypeElement(element) {
-    return React.isValidElement(element) && typeof element.type === 'string'
-}
-
 const marginRE = /^-?\d*\.?\d+(px|%)$/
 
 export function parseRootMargin(rootMargin) {

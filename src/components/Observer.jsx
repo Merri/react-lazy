@@ -5,14 +5,14 @@ import PropTypes from 'prop-types'
 import { findDOMNode } from 'react-dom'
 
 import { createObserver, observeElement, unobserveElement } from '../lib/intersectionObserver'
-import { isDOMTypeElement, shallowCompare } from '../lib/utils'
+import { shallowCompare } from '../lib/utils'
 
 const observerOptions = ['root', 'rootMargin', 'threshold']
 const optToPropMapper = { root: 'viewport', rootMargin: 'cushion' }
 const observerProps = ['viewport', 'cushion', 'disabled'].concat(observerOptions)
 const objectProto = Object.prototype
 
-export default class Observer extends React.PureComponent {
+export default class Observer extends React.Component {
     constructor(props) {
         super(props)
 
@@ -63,7 +63,12 @@ export default class Observer extends React.PureComponent {
     }
 
     observe() {
-        this.target = isDOMTypeElement(this.target) ? this.target : findDOMNode(this.target)
+        const isDOMTypeElement = React.isValidElement(this.target) && typeof this.target.type === 'string'
+
+        if (!isDOMTypeElement) {
+            this.target = findDOMNode(this.target)
+        }
+
         this.observer = createObserver(this.options)
         observeElement(this)
     }

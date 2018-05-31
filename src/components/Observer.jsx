@@ -4,8 +4,8 @@ import PropTypes from 'prop-types'
 /* eslint-disable react/no-find-dom-node */
 import { findDOMNode } from 'react-dom'
 
-import { createObserver, observeElement, unobserveElement } from '../lib/IntersectionObserver'
-import { isDOMTypeElement, shallowCompareOptions } from '../lib/utils'
+import { createObserver, observeElement, unobserveElement } from '../lib/intersectionObserver'
+import { isDOMTypeElement, shallowCompare } from '../lib/utils'
 
 const observerOptions = ['root', 'rootMargin', 'threshold']
 const optToPropMapper = { root: 'viewport', rootMargin: 'cushion' }
@@ -83,7 +83,7 @@ export default class Observer extends React.Component {
     componentDidUpdate(prevProps) {
         if (
             this.targetChanged ||
-            observerProps.some(option => shallowCompareOptions(this.props[option], prevProps[option]))
+            observerProps.some(option => shallowCompare(this.props[option], prevProps[option]))
         ) {
             this.unobserve()
 

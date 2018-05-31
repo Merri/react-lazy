@@ -1,5 +1,5 @@
 // based on @researchgate/react-intersection-observer
-import { parseRootMargin, shallowCompareOptions } from './utils'
+import { parseRootMargin, shallowCompare } from './utils'
 
 export const storage = new Map()
 
@@ -30,9 +30,9 @@ export function getPooled(options = {}) {
 
     for (let observer = observers.next(); !observer.done; observer = observers.next()) {
         const unmatched =
-            shallowCompareOptions(root, observer.value.root) ||
-            shallowCompareOptions(rootMargin, observer.value.rootMargin) ||
-            shallowCompareOptions(threshold, observer.value.threshold)
+            shallowCompare(root, observer.value.root) ||
+            shallowCompare(rootMargin, observer.value.rootMargin) ||
+            shallowCompare(threshold, observer.value.threshold)
 
         if (!unmatched) {
             return observer.value

@@ -4,27 +4,9 @@ import PropTypes from 'prop-types'
 /* eslint-disable react/no-find-dom-node */
 import { findDOMNode } from 'react-dom'
 
-import ObserverContainer from './ObserverContainer'
+import { createObserver, observeElement, unobserveElement } from './ObserverContainer'
 
 import { isDOMTypeElement, shallowCompareOptions } from '../lib/utils'
-
-/**
- * The Intersection Observer API callback that is called whenever one element,
- * called the target, intersects either the device viewport or a specified element.
- * Also will get called whenever the visibility of the target element changes and
- * crosses desired amounts of intersection with the viewport element.
- * @param {array} changes
- * @param {IntersectionObserver} observer
- */
-export function callback(changes, observer) {
-    for (let i = 0; i < changes.length; i++) {
-        const instance = ObserverContainer.findElement(changes[i], observer)
-
-        if (instance) {
-            instance.handleChange(changes[i])
-        }
-    }
-}
 
 const observerOptions = ['root', 'rootMargin', 'threshold']
 const optToPropMapper = { root: 'viewport', rootMargin: 'cushion' }
@@ -83,13 +65,13 @@ export default class Observer extends React.Component {
 
     observe() {
         this.target = isDOMTypeElement(this.target) ? this.target : findDOMNode(this.target)
-        this.observer = ObserverContainer.create(callback, this.options)
-        ObserverContainer.observe(this)
+        this.observer = createObserver(this.options)
+        observeElement(this)
     }
 
     unobserve() {
         if (this.target != null) {
-            ObserverContainer.unobserve(this)
+            unobserveElement(this)
         }
     }
 

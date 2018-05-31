@@ -12,7 +12,7 @@ const optToPropMapper = { root: 'viewport', rootMargin: 'cushion' }
 const observerProps = ['viewport', 'cushion', 'disabled'].concat(observerOptions)
 const objectProto = Object.prototype
 
-export default class Observer extends React.Component {
+export default class Observer extends React.PureComponent {
     constructor(props) {
         super(props)
 

@@ -7,8 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [unreleased]
 
+### Changed
+- Size of final generated JavaScript has been reduced
+- Code speed optimizations
+
 ### Removed
-- `DefaultWrapper` and `LazyChild` are no longer exported.
+- `DefaultWrapper` and `LazyChild` are no longer exported
 
 
 ## [1.0.1] - 2018-05-30

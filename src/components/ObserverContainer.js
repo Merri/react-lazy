@@ -1,6 +1,8 @@
 // based on @researchgate/react-intersection-observer
 import { parseRootMargin, shallowCompareOptions } from '../lib/utils'
 
+export const storage = new Map()
+
 export function getPooled(options = {}) {
     const root = options.root || null
     const rootMargin = parseRootMargin(options.rootMargin)
@@ -23,8 +25,6 @@ export function getPooled(options = {}) {
 
     return null
 }
-
-export const storage = new Map()
 
 export default class ObserverContainer {
     static create(callback, options) {

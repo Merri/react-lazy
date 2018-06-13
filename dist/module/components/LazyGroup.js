@@ -20,9 +20,9 @@ var _DefaultWrapper = require('./DefaultWrapper');
 
 var _DefaultWrapper2 = _interopRequireDefault(_DefaultWrapper);
 
-var _Observer = require('./Observer');
+var _reactIntersectionObserver = require('@researchgate/react-intersection-observer');
 
-var _Observer2 = _interopRequireDefault(_Observer);
+var _reactIntersectionObserver2 = _interopRequireDefault(_reactIntersectionObserver);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -108,8 +108,8 @@ var LazyGroup = function (_React$PureComponent) {
                 props = _objectWithoutProperties(_props2, ['children', 'childrenToWrap', 'childWrapper', 'clientOnly', 'component', 'cushion', 'ltIE9', 'onLoad', 'onViewport', 'threshold', 'viewport', 'visible']);
 
             return _react2.default.createElement(
-                _Observer2.default,
-                { cushion: cushion, onChange: this.onViewport, threshold: threshold, viewport: viewport },
+                _reactIntersectionObserver2.default,
+                { onChange: this.onViewport, root: viewport, rootMargin: cushion, threshold: threshold },
                 _react2.default.createElement(component, props,
                 // swap render once element is visible in viewport
                 clientOnly || visible && this.state.viewportAt

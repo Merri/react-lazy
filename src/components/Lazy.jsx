@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import Observer from './Observer'
+import Observer from '@researchgate/react-intersection-observer'
 
 import { propsWithNoScriptRender } from '../lib/wrap'
 
@@ -51,7 +51,7 @@ export default class Lazy extends React.PureComponent {
 
         if (clientOnly || (visible && this.state.show)) {
             return (
-                <Observer cushion={cushion} onChange={this.onViewport} threshold={threshold} viewport={viewport}>
+                <Observer onChange={this.onViewport} root={viewport} rootMargin={cushion} threshold={threshold}>
                     {React.createElement(component, props, visible && this.state.show ? children : null)}
                 </Observer>
             )
@@ -59,7 +59,7 @@ export default class Lazy extends React.PureComponent {
 
         // wrap all contents inside noscript
         return (
-            <Observer cushion={cushion} onChange={this.onViewport}>
+            <Observer onChange={this.onViewport} root={viewport} rootMargin={cushion} threshold={threshold}>
                 {React.createElement(component, propsWithNoScriptRender(children, ltIE9, props))}
             </Observer>
         )

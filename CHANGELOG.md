@@ -5,6 +5,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
+## [1.0.3] - 2018-06-13
+
+### Changed
+- Now uses `@researchgate/react-intersection-observer` instead of customized implementation
+
+### Fixed
+- Case where `viewport` and `threshold` were not passed to `Observer` in `Lazy`
+
+
 ## [1.0.2] - 2018-05-31
 
 ### Changed

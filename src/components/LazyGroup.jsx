@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { countTypesTags, wrapTypesToLazyChild, wrapTypesToNoScript } from '../lib/wrap'
 
 import DefaultWrapper from './DefaultWrapper'
-import Observer from './Observer'
+import Observer from '@researchgate/react-intersection-observer'
 
 export default class LazyGroup extends React.PureComponent {
     constructor(props) {
@@ -69,7 +69,7 @@ export default class LazyGroup extends React.PureComponent {
         } = this.props
 
         return (
-            <Observer cushion={cushion} onChange={this.onViewport} threshold={threshold} viewport={viewport}>
+            <Observer onChange={this.onViewport} root={viewport} rootMargin={cushion} threshold={threshold}>
                 {React.createElement(
                     component,
                     props,

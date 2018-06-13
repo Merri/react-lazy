@@ -14,9 +14,9 @@ var _propTypes = require('prop-types');
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _Observer = require('./Observer');
+var _reactIntersectionObserver = require('@researchgate/react-intersection-observer');
 
-var _Observer2 = _interopRequireDefault(_Observer);
+var _reactIntersectionObserver2 = _interopRequireDefault(_reactIntersectionObserver);
 
 var _wrap = require('../lib/wrap');
 
@@ -87,16 +87,16 @@ var Lazy = function (_React$PureComponent) {
 
             if (clientOnly || visible && this.state.show) {
                 return _react2.default.createElement(
-                    _Observer2.default,
-                    { cushion: cushion, onChange: this.onViewport, threshold: threshold, viewport: viewport },
+                    _reactIntersectionObserver2.default,
+                    { onChange: this.onViewport, root: viewport, rootMargin: cushion, threshold: threshold },
                     _react2.default.createElement(component, props, visible && this.state.show ? children : null)
                 );
             }
 
             // wrap all contents inside noscript
             return _react2.default.createElement(
-                _Observer2.default,
-                { cushion: cushion, onChange: this.onViewport },
+                _reactIntersectionObserver2.default,
+                { onChange: this.onViewport, root: viewport, rootMargin: cushion, threshold: threshold },
                 _react2.default.createElement(component, (0, _wrap.propsWithNoScriptRender)(children, ltIE9, props))
             );
         }

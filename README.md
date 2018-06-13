@@ -5,9 +5,8 @@
 > Lazy load your content without breaking the internet!
 
 Supports universal rendering including disabled JavaScript by using `noscript` elements that are also friendly to all
-search engines. Uses modern IntersectionObserver API and exposes `Observer` component which works exactly like the
-excellent [@researchgate/react-intersection-observer](https://github.com/researchgate/react-intersection-observer), but
-with a few minor changes.
+search engines. Uses modern IntersectionObserver API using the excellent
+[@researchgate/react-intersection-observer](https://github.com/researchgate/react-intersection-observer).
 
 Also optionally supports displaying the content on IE8 and earlier by adding conditional comments to skip `noscript`
 elements.
@@ -20,13 +19,11 @@ npm install react-lazy
 import { Lazy } from 'react-lazy'
 // or
 import { LazyGroup } from 'react-lazy'
-// or
-import { Observer } from 'react-lazy'
 ```
 
 You also need to polyfill `intersection-observer`! Use polyfill.io or `require('intersection-observer')`. Check
-[Can I use](https://caniuse.com/#feat=intersectionobserver) for browser support status. Additionally features like `Map`
-and `Set` are also required.
+[Can I use](https://caniuse.com/#feat=intersectionobserver) for browser support status. `Map` and `Set` are also
+required, but these are required by React as well.
 
 
 ----
@@ -34,8 +31,8 @@ and `Set` are also required.
 ## Why `react-lazy`?
 
 1. Minimalistic and performant implementation with less dependencies than other solutions
-2. You can choose between ease-of-use (LazyGroup) and do-it-yourself (Lazy, Observer)
-3. The hard part of handling `noscript` is done for you (Lazy, LazyGroup)
+2. You can choose between ease-of-use (LazyGroup) and do-it-yourself (Lazy)
+3. The hard part of handling `noscript` is done for you
 
 
 ----
@@ -92,21 +89,7 @@ import { Lazy } from 'react-lazy'
 
 ## Component introduction
 
-First of all, `Observer` component is exposed. This is a powerful component for using the new IntersectionObserver API.
-The notable differences to the implementation of
-[@researchgate/react-intersection-observer](https://github.com/researchgate/react-intersection-observer) are:
-
-- `viewport` prop is added and preferred over `root` prop
-- `cushion` prop is added and preferred over `rootMargin` prop
-- `onlyOnce` prop deprecation has been enforced and is unsupported
-- Other changes are internal code optimizations for further minor speed improvements and reduced code size
-
-Essentially `react-lazy`'s implementation of `<Observer />` is fully compatible with all the examples and demos you find
-at [@researchgate/react-intersection-observer](https://github.com/researchgate/react-intersection-observer). (This part
-of the text holds true in 2018-05-30 at version 0.7.1 - throw issue if this state changes).
-
-
-As for lazy loading there are two components: `<Lazy />` and `<LazyGroup />`.
+There are two components: `<Lazy />` and `<LazyGroup />`.
 
 **Lazy** provides basic functionality for lazy loading: it keeps render in `noscript` element until it has come into
 viewport and then simply swaps render. **Everything** inside the component is wrapped into `noscript`. As the component

@@ -1,7 +1,7 @@
 {
   "name": "react-lazy",
-  "version": "1.0.2",
-  "description": "Universally rendering, lightweight and performant components for lazy loading with the noscript solution, and Intersection Observer component for ad impressions, occlusion culling and sentinel scrolling",
+  "version": "1.0.3",
+  "description": "Universally rendering, lightweight and performant components for lazy loading with the noscript technique",
   "main": "dist/module/index.js",
   "scripts": {
     "build": "npm run clean-dist && npm run build-modules && npm run build-umd",
@@ -27,7 +27,6 @@
   "keywords": [
     "react",
     "react-component",
-    "react-intersection-observer",
     "react-lazy-load",
     "lazy",
     "lazy-load",
@@ -38,8 +37,6 @@
     "render",
     "universal",
     "performance",
-    "Intersection",
-    "Observer",
     "invisible",
     "viewport",
     "visible"
@@ -73,5 +70,7 @@
     "webpack": "^4.9.1",
     "webpack-cli": "^2.1.4"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@researchgate/react-intersection-observer": "^0.7.3"
+  }
 }

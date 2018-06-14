@@ -29,11 +29,15 @@ export default class LazyGroup extends React.PureComponent {
     onViewport(event, unobserve) {
         const { children, childrenToWrap, onLoad, onViewport, visible } = this.props
 
-        if (!visible) {
-            return false
+        if (!event.isIntersecting || !visible) {
+            return
         }
 
-        if (!event.isIntersecting || event.defaultPrevented) {
+        if (onViewport) {
+            onViewport(event)
+        }
+
+        if (event.defaultPrevented) {
             return
         }
 
@@ -41,9 +45,6 @@ export default class LazyGroup extends React.PureComponent {
 
         const imgTagCount = countTypesTags(childrenToWrap, children) || null
         this.loadedImgTags = 0
-        if (onViewport) {
-            onViewport(event)
-        }
         const viewportAt = Date.now()
         this.setState(
             { imgTagCount, loadedAt: !imgTagCount ? viewportAt : null, viewportAt },
@@ -74,7 +75,7 @@ export default class LazyGroup extends React.PureComponent {
                     component,
                     props,
                     // swap render once element is visible in viewport
-                    clientOnly || (visible && this.state.viewportAt)
+                    clientOnly || this.state.viewportAt
                         // replace elements with LazyChild
                         ? wrapTypesToLazyChild(childrenToWrap, children, childWrapper, this.onImgLoaded)
                         // wrap given element types to noscript and the given wrapper component
@@ -98,7 +99,7 @@ LazyGroup.propTypes = {
     children: PropTypes.node,
     childrenToWrap: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.string])),
     childWrapper: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
-    component: PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.string]),
+    component: PropTypes.any,
     cushion: PropTypes.string,
     clientOnly: PropTypes.bool,
     ltIE9: PropTypes.bool,

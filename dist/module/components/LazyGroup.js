@@ -71,11 +71,15 @@ var LazyGroup = function (_React$PureComponent) {
                 visible = _props.visible;
 
 
-            if (!visible) {
-                return false;
+            if (!event.isIntersecting || !visible) {
+                return;
             }
 
-            if (!event.isIntersecting || event.defaultPrevented) {
+            if (onViewport) {
+                onViewport(event);
+            }
+
+            if (event.defaultPrevented) {
                 return;
             }
 
@@ -83,9 +87,6 @@ var LazyGroup = function (_React$PureComponent) {
 
             var imgTagCount = (0, _wrap.countTypesTags)(childrenToWrap, children) || null;
             this.loadedImgTags = 0;
-            if (onViewport) {
-                onViewport(event);
-            }
             var viewportAt = Date.now();
             this.setState({ imgTagCount: imgTagCount, loadedAt: !imgTagCount ? viewportAt : null, viewportAt: viewportAt }, !imgTagCount ? onLoad : null);
         }
@@ -112,7 +113,7 @@ var LazyGroup = function (_React$PureComponent) {
                 { onChange: this.onViewport, root: viewport, rootMargin: cushion, threshold: threshold },
                 _react2.default.createElement(component, props,
                 // swap render once element is visible in viewport
-                clientOnly || visible && this.state.viewportAt
+                clientOnly || this.state.viewportAt
                 // replace elements with LazyChild
                 ? (0, _wrap.wrapTypesToLazyChild)(childrenToWrap, children, childWrapper, this.onImgLoaded)
                 // wrap given element types to noscript and the given wrapper component

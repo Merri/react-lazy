@@ -15,23 +15,21 @@ export default class Lazy extends React.PureComponent {
     }
 
     onViewport(event, unobserve) {
-        const { onLoad, onViewport, visible } = this.props
-
-        if (!visible) {
+        if (!event.isIntersecting || !this.props.visible) {
             return
         }
 
-        if (!event.isIntersecting || event.defaultPrevented) {
+        if (this.props.onViewport) {
+            this.props.onViewport(event)
+        }
+
+        if (event.defaultPrevented) {
             return
         }
 
         unobserve()
 
-        if (onViewport) {
-            onViewport(event)
-        }
-
-        this.setState({ show: true }, onLoad)
+        this.setState({ show: true }, this.props.onLoad)
     }
 
     render() {
@@ -49,18 +47,15 @@ export default class Lazy extends React.PureComponent {
             ...props
         } = this.props
 
-        if (clientOnly || (visible && this.state.show)) {
-            return (
-                <Observer onChange={this.onViewport} root={viewport} rootMargin={cushion} threshold={threshold}>
-                    {React.createElement(component, props, visible && this.state.show ? children : null)}
-                </Observer>
-            )
-        }
+        const isClientRender = clientOnly || this.state.show
 
-        // wrap all contents inside noscript
         return (
             <Observer onChange={this.onViewport} root={viewport} rootMargin={cushion} threshold={threshold}>
-                {React.createElement(component, propsWithNoScriptRender(children, ltIE9, props))}
+                {React.createElement(
+                    component,
+                    isClientRender ? props : propsWithNoScriptRender(children, ltIE9, props),
+                    isClientRender && this.state.show && visible ? children : null
+                )}
             </Observer>
         )
     }
@@ -75,7 +70,7 @@ Lazy.defaultProps = {
 
 Lazy.propTypes = {
     children: PropTypes.node,
-    component: PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.string]),
+    component: PropTypes.any,
     cushion: PropTypes.string,
     clientOnly: PropTypes.bool,
     ltIE9: PropTypes.bool,

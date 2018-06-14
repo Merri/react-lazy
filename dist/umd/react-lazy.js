@@ -17,16 +17,15 @@ function s(e){return e&&e.__esModule?e:{default:e}}var c=function(e){function t(
 var r=function(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called")
 return!t||"object"!==(void 0===t?"undefined":n(t))&&"function"!=typeof t?e:t}(this,(t.__proto__||Object.getPrototypeOf(t)).call(this,e))
 return r.loadedImgTags=0,r.state={imgTagCount:null,loadedAt:null,viewportAt:null},r.onImgLoaded=r.onImgLoaded.bind(r),r.onViewport=r.onViewport.bind(r),r}return function(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+(void 0===t?"undefined":n(t)))
-e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}(t,i.default.PureComponent),o(t,[{key:"onImgLoaded",value:function(){this.loadedImgTags++,this.loadedImgTags===this.state.imgTagCount&&(this.loadedImgTags=0,this.setState({imgTagCount:null,loadedAt:Date.now()},this.props.onLoad))}},{key:"onViewport",value:function(e,t){var r=this.props,n=r.children,o=r.childrenToWrap,i=r.onLoad,l=r.onViewport
-if(!r.visible)return!1
-if(e.isIntersecting&&!e.defaultPrevented){t()
-var u=(0,a.countTypesTags)(o,n)||null
-this.loadedImgTags=0,l&&l(e)
-var s=Date.now()
-this.setState({imgTagCount:u,loadedAt:u?null:s,viewportAt:s},u?null:i)}}},{key:"render",value:function(){var e=this.props,t=e.children,r=e.childrenToWrap,n=e.childWrapper,o=e.clientOnly,l=e.component,s=e.cushion,c=e.ltIE9,p=(e.onLoad,e.onViewport,e.threshold),f=e.viewport,d=e.visible,h=function(e,t){var r={}
+e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}(t,i.default.PureComponent),o(t,[{key:"onImgLoaded",value:function(){this.loadedImgTags++,this.loadedImgTags===this.state.imgTagCount&&(this.loadedImgTags=0,this.setState({imgTagCount:null,loadedAt:Date.now()},this.props.onLoad))}},{key:"onViewport",value:function(e,t){var r=this.props,n=r.children,o=r.childrenToWrap,i=r.onLoad,l=r.onViewport,u=r.visible
+if(e.isIntersecting&&u&&(l&&l(e),!e.defaultPrevented)){t()
+var s=(0,a.countTypesTags)(o,n)||null
+this.loadedImgTags=0
+var c=Date.now()
+this.setState({imgTagCount:s,loadedAt:s?null:c,viewportAt:c},s?null:i)}}},{key:"render",value:function(){var e=this.props,t=e.children,r=e.childrenToWrap,n=e.childWrapper,o=e.clientOnly,l=e.component,s=e.cushion,c=e.ltIE9,p=(e.onLoad,e.onViewport,e.threshold),f=e.viewport,d=(e.visible,function(e,t){var r={}
 for(var n in e)t.indexOf(n)>=0||Object.prototype.hasOwnProperty.call(e,n)&&(r[n]=e[n])
-return r}(e,["children","childrenToWrap","childWrapper","clientOnly","component","cushion","ltIE9","onLoad","onViewport","threshold","viewport","visible"])
-return i.default.createElement(u.default,{onChange:this.onViewport,root:f,rootMargin:s,threshold:p},i.default.createElement(l,h,o||d&&this.state.viewportAt?(0,a.wrapTypesToLazyChild)(r,t,n,this.onImgLoaded):(0,a.wrapTypesToNoScript)(r,t,c,n)))}}]),t}()
+return r}(e,["children","childrenToWrap","childWrapper","clientOnly","component","cushion","ltIE9","onLoad","onViewport","threshold","viewport","visible"]))
+return i.default.createElement(u.default,{onChange:this.onViewport,root:f,rootMargin:s,threshold:p},i.default.createElement(l,d,o||this.state.viewportAt?(0,a.wrapTypesToLazyChild)(r,t,n,this.onImgLoaded):(0,a.wrapTypesToNoScript)(r,t,c,n)))}}]),t}()
 t.default=c,c.defaultProps={childrenToWrap:["iframe","img"],childWrapper:l.default,clientOnly:!1,component:"div",ltIE9:!1,visible:!0}},function(e,t,r){"use strict"
 Object.defineProperty(t,"__esModule",{value:!0}),t.countTypesTags=function e(t,r){var o=arguments.length>2&&void 0!==arguments[2]?arguments[2]:0
 if(!r)return o
@@ -51,11 +50,10 @@ function u(e){return e&&e.__esModule?e:{default:e}}var s=function(e){function t(
 var r=function(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called")
 return!t||"object"!==(void 0===t?"undefined":n(t))&&"function"!=typeof t?e:t}(this,(t.__proto__||Object.getPrototypeOf(t)).call(this,e))
 return r.state={show:!1},r.onViewport=r.onViewport.bind(r),r}return function(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+(void 0===t?"undefined":n(t)))
-e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}(t,i.default.PureComponent),o(t,[{key:"onViewport",value:function(e,t){var r=this.props,n=r.onLoad,o=r.onViewport
-r.visible&&e.isIntersecting&&!e.defaultPrevented&&(t(),o&&o(e),this.setState({show:!0},n))}},{key:"render",value:function(){var e=this.props,t=e.children,r=e.clientOnly,n=e.component,o=e.cushion,u=e.ltIE9,s=e.visible,c=(e.onLoad,e.onViewport,e.threshold),p=e.viewport,f=function(e,t){var r={}
+e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}(t,i.default.PureComponent),o(t,[{key:"onViewport",value:function(e,t){e.isIntersecting&&this.props.visible&&(this.props.onViewport&&this.props.onViewport(e),e.defaultPrevented||(t(),this.setState({show:!0},this.props.onLoad)))}},{key:"render",value:function(){var e=this.props,t=e.children,r=e.clientOnly,n=e.component,o=e.cushion,u=e.ltIE9,s=e.visible,c=(e.onLoad,e.onViewport,e.threshold),p=e.viewport,f=function(e,t){var r={}
 for(var n in e)t.indexOf(n)>=0||Object.prototype.hasOwnProperty.call(e,n)&&(r[n]=e[n])
-return r}(e,["children","clientOnly","component","cushion","ltIE9","visible","onLoad","onViewport","threshold","viewport"])
-return r||s&&this.state.show?i.default.createElement(a.default,{onChange:this.onViewport,root:p,rootMargin:o,threshold:c},i.default.createElement(n,f,s&&this.state.show?t:null)):i.default.createElement(a.default,{onChange:this.onViewport,root:p,rootMargin:o,threshold:c},i.default.createElement(n,(0,l.propsWithNoScriptRender)(t,u,f)))}}]),t}()
+return r}(e,["children","clientOnly","component","cushion","ltIE9","visible","onLoad","onViewport","threshold","viewport"]),d=r||this.state.show
+return i.default.createElement(a.default,{onChange:this.onViewport,root:p,rootMargin:o,threshold:c},i.default.createElement(n,d?f:(0,l.propsWithNoScriptRender)(t,u,f),d&&this.state.show&&s?t:null))}}]),t}()
 t.default=s,s.defaultProps={clientOnly:!1,component:"div",ltIE9:!1,visible:!0}},function(e,t,r){"use strict"
 Object.defineProperty(t,"__esModule",{value:!0})
 var n=r(9)

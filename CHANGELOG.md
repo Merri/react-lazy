@@ -5,6 +5,17 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
+## [unreleased]
+
+### Fixed
+- Allow blocking lazy load in `onViewport` events by using `preventDefault()`
+- No longer re-render as `noscript` if setting `visible` to false after element has come to viewport
+- `component` propTypes have been fixed to `any`
+
+### Changed
+- `Lazy`'s render method has been compacted to shorter code
+
+
 ## [1.0.3] - 2018-06-13
 
 ### Changed

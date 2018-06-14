@@ -47,57 +47,44 @@ var Lazy = function (_React$PureComponent) {
     _createClass(Lazy, [{
         key: 'onViewport',
         value: function onViewport(event, unobserve) {
-            var _props = this.props,
-                onLoad = _props.onLoad,
-                onViewport = _props.onViewport,
-                visible = _props.visible;
-
-
-            if (!visible) {
+            if (!event.isIntersecting || !this.props.visible) {
                 return;
             }
 
-            if (!event.isIntersecting || event.defaultPrevented) {
+            if (this.props.onViewport) {
+                this.props.onViewport(event);
+            }
+
+            if (event.defaultPrevented) {
                 return;
             }
 
             unobserve();
 
-            if (onViewport) {
-                onViewport(event);
-            }
-
-            this.setState({ show: true }, onLoad);
+            this.setState({ show: true }, this.props.onLoad);
         }
     }, {
         key: 'render',
         value: function render() {
-            var _props2 = this.props,
-                children = _props2.children,
-                clientOnly = _props2.clientOnly,
-                component = _props2.component,
-                cushion = _props2.cushion,
-                ltIE9 = _props2.ltIE9,
-                visible = _props2.visible,
-                onLoad = _props2.onLoad,
-                onViewport = _props2.onViewport,
-                threshold = _props2.threshold,
-                viewport = _props2.viewport,
-                props = _objectWithoutProperties(_props2, ['children', 'clientOnly', 'component', 'cushion', 'ltIE9', 'visible', 'onLoad', 'onViewport', 'threshold', 'viewport']);
+            var _props = this.props,
+                children = _props.children,
+                clientOnly = _props.clientOnly,
+                component = _props.component,
+                cushion = _props.cushion,
+                ltIE9 = _props.ltIE9,
+                visible = _props.visible,
+                onLoad = _props.onLoad,
+                onViewport = _props.onViewport,
+                threshold = _props.threshold,
+                viewport = _props.viewport,
+                props = _objectWithoutProperties(_props, ['children', 'clientOnly', 'component', 'cushion', 'ltIE9', 'visible', 'onLoad', 'onViewport', 'threshold', 'viewport']);
 
-            if (clientOnly || visible && this.state.show) {
-                return _react2.default.createElement(
-                    _reactIntersectionObserver2.default,
-                    { onChange: this.onViewport, root: viewport, rootMargin: cushion, threshold: threshold },
-                    _react2.default.createElement(component, props, visible && this.state.show ? children : null)
-                );
-            }
+            var isClientRender = clientOnly || this.state.show;
 
-            // wrap all contents inside noscript
             return _react2.default.createElement(
                 _reactIntersectionObserver2.default,
                 { onChange: this.onViewport, root: viewport, rootMargin: cushion, threshold: threshold },
-                _react2.default.createElement(component, (0, _wrap.propsWithNoScriptRender)(children, ltIE9, props))
+                _react2.default.createElement(component, isClientRender ? props : (0, _wrap.propsWithNoScriptRender)(children, ltIE9, props), isClientRender && this.state.show && visible ? children : null)
             );
         }
     }]);

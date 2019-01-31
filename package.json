@@ -12,7 +12,7 @@
     "precommit": "npm run test",
     "prepare": "npm run build",
     "pretest": "npm run lint",
-    "test": "mocha --compilers js:babel-core/register --reporter spec"
+    "test": "mocha --require babel-core/register --reporter spec"
   },
   "repository": {
     "type": "git",
@@ -60,7 +60,7 @@
     "eslint": "^4.19.1",
     "eslint-plugin-react": "^7.8.2",
     "jsdom": "~7.0.0",
-    "mocha": "^3.4.0",
+    "mocha": "^5.2.0",
     "mocha-jsdom": "~1.1.0",
     "prop-types": "^15.6.1",
     "react": "^16.4.0",

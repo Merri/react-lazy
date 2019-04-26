@@ -16,7 +16,7 @@ export function countTypesTags(types, children, count = 0) {
         } else if (types.includes(child.type)) {
             count++
         } else {
-            const props = child.props || (child._store && child._store.props) || {}
+            const props = child.props || {}
             count += countTypesTags(types, props.children)
         }
     })
@@ -27,16 +27,18 @@ export function countTypesTags(types, children, count = 0) {
 export function propsWithNoScriptRender(children, ltIE9, props = {}) {
     const noscript = renderToStaticMarkup(React.createElement('noscript', null, children))
 
-    const __html = !ltIE9 ? noscript : noscript
-        .replace('<noscript>', '<!--[if IE 9]><!--><noscript><!--<![endif]-->')
-        .replace('</noscript>', '<!--[if IE 9]><!--></noscript><!--<![endif]-->')
-
-    props.dangerouslySetInnerHTML = { __html }
+    props.dangerouslySetInnerHTML = {
+        __html: !ltIE9
+            ? noscript
+            : noscript
+                  .replace('<noscript>', '<!--[if IE 9]><!--><noscript><!--<![endif]-->')
+                  .replace('</noscript>', '<!--[if IE 9]><!--></noscript><!--<![endif]-->'),
+    }
 
     return props
 }
 
-export function wrapTypesToLazyChild(types, children, wrapper, callback) {
+export function wrapTypesToLazyChild(types, children, wrapper, callback, inViewport) {
     if (!children) {
         return children
     }
@@ -46,18 +48,19 @@ export function wrapTypesToLazyChild(types, children, wrapper, callback) {
             return child
         } else if (types.includes(child.type)) {
             return (
-                <LazyChild callback={callback} wrapper={wrapper}>{child}</LazyChild>
+                <LazyChild callback={callback} wrapper={wrapper}>
+                    {inViewport ? child : null}
+                </LazyChild>
             )
-        } else {
-            const props = child.props || (child._store && child._store.props) || {}
-            const children = wrapTypesToLazyChild(types, props.children, wrapper, callback)
-
-            if (children !== props.children) {
-                return React.cloneElement(child, null, children)
-            } else {
-                return child
-            }
         }
+        const props = child.props || {}
+        const laziedChildren = wrapTypesToLazyChild(types, props.children, wrapper, callback, inViewport)
+
+        if (laziedChildren !== props.children) {
+            return React.cloneElement(child, null, laziedChildren)
+        }
+
+        return child
     })
 }
 
@@ -71,15 +74,15 @@ export function wrapTypesToNoScript(types, children, ltIE9, wrapper) {
             return child
         } else if (types.includes(child.type)) {
             return React.createElement(wrapper, propsWithNoScriptRender(child, ltIE9))
-        } else {
-            const props = child.props || (child._store && child._store.props) || {}
-            const children = wrapTypesToNoScript(types, props.children, ltIE9, wrapper)
-
-            if (children !== props.children) {
-                return React.cloneElement(child, null, children)
-            } else {
-                return child
-            }
         }
+
+        const props = child.props || {}
+        const noscriptedChildren = wrapTypesToNoScript(types, props.children, ltIE9, wrapper)
+
+        if (noscriptedChildren !== props.children) {
+            return React.cloneElement(child, null, noscriptedChildren)
+        }
+
+        return child
     })
 }

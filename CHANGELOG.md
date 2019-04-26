@@ -5,15 +5,21 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
-## [unreleased]
+## [1.1.0] - 2019-04-26
 
 ### Fixed
 - Allow blocking lazy load in `onViewport` events by using `preventDefault()`
 - No longer re-render as `noscript` if setting `visible` to false after element has come to viewport
 - `component` propTypes have been fixed to `any`
+- `clientOnly` works now correctly with `LazyGroup`
 
 ### Changed
+- `ref` is now passed through
+- Build and test system has been replaced with a less clunky modern one
 - `Lazy`'s render method has been compacted to shorter code
+
+### Removed
+- Support for old versions of React, now minimum of 16.4 required
 
 
 ## [1.0.3] - 2018-06-13

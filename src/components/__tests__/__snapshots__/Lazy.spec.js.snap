@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Lazy children should be rendered inside noscript 1`] = `
+<div
+  dangerouslySetInnerHTML={
+    Object {
+      "__html": "<noscript><span>I am inside noscript!</span></noscript>",
+    }
+  }
+/>
+`;
+
+exports[`Lazy ltIE9 should render with IE conditional comments around noscript 1`] = `
+<div
+  dangerouslySetInnerHTML={
+    Object {
+      "__html": "<!--[if IE 9]><!--><noscript><!--<![endif]--><!--[if IE 9]><!--></noscript><!--<![endif]-->",
+    }
+  }
+/>
+`;
+
+exports[`Lazy should let change component to be rendered 1`] = `
+<section
+  dangerouslySetInnerHTML={
+    Object {
+      "__html": "<noscript></noscript>",
+    }
+  }
+/>
+`;
+
+exports[`Lazy should render as div and with empty noscript by default 1`] = `
+<div
+  dangerouslySetInnerHTML={
+    Object {
+      "__html": "<noscript></noscript>",
+    }
+  }
+/>
+`;
+
+exports[`Lazy should render only div in clientOnly mode 1`] = `<div />`;
+
+exports[`Lazy with ltIE9 children should be rendered inside noscript with conditional comments 1`] = `
+<div
+  dangerouslySetInnerHTML={
+    Object {
+      "__html": "<!--[if IE 9]><!--><noscript><!--<![endif]--><span>I am inside IECC noscript!</span><!--[if IE 9]><!--></noscript><!--<![endif]-->",
+    }
+  }
+/>
+`;

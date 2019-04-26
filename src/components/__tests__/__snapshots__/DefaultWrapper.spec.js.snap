@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DefaultWrapper className indicates failed state when isFailed 1`] = `
+<div
+  className="react-lazy-wrapper react-lazy-wrapper--failed"
+/>
+`;
+
+exports[`DefaultWrapper className indicates loaded state when isLoaded 1`] = `
+<div
+  className="react-lazy-wrapper react-lazy-wrapper--loaded"
+/>
+`;
+
+exports[`DefaultWrapper className indicates loading state when childProps exists 1`] = `
+<div
+  className="react-lazy-wrapper react-lazy-wrapper--loading"
+/>
+`;
+
+exports[`DefaultWrapper className indicates placeholder state by default 1`] = `
+<div
+  className="react-lazy-wrapper react-lazy-wrapper--placeholder"
+/>
+`;
+
+exports[`DefaultWrapper may contain children 1`] = `
+<div
+  className="react-lazy-wrapper react-lazy-wrapper--loaded"
+>
+  <div />
+</div>
+`;
+
+exports[`DefaultWrapper passes other props directly to the rendered div element 1`] = `
+<div
+  className="react-lazy-wrapper react-lazy-wrapper--loaded"
+  id="you-should-see-me-in-the-div"
+/>
+`;

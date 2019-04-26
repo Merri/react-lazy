@@ -1,0 +1,85 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LazyGroup childrenToWrap should wrap given component types inside noscript 1`] = `
+<div>
+  <div
+    className="react-lazy-wrapper react-lazy-wrapper--placeholder"
+    dangerouslySetInnerHTML={
+      Object {
+        "__html": "<noscript><span>I am inside noscript!</span></noscript>",
+      }
+    }
+  />
+  <div>
+    I am not! 
+    <div
+      className="react-lazy-wrapper react-lazy-wrapper--placeholder"
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "<noscript><span>But I am!</span></noscript>",
+        }
+      }
+    />
+  </div>
+</div>
+`;
+
+exports[`LazyGroup childrenToWrap should wrap given component types inside noscript 2`] = `
+<div>
+  <div
+    className="react-lazy-wrapper react-lazy-wrapper--placeholder"
+    dangerouslySetInnerHTML={
+      Object {
+        "__html": "<!--[if IE 9]><!--><noscript><!--<![endif]--><span>I am inside IECC noscript!</span><!--[if IE 9]><!--></noscript><!--<![endif]-->",
+      }
+    }
+  />
+  <div>
+    I am not! 
+    <div
+      className="react-lazy-wrapper react-lazy-wrapper--placeholder"
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "<!--[if IE 9]><!--><noscript><!--<![endif]--><span>But I am!</span><!--[if IE 9]><!--></noscript><!--<![endif]-->",
+        }
+      }
+    />
+  </div>
+</div>
+`;
+
+exports[`LazyGroup childrenToWrap should wrap matching children in clientOnly mode 1`] = `
+<div>
+  <div
+    className="react-lazy-wrapper react-lazy-wrapper--placeholder"
+  />
+  <div>
+    Not wrapped! You can read me in the snapshot! 
+    <div
+      className="react-lazy-wrapper react-lazy-wrapper--placeholder"
+    />
+  </div>
+</div>
+`;
+
+exports[`LazyGroup ltIE9 should render just a div by default 1`] = `<div />`;
+
+exports[`LazyGroup ltIE9 should render span inside div by default 1`] = `
+<div>
+  <span>
+    I am NOT inside IECC noscript!
+  </span>
+</div>
+`;
+
+exports[`LazyGroup should let change component to be rendered 1`] = `<section />`;
+
+exports[`LazyGroup should render just a div by default 1`] = `<div />`;
+
+exports[`LazyGroup should render span inside div by default 1`] = `
+<div>
+  <span>
+    I am NOT inside noscript!
+  </span>
+</div>
+`;

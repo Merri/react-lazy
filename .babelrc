@@ -1,34 +1,3 @@
 {
-    "env": {
-        "development": {
-            "presets": [
-                ["env", {
-                    "targets": {
-                        "browsers": ["last 2 versions", "safari >= 7", "ie >= 11"]
-                    }
-                }],
-                "react"
-            ],
-            "plugins": ["transform-export-extensions", "transform-object-rest-spread"]
-        },
-        "build": {
-            "presets": [
-                ["env", {
-                    "targets": {
-                        "browsers": ["last 2 versions", "safari >= 7", "ie >= 11"]
-                    }
-                }],
-                "react"
-            ],
-            "plugins": [
-                "transform-export-extensions",
-                "transform-object-rest-spread",
-                "transform-react-remove-prop-types"
-            ],
-            "ignore": [
-                "**/__tests__/*.js",
-                "**/fake-*"
-            ]
-        }
-    }
+  "presets": ["@researchgate/babel-preset-rg"]
 }

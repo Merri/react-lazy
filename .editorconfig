@@ -1,27 +1,20 @@
-# http://editorconfig.org
+# http://EditorConfig.org
+# top-most EditorConfig file
 root = true
 
 [*]
-# Use hard or soft tabs
-indent_style = space
-
-# Size of a single indent
-indent_size = tab
-
-# Number of columns representing a tab character
-tab_width = 4
-
-# Use line-feed as EOL indicator
 end_of_line = lf
-
-# Use UTF-8 character encoding for all files
-charset = utf-8
-
-# Remove any whitespace characters preceding newline characters
 trim_trailing_whitespace = true
-
-# Ensure file ends with a newline when saving
-insert_final_newline = true
+insert_final_newline = false
+indent_style = space
 
 [*.md]
 trim_trailing_whitespace = false
+
+[*.{js,jsx,scss}]
+charset = utf-8
+insert_final_newline = true
+indent_size = 4
+
+[{*.json,.travis.yml,.*rc}]
+indent_size = 2

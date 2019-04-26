@@ -47,7 +47,7 @@ Likely side effect of lazy loading is that user may see content flashing as it c
 delay as it depends on connectivity. You can make the experience less flickery by adding a transition when image is
 loaded (a bit harder to develop) or by giving `Lazy` a large cushion (500 pixels or more) to load image before it is
 actually in the viewport. Using both strategies together is recommended. You can test the experience on your own site by
-dropping mobile connection to 2G / edge.
+dropping mobile connection to slow 3G.
 
 Chrome developer tools also has network throttling so you don't need to get yourself into a train to nowhere to test how
 well or poorly your site works in high latency conditions. However it is also recommended you do get yourself into a
@@ -247,57 +247,3 @@ simple div with a `className` of `react-lazy-wrapper`. BEM convention is used to
 This is the component used by `LazyGroup` to handle rendering of the wrapped child components. It manages the `onLoad` /
 `onError` handling. It takes two props: `callback` and `wrapper`. `callback` is called by `LazyChild` once loading
 result has been resolved. `wrapper` is the component rendered around wrapped child element.
-
-
-----
-
-## Developing
-
-```
-npm install
-npm run build
-npm test
-```
-
-**Note!** This component uses jsdom in it's tests. This means you may need to install stuff, especially on
-Windows. The following is copied from [node-jsdom's readme](https://github.com/darrylwest/node-jsdom):
-
-### Contextify
-
-[Contextify](https://npmjs.org/package/contextify) is a dependency of jsdom, used for running `<script>` tags within the
-page. In other words, it allows jsdom, which is run in Node.js, to run strings of JavaScript in an isolated environment
-that pretends to be a browser environment instead of a server. You can see how this is an important feature.
-
-Unfortunately, doing this kind of magic requires C++. And in Node.js, using C++ from JavaScript means using "native
-modules." Native modules are compiled at installation time so that they work precisely for your machine; that is, you
-don't download a contextify binary from npm, but instead build one locally after downloading the source from npm.
-
-Getting C++ compiled within npm's installation system can be tricky, especially for Windows users. Thus, one of the most
-common problems with jsdom is trying to use it without the proper compilation tools installed. Here's what you need to
-compile Contextify, and thus to install jsdom:
-
-#### Windows
-
-- The latest version of [Node.js for Windows](http://nodejs.org/download/)
-- A copy of [Visual Studio Express 2013 for Windows Desktop](http://www.visualstudio.com/downloads/download-visual-studio-vs#d-express-windows-desktop)
-- A copy of [Python 2.7](http://www.python.org/download/), installed in the default location of `C:\Python27`
-- Set your system environment variable GYP_MSVS_VERSION like so (assuming you have Visual Studio 2013 installed):
-  ```shell
-  setx GYP_MSVS_VERSION 2013
-  ```
-
-- Restart your command prompt window to ensure required path variables are present.
-
-There are some slight modifications to this that can work; for example other Visual Studio versions often work too. But
-it's tricky, so start with the basics!
-
-#### Mac
-
-- XCode needs to be installed
-- "Command line tools for XCode" need to be installed
-- Launch XCode once to accept the license, etc. and ensure it's properly installed
-
-#### Linux
-
-You'll need various build tools installed, like `make`, Python 2.7, and a compiler toolchain. How to install these will
-be specific to your distro, if you don't already have them.

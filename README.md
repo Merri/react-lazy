@@ -1,6 +1,6 @@
 # react-lazy
-[![Version](https://img.shields.io/npm/v/react-lazy.svg)](https://www.npmjs.com/package/@merri/nomjs)
-[![Build Status](https://travis-ci.org/Merri/nomjs.svg)](https://travis-ci.org/Merri/nomjs)
+[![Version](https://img.shields.io/npm/v/react-lazy.svg)](https://www.npmjs.com/package/react-lazy)
+[![Build Status](https://travis-ci.org/Merri/react-lazy.svg)](https://travis-ci.org/Merri/react-lazy)
 
 > Lazy load your content without breaking the internet!
 
